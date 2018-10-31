@@ -70,7 +70,7 @@ async function signInWithGoogleAsync() {
         if (result.type === 'success') {
             // this.props.signInUser(result.user);
             console.log(result);
-            this.props.navigation.navigate('App');
+            this.props.navigation.navigate('SignedIn');
         } else {
             return {cancelled: true};
         }
@@ -95,7 +95,7 @@ async function signInWithFacebook() {
         console.log('first_name', first_name);
         console.log('last_name', last_name);
         console.log('email', email);
-        this.props.navigation.navigate('App');
+        this.props.navigation.navigate('SignedIn');
     }
 }
 
@@ -114,8 +114,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logo: {
-        width: 250,
-        height: 250
+        width: 150,
+        height: 150
     },
     appName: {
         fontSize: 65,
