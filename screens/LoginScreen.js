@@ -117,9 +117,6 @@ const styles = StyleSheet.create({
         width: 250,
         height: 250
     },
-    facebookLogo: {
-        width: 100
-    },
     appName: {
         fontSize: 65,
         fontFamily: 'nanum-gothic',

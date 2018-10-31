@@ -10,7 +10,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/logos/spruceIcon.png",
     "splash": {
-      "image": "./assets/images/logos/spruceLogo.JPG",
+      "image": "./assets/images/logos/spruceLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
