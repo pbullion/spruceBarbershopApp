@@ -3,13 +3,14 @@ import {
     TouchableOpacity,
     View,
     StyleSheet,
-    Image,
-    Text
-} from 'react-native';
+    Image
+}
+from 'react-native';
 import { connect } from 'react-redux';
 import Expo from 'expo';
 import { signInUser } from "../actions";
-import googleSignInButton from '../assets/images/google.png'
+import { SocialIcon } from 'react-native-elements'
+import spruceLogo from '../assets/images/logos/spruceLogo.png'
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -25,11 +26,36 @@ class LoginScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-    <Text style={styles.appName}>Spruce Barbershop</Text>
-        <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
-    <Image source={googleSignInButton} />
-        </TouchableOpacity>
-        </View>
+                <View style={styles.logoContainer}>
+                    <Image style={styles.logo} source={spruceLogo} />
+                </View>
+                <View>
+                    <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
+                        <SocialIcon
+                            title='Sign In With Google'
+                            button
+                            type='google-plus-official'
+                            style={{ padding: 20 }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={signInWithFacebook.bind(this)}>
+                        <SocialIcon
+                            title='Sign In With Facebook'
+                            button
+                            type='facebook'
+                            style={{ padding: 20 }}
+                        />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => {}}>
+                        <SocialIcon
+                            title='Sign In With Email'
+                            button
+                            type='linkedin'
+                            style={{ padding: 20 }}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </View>
     );
     }
 }
@@ -53,20 +79,50 @@ async function signInWithGoogleAsync() {
     }
 }
 
+async function signInWithFacebook() {
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('360415578030850', {
+        permissions: ['public_profile', 'email'],
+    });
+    if (type === 'success') {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(
+            `https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,first_name,last_name,picture.type(large)`
+        );
+        const { id, picture, name, email, first_name, last_name } = await response.json();
+        console.log('id', id);
+        console.log('picture', picture);
+        console.log('name', name);
+        console.log('first_name', first_name);
+        console.log('last_name', last_name);
+        console.log('email', email);
+        this.props.navigation.navigate('App');
+    }
+}
+
 export default connect(null, { signInUser })(LoginScreen)
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
-        height: 200,
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#D800FF'
+        backgroundColor: '#ffffff'
+    },
+    logoContainer: {
+        width: '100%',
+        alignItems: 'center',
+    },
+    logo: {
+        width: 250,
+        height: 250
+    },
+    facebookLogo: {
+        width: 100
     },
     appName: {
         fontSize: 65,
         fontFamily: 'nanum-gothic',
-        color: '#fff'
+        color: '#000000'
     }
 });

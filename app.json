@@ -1,16 +1,16 @@
 {
   "expo": {
     "name": "spruceBarbershopApp",
-    "description": "A very interesting project.",
+    "description": "Log in and see our wait times",
     "slug": "spruceBarbershopApp",
     "privacy": "public",
     "sdkVersion": "30.0.0",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logos/spruceIcon.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/logos/spruceLogo.JPG",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,7 +21,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.poke.spruceBarbershopApp",
+      "buildNumber": "0.0.1",
+      "supportsTablet": true,
+      "isTabletOnly": false,
+      "config": {
+        "googleSignIn": {
+          "reservedClientId": "com.googleusercontent.apps.732604278812-22e53600nlruo7a89712cibvab927jbf"
+        }
+      }
     }
   }
 }
