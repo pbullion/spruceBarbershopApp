@@ -13,7 +13,7 @@ import { signInUser } from "../actions";
 import { SocialIcon } from 'react-native-elements'
 import spruceLogo from '../assets/images/logos/spruceLogo.png'
 
-class LoginScreen extends Component {
+class SignUpScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -32,10 +32,10 @@ class LoginScreen extends Component {
                 </View>
                 <View style={styles.welcomeView}>
                     <Text style={styles.welcomeText}>
-                        Welcome Back!
+                        Welcome!
                     </Text>
                     <Text style={styles.welcomeText}>
-                        Log In Below!
+                        Sign up to be able to join the wait list from your phone!
                     </Text>
                 </View>
                 <View>
@@ -113,7 +113,7 @@ async function signInWithFacebook() {
     }
 }
 
-export default connect(null, { signInUser })(LoginScreen)
+export default connect(null, { signInUser })(SignUpScreen)
 
 const styles = StyleSheet.create({
     container: {
