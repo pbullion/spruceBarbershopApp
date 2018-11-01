@@ -4,9 +4,11 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/WaitTimesScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import StaffScreen from '../screens/StaffScreen';
+import BarbersScreen from '../screens/staff/BarbersScreen';
+import StylistsScreen from '../screens/staff/StylistsScreen';
 import WaitTimesScreen from '../screens/WaitTimesScreen';
+import ServicesScreen from "../screens/ServicesScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -26,25 +28,27 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const ServicesStack = createStackNavigator({
+    Services: ServicesScreen,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Services',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
-    />
-  ),
+ServicesStack.navigationOptions = {
+    tabBarLabel: 'Services',
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
+        />
+    ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const StaffStack = createStackNavigator({
+  Home: StaffScreen,
+  Barbers: BarbersScreen,
+  Stylists: StylistsScreen
 });
 
-SettingsStack.navigationOptions = {
+StaffStack.navigationOptions = {
   tabBarLabel: 'Staff',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -71,6 +75,6 @@ WaitTimesStack.navigationOptions = {
 export default createBottomTabNavigator({
   HomeStack,
   WaitTimesStack,
-  LinksStack,
-  SettingsStack
+  ServicesStack,
+  StaffStack
 });

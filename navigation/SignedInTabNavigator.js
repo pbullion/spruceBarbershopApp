@@ -4,9 +4,9 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/WaitTimesScreen';
-import SettingsScreen from '../screens/SettingsScreen';
-import WaitTimesScreen from '../screens/WaitTimesScreen';
+import ServicesScreen from '../screens/AuthWaitTimesScreen';
+import StaffScreen from '../screens/StaffScreen';
+import AuthWaitTimesScreen from '../screens/AuthWaitTimesScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -26,39 +26,39 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const ServicesStack = createStackNavigator({
+    Services: ServicesScreen,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+ServicesStack.navigationOptions = {
+    tabBarLabel: 'Services',
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
+        />
+    ),
+};
+
+const StaffStack = createStackNavigator({
+  Staff: StaffScreen,
+});
+
+StaffStack.navigationOptions = {
+  tabBarLabel: 'Staff',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
+      name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
     />
   ),
 };
 
-const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+const AuthWaitTimesStack = createStackNavigator({
+    WaitTimes: AuthWaitTimesScreen,
 });
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-options${focused ? '' : '-outline'}` : 'md-options'}
-    />
-  ),
-};
-
-const WaitTimesStack = createStackNavigator({
-    WaitTimes: WaitTimesScreen,
-});
-
-WaitTimesStack.navigationOptions = {
+AuthWaitTimesStack.navigationOptions = {
     tabBarLabel: 'Wait Times',
     tabBarIcon: ({ focused }) => (
         <TabBarIcon
@@ -70,7 +70,7 @@ WaitTimesStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  WaitTimesStack,
-  LinksStack,
-  SettingsStack,
+  AuthWaitTimesStack,
+  ServicesStack,
+  StaffStack,
 });
