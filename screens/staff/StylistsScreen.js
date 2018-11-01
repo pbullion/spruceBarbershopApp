@@ -35,7 +35,6 @@ export default class StylistsScreen extends React.Component {
         axios.get(`http://api.jsonbin.io/b/5b69b7d92b23fb1f2b70a7ea/5`)
             .then(res => {
                 const menu = res.data.menu;
-                console.log(res.data.menu);
                 this.setState({ menu });
             });
     }
