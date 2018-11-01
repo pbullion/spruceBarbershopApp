@@ -2,7 +2,7 @@ import React from 'react';
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 
-class LinksScreen extends React.Component {
+class WaitTimesScreen extends React.Component {
   static navigationOptions = {
     title: null,
   };
@@ -44,7 +44,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(LinksScreen)
+export default connect(mapStateToProps)(WaitTimesScreen)
 
 const styles = StyleSheet.create({
   container: {

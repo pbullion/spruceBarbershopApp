@@ -4,8 +4,9 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import LinksScreen from '../screens/LinksScreen';
+import LinksScreen from '../screens/WaitTimesScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import WaitTimesScreen from '../screens/WaitTimesScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -53,8 +54,23 @@ SettingsStack.navigationOptions = {
   ),
 };
 
+const WaitTimesStack = createStackNavigator({
+    WaitTimes: WaitTimesScreen,
+});
+
+WaitTimesStack.navigationOptions = {
+    tabBarLabel: 'Wait Times',
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name={Platform.OS === 'ios' ? `ios-time${focused ? '' : '-outline'}` : 'md-time'}
+        />
+    ),
+};
+
 export default createBottomTabNavigator({
   HomeStack,
+  WaitTimesStack,
   LinksStack,
   SettingsStack,
 });
