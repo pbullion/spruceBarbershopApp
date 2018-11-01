@@ -36,30 +36,34 @@ class HomeScreen extends React.Component {
   };
 
   render() {
+      console.log('home screen props', this.props.currentUser);
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
             <View style={styles.imageBackgroundView}>
-                <View style={styles.buttonView}>
-                    <TouchableOpacity
-                        onPress={() => this.props.navigation.navigate('SignUp')}
-                    >
-                        <View style={styles.customerButton}>
-                            <Text style={styles.customerButtonText}>New</Text>
-                            <Text style={styles.customerButtonText}>Customer</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={() => this.props.navigation.navigate('SignIn')}
-                    >
-                        <View style={styles.customerButton}>
-                            <Text style={styles.customerButtonText}>Returning</Text>
-                            <Text style={styles.customerButtonText}>Customer</Text>
-                        </View>
-                    </TouchableOpacity>
+            {!this.props.currentUser.isLoggedIn ? <View style={styles.buttonView}>
+                <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('SignUp')}
+                >
+                <View style={styles.customerButton}>
+                <Text style={styles.customerButtonText}>New</Text>
+                <Text style={styles.customerButtonText}>Customer</Text>
                 </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                onPress={() => this.props.navigation.navigate('SignIn')}
+                >
+                <View style={styles.customerButton}>
+                <Text style={styles.customerButtonText}>Returning</Text>
+                <Text style={styles.customerButtonText}>Customer</Text>
+                </View>
+                </TouchableOpacity>
+                </View> :
+                <View><Text>Welcome, {this.props.currentUser.name}</Text></View>
+            }
+
                 <View style={{ marginTop: 30 }}>
                     <Table borderStyle={{borderWidth: 0, borderColor: '#000000'}}>
                         <Row data={this.state.tableHeadBusinessHours} style={styles.head} textStyle={styles.tableHeaderText}/>

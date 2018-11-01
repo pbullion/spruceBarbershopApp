@@ -82,7 +82,7 @@ async function signInWithGoogleAsync() {
         });
 
         if (result.type === 'success') {
-            // this.props.signInUser(result.user);
+            this.props.signInUser(result.user);
             console.log(result);
             this.props.navigation.navigate('SignedIn');
         } else {
@@ -109,6 +109,8 @@ async function signInWithFacebook() {
         console.log('first_name', first_name);
         console.log('last_name', last_name);
         console.log('email', email);
+        const user = {id, picture, name, email, first_name, last_name};
+        this.props.signInUser(user);
         this.props.navigation.navigate('SignedIn');
     }
 }

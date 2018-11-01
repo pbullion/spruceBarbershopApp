@@ -10,7 +10,7 @@ const currentUser = (state = {}, action) => {
     let currentUser = null;
     switch(action.type) {
         case SIGN_IN_USER:
-            currentUser = action.user;
+            currentUser = Object.assign(action.user, {'isLoggedIn': true});
             return currentUser;
         default:
             return state;
