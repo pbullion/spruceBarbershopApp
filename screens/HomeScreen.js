@@ -7,10 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { connect } from 'react-redux';
 import { Table, Row, Rows } from 'react-native-table-component';
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
@@ -69,12 +70,21 @@ export default class HomeScreen extends React.Component {
         </ScrollView>
     );
   }
-
-  // _handleLearnMorePress = () => {
+    // _handleLearnMorePress = () => {
   //   WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
   // };
 
 }
+
+
+function mapStateToProps(state) {
+    console.log('state', state);
+    return {
+        currentUser: state.currentUser
+    }
+}
+
+export default connect(mapStateToProps)(HomeScreen)
 
 const styles = StyleSheet.create({
     container: {
@@ -83,6 +93,7 @@ const styles = StyleSheet.create({
       backgroundColor: '#ffffff',
     },
     contentContainer: {
+        width: '100%',
         paddingTop: 30,
         justifyContent: 'space-around',
         alignItems: 'center',
@@ -90,6 +101,8 @@ const styles = StyleSheet.create({
     },
     buttonView: {
         justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%'
     },
     imageBackgroundView: {
         width: '100%'
@@ -114,12 +127,12 @@ const styles = StyleSheet.create({
     },
     customerButton: {
         height: 75,
-        width: 150,
+        width: 175,
         justifyContent: 'center',
         alignContent: 'center',
         borderWidth: .5,
-        borderColor: 'rgba(53, 96, 68, 0.9)',
-        backgroundColor: 'rgba(53, 96, 68, 0.9)',
+        borderColor: 'rgba(53, 96, 68, 1)',
+        backgroundColor: 'rgba(53, 96, 68, 1)',
         marginVertical: 15,
         borderRadius: 5,
     },
