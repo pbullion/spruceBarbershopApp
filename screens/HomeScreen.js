@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Image,
-  ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
@@ -10,7 +9,6 @@ import {
 } from 'react-native';
 import { Table, Row, Rows } from 'react-native-table-component';
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
-import spruceBackground from "../assets/images/logos/spruceBackground.jpg";
 
 export default class HomeScreen extends React.Component {
   constructor(props) {
@@ -43,29 +41,24 @@ export default class HomeScreen extends React.Component {
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
             <View style={styles.imageBackgroundView}>
-                <ImageBackground
-                    source={spruceBackground}
-                    style={styles.image}
-                >
-                    <View style={styles.buttonView}>
-                        <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate('SignUp')}
-                        >
-                            <View style={styles.customerButton}>
-                                <Text style={styles.customerButtonText}>New</Text>
-                                <Text style={styles.customerButtonText}>Customer</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => this.props.navigation.navigate('SignIn')}
-                        >
-                            <View style={styles.customerButton}>
-                                <Text style={styles.customerButtonText}>Returning</Text>
-                                <Text style={styles.customerButtonText}>Customer</Text>
-                            </View>
-                        </TouchableOpacity>
-                    </View>
-                </ImageBackground>
+                <View style={styles.buttonView}>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('SignUp')}
+                    >
+                        <View style={styles.customerButton}>
+                            <Text style={styles.customerButtonText}>New</Text>
+                            <Text style={styles.customerButtonText}>Customer</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => this.props.navigation.navigate('SignIn')}
+                    >
+                        <View style={styles.customerButton}>
+                            <Text style={styles.customerButtonText}>Returning</Text>
+                            <Text style={styles.customerButtonText}>Customer</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
                 <View style={{ marginTop: 30 }}>
                     <Table borderStyle={{borderWidth: 0, borderColor: '#000000'}}>
                         <Row data={this.state.tableHeadBusinessHours} style={styles.head} textStyle={styles.tableHeaderText}/>
