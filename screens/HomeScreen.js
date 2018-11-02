@@ -61,9 +61,10 @@ class HomeScreen extends React.Component {
                 </View>
                 </TouchableOpacity>
                 </View> :
-                <View><Text>Welcome, {this.props.currentUser.name}</Text></View>
+                <View>
+                    <Text>Welcome, {this.props.currentUser.name}</Text>
+                </View>
             }
-
                 <View style={{ marginTop: 30 }}>
                     <Table borderStyle={{borderWidth: 0, borderColor: '#000000'}}>
                         <Row data={this.state.tableHeadBusinessHours} style={styles.head} textStyle={styles.tableHeaderText}/>
