@@ -4,12 +4,12 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Table, Row, Rows } from 'react-native-table-component';
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
+import GenericButton from '../components/buttons/GenericButton';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -28,7 +28,15 @@ class HomeScreen extends React.Component {
               ['Thursday', '10 am - 8 pm'],
               ['Friday', '10 am - 8 pm'],
               ['Saturday', '10 am - 4 pm'],
-          ]
+          ],
+          tableHeadSpecials: ['Discounts/Specials'],
+          tableDataSpecials: [
+              ['Military/Veteran', '$5 off all services'],
+              ['First Responders', '$5 off all services'],
+              ['Police/Fire Fighter', '$5 off all services'],
+              ['Senior Citizen', '$5 off all services'],
+              ['Thirsty Thursday', '10 am - 2 pm $5 off all services']
+          ],
       }
   }
   static navigationOptions = {
@@ -43,32 +51,29 @@ class HomeScreen extends React.Component {
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
             <View style={styles.imageBackgroundView}>
-            {!this.props.currentUser.isLoggedIn ? <View style={styles.buttonView}>
-                <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('SignUp')}
-                >
-                <View style={styles.customerButton}>
-                <Text style={styles.customerButtonText}>New</Text>
-                <Text style={styles.customerButtonText}>Customer</Text>
-                </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                onPress={() => this.props.navigation.navigate('SignIn')}
-                >
-                <View style={styles.customerButton}>
-                <Text style={styles.customerButtonText}>Returning</Text>
-                <Text style={styles.customerButtonText}>Customer</Text>
-                </View>
-                </TouchableOpacity>
+            {!this.props.currentUser.isLoggedIn ?
+                <View style={styles.buttonView}>
+                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='New' line2='Customer'/>
+                    <GenericButton onPress={() => this.props.navigation.navigate('SignIn')} line1='Returning' line2='Customer'/>
                 </View> :
                 <View>
                     <Text>Welcome, {this.props.currentUser.name}</Text>
                 </View>
             }
+            <View style={styles.waitTimeView}>
+                <Text style={{ fontSize: 30 }}>Current Wait Time:</Text>
+                <Text style={{ fontSize: 40 }}>45 minutes</Text>
+            </View>
                 <View style={{ marginTop: 30 }}>
                     <Table borderStyle={{borderWidth: 0, borderColor: '#000000'}}>
                         <Row data={this.state.tableHeadBusinessHours} style={styles.head} textStyle={styles.tableHeaderText}/>
                         <Rows data={this.state.tableDataBusinessHours} textStyle={styles.text}/>
+                    </Table>
+                </View>
+                <View style={{ marginTop: 30 }}>
+                    <Table borderStyle={{borderWidth: 0, borderColor: '#000000'}}>
+                        <Row data={this.state.tableHeadSpecials} style={styles.head} textStyle={styles.tableHeaderText}/>
+                        <Rows data={this.state.tableDataSpecials} textStyle={styles.text}/>
                     </Table>
                 </View>
             </View>
@@ -130,22 +135,10 @@ const styles = StyleSheet.create({
         width: 250,
         height: 250
     },
-    customerButton: {
-        height: 75,
-        width: 175,
-        justifyContent: 'center',
-        alignContent: 'center',
-        borderWidth: .5,
-        borderColor: 'rgba(53, 96, 68, 1)',
-        backgroundColor: 'rgba(53, 96, 68, 1)',
-        marginVertical: 15,
-        borderRadius: 5,
-    },
-    customerButtonText: {
-        color: '#ffffff',
-        fontSize: 20,
-        textAlign: 'center',
-        fontFamily: 'nanum-gothic'
+    waitTimeView: {
+      paddingTop: 15,
+      justifyContent: 'center',
+      alignItems: 'center'
     },
     head: { height: 40, backgroundColor: '#f1f8ff', alignItems: 'center' },
     tableHeaderText: { margin: 6, textAlign: 'center', fontWeight: 'bold' },

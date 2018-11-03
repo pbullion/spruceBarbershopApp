@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios/index';
 import ListComponent from "../../components/List";
 
-export default class BarbersScreen extends React.Component {
+export default class BeardOilScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

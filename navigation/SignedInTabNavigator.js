@@ -4,9 +4,10 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import ServicesScreen from '../screens/AuthWaitTimesScreen';
+import ProductsScreen from '../screens/AuthWaitTimesScreen';
 import StaffScreen from '../screens/StaffScreen';
 import AuthWaitTimesScreen from '../screens/AuthWaitTimesScreen';
+import ServicesScreen from "../screens/ServicesScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -32,6 +33,20 @@ const ServicesStack = createStackNavigator({
 
 ServicesStack.navigationOptions = {
     tabBarLabel: 'Services',
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
+        />
+    ),
+};
+
+const ProductsStack = createStackNavigator({
+    Products: ProductsScreen,
+});
+
+ProductsStack.navigationOptions = {
+    tabBarLabel: 'Products',
     tabBarIcon: ({ focused }) => (
         <TabBarIcon
             focused={focused}
@@ -72,5 +87,6 @@ export default createBottomTabNavigator({
   HomeStack,
   AuthWaitTimesStack,
   ServicesStack,
+  ProductsStack,
   StaffStack,
 });

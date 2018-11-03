@@ -8,6 +8,7 @@ import StaffScreen from '../screens/StaffScreen';
 import BarbersScreen from '../screens/staff/BarbersScreen';
 import StylistsScreen from '../screens/staff/StylistsScreen';
 import WaitTimesScreen from '../screens/WaitTimesScreen';
+import ProductsScreen from "../screens/ProductsScreen";
 import ServicesScreen from "../screens/ServicesScreen";
 
 const HomeStack = createStackNavigator({
@@ -26,6 +27,20 @@ HomeStack.navigationOptions = {
       }
     />
   ),
+};
+
+const ProductsStack = createStackNavigator({
+    Products: ProductsScreen,
+});
+
+ProductsStack.navigationOptions = {
+    tabBarLabel: 'Products',
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
+        />
+    ),
 };
 
 const ServicesStack = createStackNavigator({
@@ -76,5 +91,6 @@ export default createBottomTabNavigator({
   HomeStack,
   WaitTimesStack,
   ServicesStack,
+  ProductsStack,
   StaffStack
 });

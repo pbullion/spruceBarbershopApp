@@ -11,34 +11,35 @@ export default class ProductsScreen extends React.Component {
         }
     }
     static navigationOptions = {
-        title: 'Services',
+        title: 'Products',
     };
 
     render() {
         return (
             <View style={styles.container}>
                 <View style={styles.buttons}>
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Hair' line2='Cuts' />
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Hair' line2='Coloring' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Brushes' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Oils' />
                 </View>
                 <View style={styles.buttons}>
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Beard' line2='Trim' />
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Shave' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Combs' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Hats' />
                 </View>
                 <View style={styles.buttons}>
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Additional' line2='Services'/>
+                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Razors' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Balms' />
                 </View>
             </View>
         );
     }
-    //
-    // componentDidMount() {
-    //     axios.get(`http://api.jsonbin.io/b/5b69b7d92b23fb1f2b70a7ea/5`)
-    //         .then(res => {
-    //             const menu = res.data.menu;
-    //             this.setState({ menu });
-    //         });
-    // }
+
+    componentDidMount() {
+        axios.get(`http://api.jsonbin.io/b/5b69b7d92b23fb1f2b70a7ea/5`)
+            .then(res => {
+                const menu = res.data.menu;
+                this.setState({ menu });
+            });
+    }
 }
 
 const styles = StyleSheet.create({
