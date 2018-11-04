@@ -5,6 +5,13 @@ import GenericButton from "../components/buttons/GenericButton";
 export default class StaffScreen extends React.Component {
   static navigationOptions = {
     title: 'Staff',
+      headerStyle: {
+          backgroundColor: 'rgba(53, 96, 68, 1)',
+      },
+      headerTintColor: '#fff',
+      headerTitleStyle: {
+          fontWeight: 'bold',
+      },
   };
 
   render() {

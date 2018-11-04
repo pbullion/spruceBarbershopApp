@@ -12,6 +12,13 @@ export default class ProductsScreen extends React.Component {
     }
     static navigationOptions = {
         title: 'Products',
+        headerStyle: {
+            backgroundColor: 'rgba(53, 96, 68, 1)',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
     };
 
     render() {

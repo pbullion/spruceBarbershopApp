@@ -11,6 +11,13 @@ export default class HairCutScreen extends React.Component {
     }
     static navigationOptions = {
         title: 'Barbers',
+        headerStyle: {
+            backgroundColor: 'rgba(53, 96, 68, 1)',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
     };
 
     render() {

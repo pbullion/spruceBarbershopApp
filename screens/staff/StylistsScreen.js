@@ -11,6 +11,13 @@ export default class StylistsScreen extends React.Component {
     }
     static navigationOptions = {
         title: 'Stylists',
+        headerStyle: {
+            backgroundColor: 'rgba(53, 96, 68, 1)',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
     };
 
     render() {
@@ -20,7 +27,7 @@ export default class StylistsScreen extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://api.jsonbin.io/b/5b69b7d92b23fb1f2b70a7ea/6`)
+        axios.get(`http://api.jsonbin.io/b/5b69b7d92b23fb1f2b70a7ea/8`)
             .then(res => {
                 const data = res.data.menu.breakfast;
                 this.setState({ data });

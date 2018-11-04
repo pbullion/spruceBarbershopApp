@@ -48,6 +48,6 @@ const styles = StyleSheet.create({
     listItem: {
         fontSize: 30,
         fontFamily: 'nanum-gothic',
-        color: '#000000'
+        color: '#ffffff'
     }
 });

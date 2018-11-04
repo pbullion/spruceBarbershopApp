@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Text,
   View,
+  TouchableOpacity,
+  RefreshControl
 } from 'react-native';
 import { connect } from 'react-redux';
 import { Table, Row, Rows } from 'react-native-table-component';
@@ -15,6 +17,7 @@ class HomeScreen extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
+          refreshing: false,
           updates: {
               firstUpdate: 'Opening Late Summer 2018',
               secondUpdate: ''
@@ -43,10 +46,25 @@ class HomeScreen extends React.Component {
     header: null,
   };
 
+    _onRefresh = () => {
+        this.setState({refreshing: true});
+        this._getCurrentWaitTime();
+    };
+
+    _getCurrentWaitTime = () => {
+        this.setState({refreshing: false});
+    };
+
   render() {
       console.log('home screen props', this.props.currentUser);
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+            refreshControl={
+                <RefreshControl
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._onRefresh}
+                />
+            }
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
@@ -58,6 +76,9 @@ class HomeScreen extends React.Component {
                 </View> :
                 <View>
                     <Text>Welcome, {this.props.currentUser.name}</Text>
+                    <TouchableOpacity onPress={() => {}}>
+                        <Text>LOG OUT</Text>
+                    </TouchableOpacity>
                 </View>
             }
             <View style={styles.waitTimeView}>
