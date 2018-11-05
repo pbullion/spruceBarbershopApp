@@ -9,7 +9,8 @@ import {
 from 'react-native';
 import { connect } from 'react-redux';
 import Expo from 'expo';
-import { signInUser } from "../actions";
+import axios from 'axios';
+import { signUpUser } from "../actions";
 import { SocialIcon } from 'react-native-elements'
 import spruceLogo from '../assets/images/logos/spruceLogo.png'
 
@@ -73,6 +74,27 @@ class SignUpScreen extends Component {
     );
     }
 }
+
+
+async function performLogin(user, props) {
+    console.log('in the login function');
+    axios.post(`http://192.168.0.17:3000/users`, {
+        user
+    }, {
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then(function (response) {
+            console.log('response in the login function', response.data[0]);
+            props.signUpUser(response.data[0]);
+            props.navigation.navigate('SignedIn');
+        })
+        .catch(function (error) {
+            console.log('error', error)
+        })
+};
+
 async function signInWithGoogleAsync() {
     try {
         const result = await Expo.Google.logInAsync({
@@ -82,9 +104,16 @@ async function signInWithGoogleAsync() {
         });
 
         if (result.type === 'success') {
-            // this.props.signInUser(result.user);
-            console.log(result);
-            this.props.navigation.navigate('SignedIn');
+            let first_name = result.user.givenName;
+            let last_name = result.user.familyName;
+            let email = result.user.email;
+            let phone = '4093443814';
+            let owner = false;
+            let staff = false;
+            let customer = true;
+            let user = {first_name, last_name, email, phone, owner, staff, customer};
+            console.log(user);
+            performLogin(user, this.props)
         } else {
             return {cancelled: true};
         }
@@ -113,7 +142,7 @@ async function signInWithFacebook() {
     }
 }
 
-export default connect(null, { signInUser })(SignUpScreen)
+export default connect(null, { signUpUser })(SignUpScreen)
 
 const styles = StyleSheet.create({
     container: {

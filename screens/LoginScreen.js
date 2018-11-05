@@ -102,14 +102,9 @@ async function signInWithFacebook() {
         const response = await fetch(
             `https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,first_name,last_name,picture.type(large)`
         );
-        const { id, picture, name, email, first_name, last_name } = await response.json();
-        console.log('id', id);
-        console.log('picture', picture);
-        console.log('name', name);
-        console.log('first_name', first_name);
-        console.log('last_name', last_name);
+        const { email } = await response.json();
         console.log('email', email);
-        const user = {id, picture, name, email, first_name, last_name};
+        const user = {email};
         this.props.signInUser(user);
         this.props.navigation.navigate('SignedIn');
     }

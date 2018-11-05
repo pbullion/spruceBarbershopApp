@@ -56,7 +56,7 @@ class HomeScreen extends React.Component {
     };
 
   render() {
-      console.log('home screen props', this.props.currentUser);
+      console.log('home screen current user props', this.props.currentUser);
     return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
             refreshControl={
@@ -75,7 +75,7 @@ class HomeScreen extends React.Component {
                     <GenericButton onPress={() => this.props.navigation.navigate('SignIn')} line1='Returning' line2='Customer'/>
                 </View> :
                 <View>
-                    <Text>Welcome, {this.props.currentUser.name}</Text>
+                    <Text>Welcome, {this.props.currentUser.first_name}</Text>
                     <TouchableOpacity onPress={() => {}}>
                         <Text>LOG OUT</Text>
                     </TouchableOpacity>
