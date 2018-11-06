@@ -12,6 +12,7 @@ import Expo from 'expo';
 import { signInUser } from "../actions";
 import { SocialIcon } from 'react-native-elements'
 import spruceLogo from '../assets/images/logos/spruceLogo.png'
+import axios from "axios";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -73,6 +74,28 @@ class LoginScreen extends Component {
     );
     }
 }
+
+async function performLogin(email, props) {
+    console.log('in the login function');
+    console.log(email);
+    axios.get(`http://192.168.0.17:3000/users/email/${email}`, {
+        email
+    }, {
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then(function (response) {
+            props.signInUser(response.data[0]);
+            props.navigation.navigate('SignedIn');
+        })
+        .catch(function (error) {
+            console.log('USER IS NOT SIGNED UP');
+            console.log('error', error);
+            props.navigation.navigate('SignUp');
+        });
+};
+
 async function signInWithGoogleAsync() {
     try {
         const result = await Expo.Google.logInAsync({
@@ -82,9 +105,7 @@ async function signInWithGoogleAsync() {
         });
 
         if (result.type === 'success') {
-            this.props.signInUser(result.user);
-            console.log(result);
-            this.props.navigation.navigate('SignedIn');
+            performLogin(result.user.email, this.props)
         } else {
             return {cancelled: true};
         }
@@ -104,9 +125,8 @@ async function signInWithFacebook() {
         );
         const { email } = await response.json();
         console.log('email', email);
-        const user = {email};
-        this.props.signInUser(user);
-        this.props.navigation.navigate('SignedIn');
+        performLogin(email, this.props)
+
     }
 }
 

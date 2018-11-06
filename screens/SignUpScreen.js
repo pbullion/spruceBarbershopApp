@@ -42,7 +42,7 @@ class SignUpScreen extends Component {
                 <View>
                     <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
                         <SocialIcon
-                            title='Sign In With Google'
+                            title='Sign Up With Google'
                             button
                             type='google-plus-official'
                             style={{ padding: 20 }}
@@ -50,7 +50,7 @@ class SignUpScreen extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={signInWithFacebook.bind(this)}>
                         <SocialIcon
-                            title='Sign In With Facebook'
+                            title='Sign Up With Facebook'
                             button
                             type='facebook'
                             style={{ padding: 20 }}
@@ -58,7 +58,7 @@ class SignUpScreen extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {}}>
                         <SocialIcon
-                            title='Sign In With Email'
+                            title='Sign Up With Email'
                             button
                             type='linkedin'
                             style={{ padding: 20 }}
@@ -86,7 +86,6 @@ async function performLogin(user, props) {
         }
     })
         .then(function (response) {
-            console.log('response in the login function', response.data[0]);
             props.signUpUser(response.data[0]);
             props.navigation.navigate('SignedIn');
         })
@@ -104,15 +103,16 @@ async function signInWithGoogleAsync() {
         });
 
         if (result.type === 'success') {
+            console.log(result.user);
             let first_name = result.user.givenName;
             let last_name = result.user.familyName;
             let email = result.user.email;
-            let phone = '4093443814';
+            let phone_number = '4093443814';
+            let pictureUrl = result.user.photoUrl;
             let owner = false;
             let staff = false;
             let customer = true;
-            let user = {first_name, last_name, email, phone, owner, staff, customer};
-            console.log(user);
+            let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
             performLogin(user, this.props)
         } else {
             return {cancelled: true};
@@ -127,18 +127,18 @@ async function signInWithFacebook() {
         permissions: ['public_profile', 'email'],
     });
     if (type === 'success') {
-        // Get the user's name using Facebook's Graph API
         const response = await fetch(
             `https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,first_name,last_name,picture.type(large)`
         );
-        const { id, picture, name, email, first_name, last_name } = await response.json();
-        console.log('id', id);
-        console.log('picture', picture);
-        console.log('name', name);
-        console.log('first_name', first_name);
-        console.log('last_name', last_name);
-        console.log('email', email);
-        this.props.navigation.navigate('SignedIn');
+        const { picture, email, first_name, last_name } = await response.json();
+        let phone_number = '4093443814';
+        let owner = false;
+        let staff = false;
+        let customer = true;
+        let pictureUrl = picture.data.url;
+        let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
+        console.log(user);
+        performLogin(user, this.props)
     }
 }
 
