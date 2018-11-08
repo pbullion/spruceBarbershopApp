@@ -25,16 +25,16 @@ export default class ProductsScreen extends React.Component {
         return (
             <View style={styles.container}>
                 <View style={styles.buttons}>
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Brushes' />
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Oils' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('Home')} line1='Brushes' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('Home')} line1='Oils' />
                 </View>
                 <View style={styles.buttons}>
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Combs' />
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Hats' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('Home')} line1='Combs' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('Home')} line1='Hats' />
                 </View>
                 <View style={styles.buttons}>
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Razors' />
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='Balms' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('Home')} line1='Razors' />
+                    <GenericButton onPress={() => this.props.navigation.navigate('Home')} line1='Balms' />
                 </View>
             </View>
         );

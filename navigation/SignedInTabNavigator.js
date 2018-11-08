@@ -8,6 +8,11 @@ import ProductsScreen from '../screens/AuthWaitTimesScreen';
 import StaffScreen from '../screens/StaffScreen';
 import AuthWaitTimesScreen from '../screens/AuthWaitTimesScreen';
 import ServicesScreen from "../screens/ServicesScreen";
+import HairServicesScreen from "../screens/services/HairServicesScreen";
+import BeardServicesScreen from "../screens/services/BeardServicesScreen";
+import ShaveServicesScreen from "../screens/services/ShaveServicesScreen";
+import ColoringServicesScreen from "../screens/services/ColoringServicesScreen";
+import AdditionalServicesScreen from "../screens/services/AdditionalServicesScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -28,8 +33,12 @@ HomeStack.navigationOptions = {
 };
 
 const ServicesStack = createStackNavigator({
-    Services: ServicesScreen,
-});
+    Home: ServicesScreen,
+    Hair: HairServicesScreen,
+    Beard: BeardServicesScreen,
+    Shave: ShaveServicesScreen,
+    Coloring: ColoringServicesScreen,
+    Additional: AdditionalServicesScreen});
 
 ServicesStack.navigationOptions = {
     tabBarLabel: 'Services',

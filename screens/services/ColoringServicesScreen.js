@@ -1,8 +1,8 @@
 import React from 'react';
 import axios from 'axios/index';
-import ListComponent from "../../components/List";
+import ServicesList from "../../components/ServicesList";
 
-export default class HairCutScreen extends React.Component {
+export default class ColoringServicesScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -10,7 +10,7 @@ export default class HairCutScreen extends React.Component {
         }
     }
     static navigationOptions = {
-        title: 'Barbers',
+        title: 'Hair Coloring Services',
         headerStyle: {
             backgroundColor: 'rgba(53, 96, 68, 1)',
         },
@@ -22,14 +22,15 @@ export default class HairCutScreen extends React.Component {
 
     render() {
         return (
-            <ListComponent data={this.state.data} imageHeight={650}/>
+            <ServicesList data={this.state.data} imageHeight={650}/>
         );
     }
 
     componentDidMount() {
-        axios.get(`http://api.jsonbin.io/b/5b69b7d92b23fb1f2b70a7ea/6`)
+        axios.get(`http://192.168.0.12:3000/services/category/Coloring`)
             .then(res => {
-                const data = res.data.menu.breakfast;
+                // console.log('hair services response', res.data);
+                const data = res.data;
                 this.setState({ data });
             });
     }

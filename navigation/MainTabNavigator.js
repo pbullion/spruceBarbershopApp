@@ -10,6 +10,11 @@ import StylistsScreen from '../screens/staff/StylistsScreen';
 import WaitTimesScreen from '../screens/WaitTimesScreen';
 import ProductsScreen from "../screens/ProductsScreen";
 import ServicesScreen from "../screens/ServicesScreen";
+import HairServicesScreen from "../screens/services/HairServicesScreen";
+import BeardServicesScreen from "../screens/services/BeardServicesScreen";
+import ShaveServicesScreen from "../screens/services/ShaveServicesScreen";
+import AdditionalServicesScreen from "../screens/services/AdditionalServicesScreen";
+import ColoringServicesScreen from "../screens/services/ColoringServicesScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -44,7 +49,12 @@ ProductsStack.navigationOptions = {
 };
 
 const ServicesStack = createStackNavigator({
-    Services: ServicesScreen,
+    Home: ServicesScreen,
+    Hair: HairServicesScreen,
+    Beard: BeardServicesScreen,
+    Shave: ShaveServicesScreen,
+    Coloring: ColoringServicesScreen,
+    Additional: AdditionalServicesScreen
 });
 
 ServicesStack.navigationOptions = {
