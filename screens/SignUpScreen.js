@@ -78,7 +78,7 @@ class SignUpScreen extends Component {
 
 async function performLogin(user, props) {
     console.log('in the login function');
-    axios.post(`http://192.168.0.17:3000/users`, {
+    axios.post(`http://52.37.61.234:3001/users`, {
         user
     }, {
         headers: {

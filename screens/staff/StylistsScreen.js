@@ -27,9 +27,9 @@ export default class StylistsScreen extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://api.jsonbin.io/b/5b69b7d92b23fb1f2b70a7ea/8`)
+        axios.get(`http://52.37.61.234:3001/staff/list/stylist`)
             .then(res => {
-                const data = res.data.menu.breakfast;
+                const data = res.data;
                 this.setState({ data });
             });
     }

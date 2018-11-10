@@ -15,9 +15,9 @@ export default class ListComponent extends React.Component {
                 {this.props.data ? this.props.data.map((item,index) => {
                     return (
                         <View style={{ flexDirection: 'column', justifyContent: 'center', width: '100%' }} key={index}>
-                            {item.imgURL ?
-                            <ImageBackground source={{uri: item.imgURL}} style={[styles.image, {height: this.props.imageHeight}]}>
-                                <Text style={styles.listItem}>{item.title}</Text>
+                            {item.staffpicture ?
+                            <ImageBackground source={{uri: item.staffpicture}} style={[styles.image, {height: this.props.imageHeight}]}>
+                                <Text style={styles.listItem}>{item.first_name} {item.last_name}</Text>
                             </ImageBackground> :
                                 null}
                         </View>

@@ -27,7 +27,7 @@ export default class BeardServicesScreen extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://192.168.0.12:3000/services/category/Beard`)
+        axios.get(`http://52.37.61.234:3001/services/category/Beard`)
             .then(res => {
                 // console.log('hair services response', res.data);
                 const data = res.data;

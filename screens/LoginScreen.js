@@ -78,7 +78,7 @@ class LoginScreen extends Component {
 async function performLogin(email, props) {
     console.log('in the login function');
     console.log(email);
-    axios.get(`http://192.168.0.17:3000/users/email/${email}`, {
+    axios.get(`http://52.37.61.234:3001/users/email/${email}`, {
         email
     }, {
         headers: {
