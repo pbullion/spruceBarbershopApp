@@ -12,6 +12,7 @@ import { connect } from 'react-redux';
 import { Table, Row, Rows } from 'react-native-table-component';
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
 import GenericButton from '../components/buttons/GenericButton';
+import {Col, Grid} from "react-native-easy-grid";
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -22,15 +23,35 @@ class HomeScreen extends React.Component {
               firstUpdate: 'Opening Late Summer 2018',
               secondUpdate: ''
           },
-          tableHeadBusinessHours: ['Business Hours'],
           tableDataBusinessHours: [
-              ['Sunday', 'Closed'],
-              ['Monday', 'Closed'],
-              ['Tuesday', '10 am - 8 pm'],
-              ['Wednesday', '10 am - 8 pm'],
-              ['Thursday', '10 am - 8 pm'],
-              ['Friday', '10 am - 8 pm'],
-              ['Saturday', '10 am - 4 pm'],
+              {
+                  day: "Sunday",
+                  hours: "Closed"
+              },
+              {
+                  day: "Monday",
+                  hours: "Closed"
+              },
+              {
+                  day: "Tuesday",
+                  hours: "10 am - 8 pm"
+              },
+              {
+                  day: "Wednesday",
+                  hours: "10 am - 8 pm"
+              },
+              {
+                  day: "Thursday",
+                  hours: "10 am - 8 pm"
+              },
+              {
+                  day: "Friday",
+                  hours: "10 am - 8 pm"
+              },
+              {
+                  day: "Saturday",
+                  hours: "10 am - 4 pm"
+              }
           ],
           tableHeadSpecials: ['Discounts/Specials'],
           tableDataSpecials: [
@@ -85,12 +106,17 @@ class HomeScreen extends React.Component {
                 <Text style={{ fontSize: 30 }}>Current Wait Time:</Text>
                 <Text style={{ fontSize: 40 }}>45 minutes</Text>
             </View>
-                <View style={{ marginTop: 30 }}>
-                    <Table borderStyle={{borderWidth: 0, borderColor: '#000000'}}>
-                        <Row data={this.state.tableHeadBusinessHours} style={styles.head} textStyle={styles.tableHeaderText}/>
-                        <Rows data={this.state.tableDataBusinessHours} textStyle={styles.text}/>
-                    </Table>
-                </View>
+                <Grid style={{ paddingTop: 10 }}>
+                    <Col size={1}><Text style={styles.tableHeader}>Business Hours</Text></Col>
+                </Grid>
+                {this.state.tableDataBusinessHours ? this.state.tableDataBusinessHours.map((item, index) => {
+                    return (
+                        <Grid style={{ height: 35 }} key={index}>
+                            <Col size={2}><Text style={[styles.tableItem]}>{item.day}</Text></Col>
+                            <Col size={2}><Text style={[styles.tableItem]}>{item.hours}</Text></Col>
+                        </Grid>
+                    )
+                }) : null}
                 <View style={{ marginTop: 30 }}>
                     <Table borderStyle={{borderWidth: 0, borderColor: '#000000'}}>
                         <Row data={this.state.tableHeadSpecials} style={styles.head} textStyle={styles.tableHeaderText}/>
@@ -160,6 +186,20 @@ const styles = StyleSheet.create({
       paddingTop: 15,
       justifyContent: 'center',
       alignItems: 'center'
+    },
+    tableHeader: {
+        color: '#ffffff',
+        fontSize: 23,
+        width: '100%',
+        backgroundColor: '#2F553C',
+        textAlign: 'center',
+        marginBottom: 15,
+        padding: 12,
+    },
+    tableItem: {
+        color: '#000',
+        fontSize: 18,
+        textAlign: 'center'
     },
     head: { height: 40, backgroundColor: '#f1f8ff', alignItems: 'center' },
     tableHeaderText: { margin: 6, textAlign: 'center', fontWeight: 'bold' },

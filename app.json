@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "spruceBarbershopApp",
-    "description": "Log in and see our wait times",
+    "name": "Spruce",
+    "description": "Spruce Barbershop located in Port Neches, TX. View our wait times, and log in to be able to join the wait list from your phone.",
     "slug": "spruceBarbershopApp",
     "privacy": "public",
     "sdkVersion": "30.0.0",
@@ -22,7 +22,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.poke.spruceBarbershopApp",
-      "buildNumber": "0.0.2",
+      "buildNumber": "0.0.3",
       "supportsTablet": true,
       "isTabletOnly": false,
       "config": {

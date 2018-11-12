@@ -30,6 +30,10 @@ HomeStack.navigationOptions = {
       }
     />
   ),
+    tabBarOptions: {
+        activeTintColor: '#2F553C',
+        inactiveTintColor: 'gray',
+    }
 };
 
 const ServicesStack = createStackNavigator({
@@ -48,6 +52,10 @@ ServicesStack.navigationOptions = {
             name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
         />
     ),
+    tabBarOptions: {
+        activeTintColor: '#2F553C',
+        inactiveTintColor: 'gray',
+    }
 };
 
 const ProductsStack = createStackNavigator({
@@ -62,6 +70,10 @@ ProductsStack.navigationOptions = {
             name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
         />
     ),
+    tabBarOptions: {
+        activeTintColor: '#2F553C',
+        inactiveTintColor: 'gray',
+    }
 };
 
 const StaffStack = createStackNavigator({
@@ -76,6 +88,10 @@ StaffStack.navigationOptions = {
       name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
     />
   ),
+    tabBarOptions: {
+        activeTintColor: '#2F553C',
+        inactiveTintColor: 'gray',
+    }
 };
 
 const AuthWaitTimesStack = createStackNavigator({
@@ -90,6 +106,10 @@ AuthWaitTimesStack.navigationOptions = {
             name={Platform.OS === 'ios' ? `ios-time${focused ? '' : '-outline'}` : 'md-time'}
         />
     ),
+    tabBarOptions: {
+        activeTintColor: '#2F553C',
+        inactiveTintColor: 'gray',
+    }
 };
 
 export default createBottomTabNavigator({
