@@ -22,7 +22,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.poke.spruceBarbershopApp",
-      "buildNumber": "0.0.3",
+      "buildNumber": "0.0.4",
       "supportsTablet": true,
       "isTabletOnly": false,
       "config": {

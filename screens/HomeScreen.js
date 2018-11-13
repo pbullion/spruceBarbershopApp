@@ -13,67 +13,64 @@ import { Table, Row, Rows } from 'react-native-table-component';
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
 import GenericButton from '../components/buttons/GenericButton';
 import {Col, Grid} from "react-native-easy-grid";
+import axios from "axios";
 
 class HomeScreen extends React.Component {
   constructor(props) {
       super(props);
       this.state = {
           refreshing: false,
-          updates: {
-              firstUpdate: 'Opening Late Summer 2018',
-              secondUpdate: ''
-          },
-          tableDataBusinessHours: [
-              {
-                  day: "Sunday",
-                  hours: "Closed"
-              },
-              {
-                  day: "Monday",
-                  hours: "Closed"
-              },
-              {
-                  day: "Tuesday",
-                  hours: "10 am - 8 pm"
-              },
-              {
-                  day: "Wednesday",
-                  hours: "10 am - 8 pm"
-              },
-              {
-                  day: "Thursday",
-                  hours: "10 am - 8 pm"
-              },
-              {
-                  day: "Friday",
-                  hours: "10 am - 8 pm"
-              },
-              {
-                  day: "Saturday",
-                  hours: "10 am - 4 pm"
-              }
-          ],
-          tableHeadSpecials: ['Discounts/Specials'],
-          tableDataSpecials: [
-              ['Military/Veteran', '$5 off all services'],
-              ['First Responders', '$5 off all services'],
-              ['Police/Fire Fighter', '$5 off all services'],
-              ['Senior Citizen', '$5 off all services'],
-              ['Thirsty Thursday', '10 am - 2 pm $5 off all services']
-          ],
+          update: null,
+          businessHours: null,
+          specials: null
       }
   }
   static navigationOptions = {
     header: null,
   };
 
+    _getCurrentWaitTime = () => {
+        this.setState({refreshing: false});
+    };
+
+    _getSpecials = () => {
+        axios.get(`http://52.37.61.234:3001/homeScreen/specials`)
+            .then(res => {
+                const specials = res.data;
+                this.setState({ specials });
+            });
+    };
+
+    _getBusinessHours = () => {
+        axios.get(`http://52.37.61.234:3001/homeScreen/businessHours`)
+            .then(res => {
+                const businessHours = res.data;
+                this.setState({ businessHours });
+            });
+    };
+
+    _getUpdate = () => {
+        axios.get(`http://52.37.61.234:3001/homeScreen/update`)
+            .then(res => {
+                const update = res.data;
+                this.setState({ update });
+            });
+    };
+
+
     _onRefresh = () => {
         this.setState({refreshing: true});
         this._getCurrentWaitTime();
+        this._getSpecials();
+        this._getBusinessHours();
+        this._getUpdate();
     };
 
-    _getCurrentWaitTime = () => {
-        this.setState({refreshing: false});
+    componentDidMount() {
+        this._getCurrentWaitTime();
+        this._getSpecials();
+        this._getBusinessHours();
+        this._getUpdate();
     };
 
   render() {
@@ -89,6 +86,7 @@ class HomeScreen extends React.Component {
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
+            {this.props.update ? <Text>{this.props.update}</Text> : null}
             <View style={styles.imageBackgroundView}>
             {!this.props.currentUser.isLoggedIn ?
                 <View style={styles.buttonView}>
@@ -109,7 +107,7 @@ class HomeScreen extends React.Component {
                 <Grid style={{ paddingTop: 10 }}>
                     <Col size={1}><Text style={styles.tableHeader}>Business Hours</Text></Col>
                 </Grid>
-                {this.state.tableDataBusinessHours ? this.state.tableDataBusinessHours.map((item, index) => {
+                {this.state.businessHours ? this.state.businessHours.map((item, index) => {
                     return (
                         <Grid style={{ height: 35 }} key={index}>
                             <Col size={2}><Text style={[styles.tableItem]}>{item.day}</Text></Col>
@@ -117,20 +115,24 @@ class HomeScreen extends React.Component {
                         </Grid>
                     )
                 }) : null}
-                <View style={{ marginTop: 30 }}>
-                    <Table borderStyle={{borderWidth: 0, borderColor: '#000000'}}>
-                        <Row data={this.state.tableHeadSpecials} style={styles.head} textStyle={styles.tableHeaderText}/>
-                        <Rows data={this.state.tableDataSpecials} textStyle={styles.text}/>
-                    </Table>
+                <Grid style={{ paddingTop: 10 }}>
+                    <Col size={1}><Text style={styles.specialHeader}>Specials</Text></Col>
+                </Grid>
+                <View style={{ paddingTop: 10 }}>
+                    {this.state.specials ? <Text style={styles.special}>{this.state.specials[0].special}</Text> : null}
                 </View>
+                {this.state.specials ? this.state.specials.map((item, index) => {
+                    return (
+                        <View style={{ height: 35 }} key={index}>
+                            <Text style={[styles.specialItem]}>{item.type}</Text>
+                            {item.type_line2 ? <Text style={[styles.specialItem]}>{item.type_line2}</Text> : null}
+                        </View>
+                    )
+                }) : null}
             </View>
         </ScrollView>
     );
   }
-    // _handleLearnMorePress = () => {
-  //   WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  // };
-
 }
 
 
@@ -195,6 +197,27 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 15,
         padding: 12,
+    },
+    specialHeader: {
+        color: '#ffffff',
+        fontSize: 23,
+        width: '100%',
+        backgroundColor: '#2F553C',
+        textAlign: 'center',
+        marginBottom: 10,
+        padding: 12,
+    },
+    special: {
+        color: '#000000',
+        fontSize: 28,
+        width: '100%',
+        textAlign: 'center',
+        marginBottom: 12,
+    },
+    specialItem: {
+        color: '#000',
+        fontSize: 21,
+        textAlign: 'center'
     },
     tableItem: {
         color: '#000',
