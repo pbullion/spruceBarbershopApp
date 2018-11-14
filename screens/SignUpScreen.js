@@ -13,6 +13,7 @@ import axios from 'axios';
 import { signUpUser } from "../actions";
 import { SocialIcon } from 'react-native-elements'
 import spruceLogo from '../assets/images/logos/spruceLogo.png'
+import * as Animatable from 'react-native-animatable';
 
 class SignUpScreen extends Component {
     constructor(props) {
@@ -39,35 +40,41 @@ class SignUpScreen extends Component {
                         Sign up to be able to join the wait list from your phone!
                     </Text>
                 </View>
-                <View>
+                <View style={{ width: '100%', paddingHorizontal: 10 }}>
                     <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
-                        <SocialIcon
-                            title='Sign Up With Google'
-                            button
-                            type='google-plus-official'
-                            style={{ padding: 20 }}
-                        />
+                        <Animatable.View animation="bounceInUp">
+                            <SocialIcon
+                                title='Sign Up With Google'
+                                button
+                                type='google-plus-official'
+                                style={{ padding: 20 }}
+                            />
+                        </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={signInWithFacebook.bind(this)}>
-                        <SocialIcon
-                            title='Sign Up With Facebook'
-                            button
-                            type='facebook'
-                            style={{ padding: 20 }}
-                        />
+                        <Animatable.View animation="bounceInUp">
+                            <SocialIcon
+                                title='Sign Up With Facebook'
+                                button
+                                type='facebook'
+                                style={{ padding: 20 }}
+                            />
+                        </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => {}}>
-                        <SocialIcon
-                            title='Sign Up With Email'
-                            button
-                            type='linkedin'
-                            style={{ padding: 20 }}
-                        />
+                        <Animatable.View animation="bounceInUp">
+                            <SocialIcon
+                                title='Sign Up With Email'
+                                button
+                                type='linkedin'
+                                style={{ padding: 20 }}
+                            />
+                        </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('App')}>
-                        <View style={styles.customerButton}>
+                        <Animatable.View animation="bounceInDown" easing="ease-in" style={styles.customerButton}>
                             <Text style={styles.customerButtonText}>Go Back Home</Text>
-                        </View>
+                        </Animatable.View>
                     </TouchableOpacity>
                 </View>
             </View>

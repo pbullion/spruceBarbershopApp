@@ -1,5 +1,12 @@
 import React from 'react';
-import {ScrollView, StyleSheet, View, Text, ImageBackground} from 'react-native';
+import {ScrollView, StyleSheet, View, Text} from 'react-native';
+import * as Animatable from "react-native-animatable";
+import {
+    Title,
+    Paragraph,
+    Card,
+    Caption
+} from 'react-native-paper';
 
 export default class ServicesList extends React.Component {
     constructor(props) {
@@ -10,20 +17,27 @@ export default class ServicesList extends React.Component {
     }
 
     render() {
-        console.log(this.props.data);
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                 {this.props.data ? this.props.data.map((item,index) => {
                     return (
-                        <View style={styles.listItem} key={index}>
-                            <Text style={styles.name}>{item.name}</Text>
-                            <Text style={styles.price}>${item.price / 100}</Text>
-                            <Text style={styles.time}>{item.time} minutes</Text>
-                            {item.description.map((item,index) => {
-                                return (
-                                    <Text key={index} style={styles.description}>•{item}</Text>
-                                )})
-                            }
+                        <View style={{ width: '100%' }} key={index}>
+                            <Animatable.View animation="bounceInUp">
+                                <Card style={styles.card}>
+                                    <Card.Content style={styles.cardContent}>
+                                        <Title style={{ color: '#ffffff' }}>{item.name}</Title>
+                                        <Text style={styles.subTitle}>${item.price / 100}</Text>
+                                        <Text style={styles.subTitle}>{item.time} minutes</Text>
+                                        <View>
+                                            {item.description.map((item,index) => {
+                                                return (
+                                                    <Text key={index} style={{ textAlign: 'center', color: '#ffffff' }}>• {item}</Text>
+                                                )})
+                                            }
+                                        </View>
+                                    </Card.Content>
+                                </Card>
+                            </Animatable.View>
                         </View>
                     )
                 }) : null}
@@ -35,44 +49,28 @@ export default class ServicesList extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
     },
     contentContainer: {
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        paddingBottom: 75,
+        padding: 5
     },
-    listItem: {
-        width: '100%',
+    card: {
+        marginHorizontal: 4,
+        backgroundColor: '#356044',
+        marginVertical: 8,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingBottom: 5
     },
-    name: {
-        fontSize: 30,
-        fontFamily: 'nanum-gothic',
-        padding: 15,
-        color: '#ffffff',
-        backgroundColor: 'rgba(53, 96, 68, 1)',
-        width: '100%',
-        textAlign: 'center'
+    cardContent: {
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    price: {
-        fontSize: 25,
-        marginTop: 15,
-        marginBottom: 5,
-        fontFamily: 'nanum-gothic',
-    },
-    time: {
-        fontSize: 20,
-        paddingVertical: 5,
-        fontFamily: 'nanum-gothic',
-    },
-    description: {
-        fontSize: 15,
-        paddingVertical: 5,
-        fontFamily: 'nanum-gothic',
-        textAlign: 'center'
+    subTitle: {
+        fontSize: 18,
+        paddingBottom: 5,
+        color: '#ffffff'
     }
 });

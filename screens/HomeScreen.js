@@ -14,6 +14,7 @@ import spruceLogo from "../assets/images/logos/spruceLogo.png";
 import GenericButton from '../components/buttons/GenericButton';
 import {Col, Grid} from "react-native-easy-grid";
 import axios from "axios";
+import { Button } from "react-native-elements";
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -90,8 +91,24 @@ class HomeScreen extends React.Component {
             <View style={styles.imageBackgroundView}>
             {!this.props.currentUser.isLoggedIn ?
                 <View style={styles.buttonView}>
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='New' line2='Customer'/>
-                    <GenericButton onPress={() => this.props.navigation.navigate('SignIn')} line1='Returning' line2='Customer'/>
+                    <Button
+                        raised
+                        large
+                        title='Sign Up'
+                        borderRadius={18}
+                        containerViewStyle={{borderRadius: 18}}
+                        buttonStyle={styles.customerButton}
+                        onPress={() => this.props.navigation.navigate('SignUp')}
+                    />
+                    <Button
+                        raised
+                        large
+                        title='Log In'
+                        borderRadius={18}
+                        containerViewStyle={{borderRadius: 18}}
+                        buttonStyle={styles.customerButton}
+                        onPress={() => this.props.navigation.navigate('SignIn')}
+                    />
                 </View> :
                 <View>
                     <Text>Welcome, {this.props.currentUser.first_name}</Text>
@@ -159,9 +176,15 @@ const styles = StyleSheet.create({
         paddingBottom: 50
     },
     buttonView: {
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
-        width: '100%'
+        flexDirection: 'row',
+        width: '100%',
+        marginBottom: 15
+    },
+    customerButton: {
+        backgroundColor: '#2F553C',
+        width: 150
     },
     imageBackgroundView: {
         width: '100%'
@@ -185,7 +208,7 @@ const styles = StyleSheet.create({
         height: 250
     },
     waitTimeView: {
-      paddingTop: 15,
+      paddingVertical: 15,
       justifyContent: 'center',
       alignItems: 'center'
     },

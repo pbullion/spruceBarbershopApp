@@ -10,9 +10,11 @@ from 'react-native';
 import { connect } from 'react-redux';
 import Expo from 'expo';
 import { signInUser } from "../actions";
-import { SocialIcon } from 'react-native-elements'
+import { SocialIcon, FormInput, FormLabel } from 'react-native-elements'
 import spruceLogo from '../assets/images/logos/spruceLogo.png'
 import axios from "axios";
+import * as Animatable from "react-native-animatable";
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -28,46 +30,50 @@ class LoginScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.logoContainer}>
-                    <Image style={styles.logo} source={spruceLogo} />
-                </View>
                 <View style={styles.welcomeView}>
                     <Text style={styles.welcomeText}>
-                        Welcome Back!
-                    </Text>
-                    <Text style={styles.welcomeText}>
-                        Log In Below!
+                        Log In
                     </Text>
                 </View>
-                <View>
-                    <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
-                        <SocialIcon
-                            title='Sign In With Google'
-                            button
-                            type='google-plus-official'
-                            style={{ padding: 20 }}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={signInWithFacebook.bind(this)}>
-                        <SocialIcon
-                            title='Sign In With Facebook'
-                            button
-                            type='facebook'
-                            style={{ padding: 20 }}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {}}>
-                        <SocialIcon
-                            title='Sign In With Email'
-                            button
-                            type='linkedin'
-                            style={{ padding: 20 }}
-                        />
-                    </TouchableOpacity>
+                <View style={{ width: '100%', paddingHorizontal: 10 }}>
+                    <View>
+                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Email</FormLabel>
+                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={() => {}} focus/>
+
+                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Password</FormLabel>
+                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={() => {}} focus/>
+                    </View>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('App')}>
-                        <View style={styles.customerButton}>
+                        <Animatable.View animation="bounceInDown" style={styles.logInButton}>
+                            <Text style={styles.logInButtonText}>Log In</Text>
+                        </Animatable.View>
+                    </TouchableOpacity>
+                    <View style={styles.socialLogins}>
+                        <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
+                            <Animatable.View animation="bounceInDown">
+                                <SocialIcon
+                                    title='Google'
+                                    button
+                                    type='google-plus-official'
+                                    style={{ padding: 20, width: 150 }}
+                                />
+                            </Animatable.View>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={signInWithFacebook.bind(this)}>
+                            <Animatable.View animation="bounceInDown">
+                                <SocialIcon
+                                    title='Facebook'
+                                    button
+                                    type='facebook'
+                                    style={{ padding: 20, width: 150 }}
+                                />
+                            </Animatable.View>
+                        </TouchableOpacity>
+                    </View>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('App')}>
+                        <Animatable.View animation="bounceInDown" style={styles.customerButton}>
                             <Text style={styles.customerButtonText}>Go Back Home</Text>
-                        </View>
+                        </Animatable.View>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -138,32 +144,26 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#ffffff'
+        backgroundColor: '#356044'
+    },
+    socialLogins: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        width: '100%',
+        marginVertical: 30
     },
     backButtonText: {
         fontSize: 15
-    },
-    logoContainer: {
-        width: '100%',
-        alignItems: 'center',
-    },
-    logo: {
-        width: 150,
-        height: 150
-    },
-    appName: {
-        fontSize: 65,
-        fontFamily: 'nanum-gothic',
-        color: '#000000'
     },
     welcomeView: {
         width: '100%',
         alignItems: 'center',
     },
     welcomeText: {
-        fontSize: 30,
-        color: '#000000',
-        textAlign: 'center'
+        fontSize: 50,
+        color: '#ffffff',
+        textAlign: 'center',
+        fontFamily: 'nanum-gothic'
     },
     customerButton: {
         height: 50,
@@ -178,6 +178,23 @@ const styles = StyleSheet.create({
     },
     customerButtonText: {
         color: '#ffffff',
+        fontSize: 20,
+        textAlign: 'center',
+        fontFamily: 'nanum-gothic'
+    },
+    logInButton: {
+        height: 50,
+        width: '100%',
+        justifyContent: 'center',
+        alignContent: 'center',
+        borderWidth: .5,
+        borderColor: '#ffffff',
+        backgroundColor: '#ffffff',
+        marginTop: 30,
+        borderRadius: 25,
+    },
+    logInButtonText: {
+        color: '#356044',
         fontSize: 20,
         textAlign: 'center',
         fontFamily: 'nanum-gothic'
