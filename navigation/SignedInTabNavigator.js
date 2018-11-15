@@ -13,6 +13,7 @@ import BeardServicesScreen from "../screens/services/BeardServicesScreen";
 import ShaveServicesScreen from "../screens/services/ShaveServicesScreen";
 import ColoringServicesScreen from "../screens/services/ColoringServicesScreen";
 import AdditionalServicesScreen from "../screens/services/AdditionalServicesScreen";
+import JoinWaitListScreen from "../screens/waitList/JoinWaitListScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -95,7 +96,8 @@ StaffStack.navigationOptions = {
 };
 
 const AuthWaitTimesStack = createStackNavigator({
-    WaitTimes: AuthWaitTimesScreen,
+    Home: AuthWaitTimesScreen,
+    JoinWaitList: JoinWaitListScreen
 });
 
 AuthWaitTimesStack.navigationOptions = {

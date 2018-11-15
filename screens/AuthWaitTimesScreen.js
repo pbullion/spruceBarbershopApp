@@ -68,7 +68,7 @@ class WaitTimesScreen extends React.Component {
       }
           <RefreshText/>
           <TouchableOpacity
-              onPress={() => this.props.navigation.navigate('Home')}
+              onPress={() => this.props.navigation.navigate('JoinWaitList')}
           >
               <View style={styles.joinWaitListButton}>
                   <Text style={styles.joinWaitListButtonText}>Join the wait list</Text>
