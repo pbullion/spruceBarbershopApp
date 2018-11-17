@@ -52,7 +52,7 @@ export default class ProductsScreen extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: '#ffffff',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',

@@ -11,10 +11,8 @@ import { connect } from 'react-redux';
 import Expo from 'expo';
 import { signInUser } from "../actions";
 import { SocialIcon, FormInput, FormLabel } from 'react-native-elements'
-import spruceLogo from '../assets/images/logos/spruceLogo.png'
 import axios from "axios";
 import * as Animatable from "react-native-animatable";
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -33,6 +31,9 @@ class LoginScreen extends Component {
                 <View style={styles.welcomeView}>
                     <Text style={styles.welcomeText}>
                         Log In
+                    </Text>
+                    <Text style={{ fontSize: 15, paddingTop: 50 }}>
+                        Only logins from google or facebook work right now
                     </Text>
                 </View>
                 <View style={{ width: '100%', paddingHorizontal: 10 }}>
@@ -93,7 +94,7 @@ async function performLogin(email, props) {
     })
         .then(function (response) {
             props.signInUser(response.data[0]);
-            props.navigation.navigate('SignedIn');
+            props.navigation.navigate('AuthWaitTimes');
         })
         .catch(function (error) {
             console.log('USER IS NOT SIGNED UP');

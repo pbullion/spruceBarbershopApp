@@ -46,7 +46,7 @@ export default class ListComponent extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#356044',
+        backgroundColor: '#a9a389',
     },
     contentContainer: {
         justifyContent: 'center',

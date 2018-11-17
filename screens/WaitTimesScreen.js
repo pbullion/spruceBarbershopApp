@@ -4,6 +4,7 @@ import connect from "react-redux/es/connect/connect";
 import GenericButton from "../components/buttons/GenericButton";
 import {Col, Grid} from "react-native-easy-grid";
 import RefreshText from "../components/RefreshText";
+import {Button} from "react-native-elements";
 
 class WaitTimesScreen extends React.Component {
     constructor(props) {
@@ -76,11 +77,27 @@ class WaitTimesScreen extends React.Component {
               onRefresh={this._onRefresh}
           />
       }
-          <View style={styles.joinWaitList}>
-              <Text style={styles.joinWaitListText}>Login or Sign Up</Text>
-              <Text style={styles.joinWaitListText}>and join the wait list</Text>
-          </View>
           <RefreshText/>
+          <View style={styles.buttonView}>
+              <Button
+                  raised
+                  large
+                  title='Sign Up'
+                  borderRadius={18}
+                  containerViewStyle={{borderRadius: 18}}
+                  buttonStyle={styles.customerButton}
+                  onPress={() => this.props.navigation.navigate('SignUp')}
+              />
+              <Button
+                  raised
+                  large
+                  title='Log In'
+                  borderRadius={18}
+                  containerViewStyle={{borderRadius: 18}}
+                  buttonStyle={styles.customerButton}
+                  onPress={() => this.props.navigation.navigate('SignIn')}
+              />
+          </View>
           <Grid>
               <Col size={1}><Text style={styles.waitListHeader}>Pos</Text></Col>
               <Col size={2}><Text style={styles.waitListHeader}>Name</Text></Col>
@@ -95,10 +112,6 @@ class WaitTimesScreen extends React.Component {
                   </Grid>
               )
           }) : null}
-          <View style={styles.buttonView}>
-              <GenericButton onPress={() => this.props.navigation.navigate('SignUp')} line1='New' line2='Customer'/>
-              <GenericButton onPress={() => this.props.navigation.navigate('SignIn')} line1='Returning' line2='Customer'/>
-          </View>
       </ScrollView>
     );
   }
@@ -154,5 +167,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         textAlign: 'center',
         fontFamily: 'nanum-gothic'
+    },
+    buttonView: {
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        marginTop: 20,
+        marginBottom: 25,
+    },
+    customerButton: {
+        backgroundColor: '#2F553C',
+        width: 150
     },
 });

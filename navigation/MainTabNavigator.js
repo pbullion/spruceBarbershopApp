@@ -35,7 +35,7 @@ HomeStack.navigationOptions = {
   ),
     tabBarOptions: {
         activeTintColor: '#2F553C',
-        inactiveTintColor: 'gray',
+        inactiveTintColor: '#a9a389',
     }
 };
 
@@ -53,7 +53,7 @@ ProductsStack.navigationOptions = {
     ),
     tabBarOptions: {
         activeTintColor: '#2F553C',
-        inactiveTintColor: 'gray',
+        inactiveTintColor: '#a9a389',
     }
 };
 
@@ -76,7 +76,7 @@ ServicesStack.navigationOptions = {
     ),
     tabBarOptions: {
         activeTintColor: '#2F553C',
-        inactiveTintColor: 'gray',
+        inactiveTintColor: '#a9a389',
     }
 };
 
@@ -96,12 +96,12 @@ StaffStack.navigationOptions = {
   ),
     tabBarOptions: {
         activeTintColor: '#2F553C',
-        inactiveTintColor: 'gray',
+        inactiveTintColor: '#a9a389',
     }
 };
 
 const WaitTimesStack = createStackNavigator({
-  WaitTimes: JoinWaitListScreen,
+    WaitTimes: WaitTimesScreen,
 });
 
 WaitTimesStack.navigationOptions = {
@@ -114,14 +114,13 @@ WaitTimesStack.navigationOptions = {
   ),
     tabBarOptions: {
         activeTintColor: '#2F553C',
-        inactiveTintColor: 'gray',
+        inactiveTintColor: '#a9a389',
     }
 };
 
 export default createBottomTabNavigator({
-  HomeStack,
-  WaitTimesStack,
-  ServicesStack,
-  ProductsStack,
-  StaffStack
+    HomeStack,
+    StaffStack,
+    WaitTimesStack,
+    ServicesStack,
 });

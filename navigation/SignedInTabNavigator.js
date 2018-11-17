@@ -96,7 +96,7 @@ StaffStack.navigationOptions = {
 };
 
 const AuthWaitTimesStack = createStackNavigator({
-    Home: AuthWaitTimesScreen,
+    AuthWaitTimes: AuthWaitTimesScreen,
     JoinWaitList: JoinWaitListScreen
 });
 
@@ -115,9 +115,8 @@ AuthWaitTimesStack.navigationOptions = {
 };
 
 export default createBottomTabNavigator({
-  HomeStack,
-  AuthWaitTimesStack,
-  ServicesStack,
-  ProductsStack,
-  StaffStack,
+    HomeStack,
+    StaffStack,
+    AuthWaitTimesStack,
+    ServicesStack,
 });

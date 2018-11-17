@@ -34,7 +34,7 @@ class SignUpScreen extends Component {
                 </View>
                 <View style={styles.welcomeView}>
                     <Text style={styles.welcomeText}>
-                        Welcome!
+                        Only sign up's from google and facebook work right now
                     </Text>
                     <Text style={styles.welcomeText}>
                         Sign up to be able to join the wait list from your phone!
@@ -84,7 +84,6 @@ class SignUpScreen extends Component {
 
 
 async function performLogin(user, props) {
-    console.log('in the login function');
     axios.post(`http://52.37.61.234:3001/users`, {
         user
     }, {
@@ -99,7 +98,7 @@ async function performLogin(user, props) {
         .catch(function (error) {
             console.log('error', error)
         })
-};
+}
 
 async function signInWithGoogleAsync() {
     try {
