@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   RefreshControl
 } from 'react-native';
+import { setWaitListView } from "../actions";
 import { connect } from 'react-redux';
 import { Table, Row, Rows } from 'react-native-table-component';
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
@@ -75,8 +76,7 @@ class HomeScreen extends React.Component {
     };
 
   render() {
-      console.log('home screen current user props', this.props.currentUser);
-    return (
+      return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
             refreshControl={
                 <RefreshControl
@@ -156,11 +156,12 @@ class HomeScreen extends React.Component {
 function mapStateToProps(state) {
     console.log('state', state);
     return {
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        waitListFlow: state.waitListFlow
     }
 }
 
-export default connect(mapStateToProps)(HomeScreen)
+export default connect(mapStateToProps, {setWaitListView})(HomeScreen)
 
 const styles = StyleSheet.create({
     container: {

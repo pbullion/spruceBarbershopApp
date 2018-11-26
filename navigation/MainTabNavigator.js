@@ -7,7 +7,7 @@ import HomeScreen from '../screens/HomeScreen';
 import StaffScreen from '../screens/StaffScreen';
 import BarbersScreen from '../screens/staff/BarbersScreen';
 import StylistsScreen from '../screens/staff/StylistsScreen';
-import WaitTimesScreen from '../screens/WaitTimesScreen';
+// import WaitTimesScreen from '../screens/WaitTimesScreen';
 import ProductsScreen from "../screens/ProductsScreen";
 import ServicesScreen from "../screens/ServicesScreen";
 import HairServicesScreen from "../screens/services/HairServicesScreen";
@@ -16,6 +16,10 @@ import ShaveServicesScreen from "../screens/services/ShaveServicesScreen";
 import AdditionalServicesScreen from "../screens/services/AdditionalServicesScreen";
 import ColoringServicesScreen from "../screens/services/ColoringServicesScreen";
 import JoinWaitListScreen from "../screens/waitList/JoinWaitListScreen";
+import JoinWaitListScreen2 from "../screens/waitList/JoinWaitListScreen2";
+import JoinWaitListScreen3 from "../screens/waitList/JoinWaitListScreen3";
+import JoinWaitListScreen4 from "../screens/waitList/JoinWaitListScreen4";
+import JoinWaitListScreen5 from "../screens/waitList/JoinWaitListScreen5";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -101,7 +105,11 @@ StaffStack.navigationOptions = {
 };
 
 const WaitTimesStack = createStackNavigator({
-    WaitTimes: WaitTimesScreen,
+    WaitTimes: JoinWaitListScreen,
+    WaitTimes2: JoinWaitListScreen2,
+    WaitTimes3: JoinWaitListScreen3,
+    WaitTimes4: JoinWaitListScreen4,
+    WaitTimes5: JoinWaitListScreen5,
 });
 
 WaitTimesStack.navigationOptions = {

@@ -5,22 +5,17 @@ import {
     Text, View,
 } from 'react-native';
 import { connect } from 'react-redux';
+import axios from "axios";
 import { setWaitListView } from "../../actions";
-import GenericButton from "../../components/buttons/GenericButton";
+import TouchableServicesList from "../../components/TouchableServicesList";
 
-class JoinWaitListScreen extends React.Component {
+class JoinWaitListScreen4 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             refreshing: false,
-            waitListFlowStaff: true,
-            waitListFlowService: false,
-            services: [],
-            staffMember: "",
-            service: "",
-            staffType: null
+            data: null
         };
-        this.handlePress = this.handlePress.bind(this);
     }
     static navigationOptions = {
         title: 'Join the Waitlist',
@@ -33,20 +28,22 @@ class JoinWaitListScreen extends React.Component {
         },
     };
 
-    handlePress = (staffType) => {
-        this.props.setWaitListView(staffType);
-        this.props.navigation.navigate('WaitTimes2');
-    };
+    componentDidMount() {
+        console.log("*************************", this.props.waitListFlow.waitListView);
+        axios.get(`http://52.37.61.234:3001/services/category/${this.props.waitListFlow.waitListView}`)
+            .then(res => {
+                const data = res.data;
+                this.setState({ data });
+            });
+    }
 
     render() {
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                 <View>
-                    <Text>Choose a barber/stylist</Text>
-                    <View>
-                        <GenericButton onPress={() => this.handlePress("Barber")} line1='Barbers'/>
-                        <GenericButton onPress={() => this.handlePress("Stylist")} line1='Stylists'/>
-                    </View>
+                    {this.state.data &&
+                        <TouchableServicesList props={this.props} data={this.state.data} imageHeight={650}/>
+                    }
                 </View>
             </ScrollView>
         );
@@ -54,13 +51,14 @@ class JoinWaitListScreen extends React.Component {
 }
 
 function mapStateToProps(state) {
+    console.log('state*******in the join wait list map 3', state);
     return {
         currentUser: state.currentUser,
         waitListFlow: state.waitListFlow
     }
 }
 
-export default connect(mapStateToProps, {setWaitListView})(JoinWaitListScreen)
+export default connect(mapStateToProps, {setWaitListView})(JoinWaitListScreen4)
 
 const styles = StyleSheet.create({
     container: {

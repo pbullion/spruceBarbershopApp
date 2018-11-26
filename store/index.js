@@ -1,10 +1,10 @@
 import { createStore, combineReducers } from 'redux';
 import currentUserReducer from '../reducers/currentUserReducer';
-import { reducer as formReducer } from 'redux-form';
+import waitListFlowReducer from '../reducers/waitListFlowReducer';
 
 const rootReducer = combineReducers({
-    form: formReducer,
-    currentUser: currentUserReducer
+    currentUser: currentUserReducer,
+    waitListFlow: waitListFlowReducer
 });
 
 const store = createStore(rootReducer);
