@@ -97,7 +97,6 @@ StaffStack.navigationOptions = {
 
 const AuthWaitTimesStack = createStackNavigator({
     AuthWaitTimes: AuthWaitTimesScreen,
-    JoinWaitList: JoinWaitListScreen
 });
 
 AuthWaitTimesStack.navigationOptions = {

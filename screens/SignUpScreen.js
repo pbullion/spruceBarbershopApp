@@ -93,7 +93,7 @@ async function performLogin(user, props) {
     })
         .then(function (response) {
             props.signUpUser(response.data[0]);
-            props.navigation.navigate('SignedIn');
+            props.navigation.navigate('WaitTimeList');
         })
         .catch(function (error) {
             console.log('error', error)

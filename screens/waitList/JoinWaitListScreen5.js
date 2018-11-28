@@ -7,7 +7,7 @@ import {
 import { connect } from 'react-redux';
 import axios from "axios";
 import { setWaitListView } from "../../actions";
-import TouchableServicesList from "../../components/TouchableServicesList";
+import { Button } from "react-native-elements";
 
 class JoinWaitListScreen5 extends React.Component {
     constructor(props) {
@@ -28,8 +28,26 @@ class JoinWaitListScreen5 extends React.Component {
         },
     };
 
+    handleSubmit = (props) => {
+        const waitList = props.waitListFlow;
+        const currentUser = props.currentUser;
+        axios.post(`http://localhost:3001/waitlist`, {
+            waitList,
+            currentUser
+        }, {
+            headers: {
+                'content-type': 'application/json'
+            }
+        })
+            .then(function (response) {
+                props.navigation.navigate('WaitTimeList');
+            })
+            .catch(function (error) {
+                console.log('error', error)
+            })
+    };
+
     componentDidMount() {
-        console.log("*************************", this.props.waitListFlow.waitListView);
         axios.get(`http://52.37.61.234:3001/services/category/${this.props.waitListFlow.waitListView}`)
             .then(res => {
                 const data = res.data;
@@ -38,16 +56,26 @@ class JoinWaitListScreen5 extends React.Component {
     }
 
     render() {
-        console.log("here klasdflkjsdklfjlskdjflksjdfkljslkdjfljsdjflsdlkfslkdfj PROPS", this.props.waitListFlow);
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                 <View>
                     <Text style={{fontSize: 30}}>Patrick Bullion</Text>
                     <Text>You chose the staff member with the staff ID of</Text>
                     <Text style={{fontSize: 30}}>{this.props.waitListFlow.staffMemberID}</Text>
+                    <Text style={{fontSize: 30}}>{this.props.waitListFlow.staffName}</Text>
                     <Text>You chose the service with an ID of</Text>
                     <Text style={{fontSize: 30, marginBottom: 50}}>{this.props.waitListFlow.serviceID}</Text>
-                    <Text>Now I need to add the submit button and send it to the database and redirect back to the wait list page....</Text>
+                    <Button
+                        raised
+                        large
+                        title='SUBMIT'
+                        borderRadius={18}
+                        fontSize={22}
+                        color='#ffffff'
+                        containerViewStyle={{borderRadius: 18}}
+                        buttonStyle={styles.submitButton}
+                        onPress={() => this.handleSubmit(this.props)}
+                    />
                 </View>
             </ScrollView>
         );

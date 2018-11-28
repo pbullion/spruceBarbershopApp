@@ -7,6 +7,7 @@ const waitListFlow = (state = initialState, action) => {
         case ADD_STAFF_TO_WAITLIST:
             return Object.assign({}, state, {
                 staffMemberID: action.staff.id,
+                staffName: action.staff.first_name,
                 waitListView: "Service"
             });
         case ADD_SERVICE_TO_WAITLIST:

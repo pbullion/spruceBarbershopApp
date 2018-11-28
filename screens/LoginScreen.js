@@ -92,7 +92,7 @@ async function performLogin(email, props) {
     })
         .then(function (response) {
             props.signInUser(response.data[0]);
-            props.navigation.navigate('AuthWaitTimes');
+            props.navigation.navigate('WaitTimeList');
         })
         .catch(function (error) {
             console.log('USER IS NOT SIGNED UP');
