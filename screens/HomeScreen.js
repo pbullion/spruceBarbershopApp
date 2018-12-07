@@ -8,10 +8,9 @@ import {
   TouchableOpacity,
   RefreshControl
 } from 'react-native';
+import { signOutUser } from "../actions";
 import { connect } from 'react-redux';
-import { Table, Row, Rows } from 'react-native-table-component';
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
-import GenericButton from '../components/buttons/GenericButton';
 import {Col, Grid} from "react-native-easy-grid";
 import axios from "axios";
 import { Button } from "react-native-elements";
@@ -32,6 +31,27 @@ class HomeScreen extends React.Component {
 
     _getCurrentWaitTime = () => {
         this.setState({refreshing: false});
+        axios.get(`http://localhost:3001/waitList/overallTimeInProgress`)
+            .then(res => {
+                console.log(res.data);
+                const waitTimeInProgress = res.data;
+                this.setState({ waitTimeInProgress });
+            });
+        axios.get(`http://localhost:3001/waitList/overallTimeInWaiting`)
+            .then(res => {
+                console.log(res.data);
+                const waitTimeInWaiting = res.data;
+                this.setState({ waitTimeInWaiting });
+            });
+    };
+
+    _waitTime = (time1, time2) => {
+        let num = time1 + time2;
+        let hours = (num / 60);
+        let rhours = Math.floor(hours);
+        let minutes = (hours - rhours) * 60;
+        let rminutes = Math.round(minutes);
+        return rhours + " hours and " + rminutes + " minutes";
     };
 
     _getSpecials = () => {
@@ -58,7 +78,6 @@ class HomeScreen extends React.Component {
             });
     };
 
-
     _onRefresh = () => {
         this.setState({refreshing: true});
         this._getCurrentWaitTime();
@@ -73,6 +92,9 @@ class HomeScreen extends React.Component {
         this._getBusinessHours();
         this._getUpdate();
     };
+    handlePress = () => {
+        this.props.signOutUser();
+    };
 
   render() {
       return (
@@ -86,7 +108,7 @@ class HomeScreen extends React.Component {
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
-            {this.props.update ? <Text>{this.props.update}</Text> : null}
+            {this.state.update ? <Text style={{ fontSize: 30, marginBottom: 20 }}>{this.state.update[0].update}</Text> : null}
             <View style={styles.imageBackgroundView}>
             {!this.props.currentUser.isLoggedIn ?
                 <View style={styles.buttonView}>
@@ -109,16 +131,21 @@ class HomeScreen extends React.Component {
                         onPress={() => this.props.navigation.navigate('SignIn')}
                     />
                 </View> :
-                <View>
-                    <Text>Welcome, {this.props.currentUser.first_name}</Text>
-                    <TouchableOpacity onPress={() => {}}>
-                        <Text>LOG OUT</Text>
+                <View style={styles.welcomeUser}>
+                    <Image style={styles.userImage} source={{uri: this.props.currentUser.pictureurl}} />
+                    <Text style={{ fontSize: 25, paddingBottom: 10 }}>Welcome, {this.props.currentUser.first_name}</Text>
+                    <TouchableOpacity onPress={() => this.handlePress()}>
+                        <Text style={{ fontSize: 25 }}>LOG OUT</Text>
                     </TouchableOpacity>
                 </View>
             }
             <View style={styles.waitTimeView}>
                 <Text style={{ fontSize: 30 }}>Current Wait Time:</Text>
-                <Text style={{ fontSize: 40 }}>45 minutes</Text>
+                {this.state.waitTimeInProgress && this.state.waitTimeInWaiting ?
+                    <Text
+                        style={{fontSize: 35}}>{this._waitTime(this.state.waitTimeInProgress, this.state.waitTimeInWaiting)}</Text>
+                    : null
+                }
             </View>
                 <Grid style={{ paddingTop: 10 }}>
                     <Col size={1}><Text style={styles.tableHeader}>Business Hours</Text></Col>
@@ -159,7 +186,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(HomeScreen)
+export default connect(mapStateToProps, {signOutUser})(HomeScreen)
 
 const styles = StyleSheet.create({
     container: {
@@ -180,6 +207,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width: '100%',
         marginBottom: 15
+    },
+    welcomeUser: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%'
+    },
+    userImage: {
+        flexGrow:1,
+        height: 175,
+        width: 175,
+        alignItems: 'center',
+        justifyContent:'center',
+        borderRadius: 75,
+        marginBottom: 10
     },
     customerButton: {
         backgroundColor: '#2F553C',

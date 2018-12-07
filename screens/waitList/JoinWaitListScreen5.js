@@ -8,6 +8,8 @@ import { connect } from 'react-redux';
 import axios from "axios";
 import { setWaitListView } from "../../actions";
 import { Button } from "react-native-elements";
+import * as Animatable from "react-native-animatable";
+import {Card, Paragraph, Title} from "react-native-paper";
 
 class JoinWaitListScreen5 extends React.Component {
     constructor(props) {
@@ -58,13 +60,35 @@ class JoinWaitListScreen5 extends React.Component {
     render() {
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-                <View>
-                    <Text style={{fontSize: 30}}>Patrick Bullion</Text>
-                    <Text>You chose the staff member with the staff ID of</Text>
-                    <Text style={{fontSize: 30}}>{this.props.waitListFlow.staffMemberID}</Text>
-                    <Text style={{fontSize: 30}}>{this.props.waitListFlow.staffName}</Text>
-                    <Text>You chose the service with an ID of</Text>
-                    <Text style={{fontSize: 30, marginBottom: 50}}>{this.props.waitListFlow.serviceID}</Text>
+                <View style={styles.viewContainer}>
+                    <View style={{ width: '100%', marginTop: 10 }}>
+                        <Animatable.View animation="bounceIn">
+                            <Card style={styles.card}>
+                                <Card.Cover source={{ uri: this.props.waitListFlow.staff.staffpicture }} style={{ width: '100%' }}/>
+                                <Card.Content style={styles.cardName}>
+                                    <Title>{this.props.waitListFlow.staff.first_name} {this.props.waitListFlow.staff.last_name}</Title>
+                                </Card.Content>
+                            </Card>
+                        </Animatable.View>
+                    </View>
+                    <View style={{ width: '100%', marginTop: 10 }}>
+                        <Animatable.View animation="bounceInUp">
+                            <Card style={styles.servicesCard}>
+                                <Card.Content style={styles.cardContent}>
+                                    <Title style={{ color: '#ffffff' }}>{this.props.waitListFlow.service.name}</Title>
+                                    <Text style={styles.subTitle}>${this.props.waitListFlow.service.price / 100}</Text>
+                                    <Text style={styles.subTitle}>{this.props.waitListFlow.service.time} minutes</Text>
+                                    <View>
+                                        {this.props.waitListFlow.service.description.map((item,index) => {
+                                            return (
+                                                <Text key={index} style={{ textAlign: 'center', color: '#ffffff' }}>• {item}</Text>
+                                            )})
+                                        }
+                                    </View>
+                                </Card.Content>
+                            </Card>
+                        </Animatable.View>
+                    </View>
                     <Button
                         raised
                         large
@@ -83,7 +107,7 @@ class JoinWaitListScreen5 extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log('state*******in the join wait list map 3', state);
+    console.log('state*******in the join wait list map final page', state);
     return {
         currentUser: state.currentUser,
         waitListFlow: state.waitListFlow
@@ -97,36 +121,53 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         backgroundColor: '#ffffff',
+        paddingBottom: 150
     },
     contentContainer: {
         width: '100%',
-        paddingTop: 50,
+        paddingTop: 5,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    viewContainer: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+    },
+    cardName: {
+        width: '100%',
         justifyContent: 'space-around',
         alignItems: 'center',
-        paddingBottom: 50
     },
     name: {
         color: '#356044',
         fontSize: 40,
         marginBottom: 20
     },
-    dropdown: {
-        width: '80%'
-    },
     submitButton: {
         backgroundColor: '#356044',
         width: 200,
-        marginTop: 40
+        marginTop: 10
     },
-    picker: {
-        alignSelf: 'stretch',
+    card: {
+        marginHorizontal: 4,
+        marginVertical: 8
+    },
+    servicesCard: {
+        marginHorizontal: 4,
         backgroundColor: '#356044',
-        paddingHorizontal: 20,
-        paddingVertical: 20,
-        margin: 20,
-        borderRadius: 10,
+        marginVertical: 8,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
-    pickerText: {
-        color: 'white',
+    cardContent: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    subTitle: {
+        fontSize: 18,
+        paddingBottom: 5,
+        color: '#ffffff'
     }
 });

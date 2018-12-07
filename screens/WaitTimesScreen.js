@@ -100,8 +100,8 @@ class WaitTimesScreen extends React.Component {
                   <Grid style={{ height: 35 }} key={index}>
                       <Col size={1}><Text style={[styles.waitListItem]}>{index + 1}</Text></Col>
                       <Col size={1}><Text style={[styles.waitListItem]}>25</Text></Col>
-                      <Col size={2}><Text style={[styles.waitListItem]}>{item.first_name}</Text></Col>
-                      <Col size={2}><Text style={[styles.waitListItem]}>{item.staffname}</Text></Col>
+                      <Col size={2}><Text style={[styles.waitListItem]}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text></Col>
+                      <Col size={2}><Text style={[styles.waitListItem]}>{item.staff_first_name} {item.staff_last_name.charAt(0)}</Text></Col>
                   </Grid>
               )
           }) : null}
