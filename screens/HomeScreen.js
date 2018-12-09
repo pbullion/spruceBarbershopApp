@@ -31,13 +31,13 @@ class HomeScreen extends React.Component {
 
     _getCurrentWaitTime = () => {
         this.setState({refreshing: false});
-        axios.get(`http://localhost:3001/waitList/overallTimeInProgress`)
+        axios.get(`http://52.37.61.234:3001/waitList/overallTimeInProgress`)
             .then(res => {
                 console.log(res.data);
                 const waitTimeInProgress = res.data;
                 this.setState({ waitTimeInProgress });
             });
-        axios.get(`http://localhost:3001/waitList/overallTimeInWaiting`)
+        axios.get(`http://52.37.61.234:3001/waitList/overallTimeInWaiting`)
             .then(res => {
                 console.log(res.data);
                 const waitTimeInWaiting = res.data;

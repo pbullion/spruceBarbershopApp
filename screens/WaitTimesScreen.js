@@ -26,7 +26,7 @@ class WaitTimesScreen extends React.Component {
 
     _getWaitList = () => {
         this.setState({refreshing: false});
-        axios.get(`http://localhost:3001/waitList`)
+        axios.get(`http://52.37.61.234:3001/waitList`)
             .then(res => {
                 console.log('wait list response', res.data);
                 const currentWaitList = res.data;
