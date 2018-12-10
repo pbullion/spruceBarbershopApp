@@ -31,11 +31,11 @@ class HomeScreen extends React.Component {
 
     _getCurrentWaitTime = () => {
         this.setState({refreshing: false});
-        axios.get(`http://52.37.61.234:3001/waitList/overallTimeInProgress`)
+        axios.get(`http://52.37.61.234:3001/waitList/soonestStaffMember`)
             .then(res => {
                 console.log(res.data);
-                const waitTimeInProgress = res.data;
-                this.setState({ waitTimeInProgress });
+                const soonestStaffMember = res.data;
+                this.setState({ soonestStaffMember });
             });
         axios.get(`http://52.37.61.234:3001/waitList/overallTimeInWaiting`)
             .then(res => {
@@ -108,7 +108,7 @@ class HomeScreen extends React.Component {
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
-            {this.state.update ? <Text style={{ fontSize: 30, marginBottom: 20 }}>{this.state.update[0].update}</Text> : null}
+            {this.state.update ? <Text style={{ fontSize: 30, marginBottom: 20, textAlign: 'center' }}>{this.state.update[0].update}</Text> : null}
             <View style={styles.imageBackgroundView}>
             {!this.props.currentUser.isLoggedIn ?
                 <View style={styles.buttonView}>
@@ -143,7 +143,7 @@ class HomeScreen extends React.Component {
                 <Text style={{ fontSize: 30 }}>Current Wait Time:</Text>
                 {this.state.waitTimeInProgress && this.state.waitTimeInWaiting ?
                     <Text
-                        style={{fontSize: 35}}>{this._waitTime(this.state.waitTimeInProgress, this.state.waitTimeInWaiting)}</Text>
+                        style={{fontSize: 35}}>{this._waitTime(this.state.soonestStaffMember, this.state.waitTimeInWaiting)}</Text>
                     : null
                 }
             </View>
@@ -215,11 +215,11 @@ const styles = StyleSheet.create({
     },
     userImage: {
         flexGrow:1,
-        height: 175,
-        width: 175,
+        height: 125,
+        width: 125,
         alignItems: 'center',
         justifyContent:'center',
-        borderRadius: 75,
+        borderRadius: 60,
         marginBottom: 10
     },
     customerButton: {
