@@ -6,8 +6,9 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import axios from "axios";
-import { setWaitListView } from "../../actions";
+import { setWaitListView, addStaffMember } from "../../actions";
 import TouchableListComponent from "../../components/TouchableList";
+import {Button} from "react-native-elements";
 
 class JoinWaitListScreen2 extends React.Component {
     constructor(props) {
@@ -28,6 +29,12 @@ class JoinWaitListScreen2 extends React.Component {
         },
     };
 
+    selectItem = (props) => {
+        const item = {id: 0};
+        this.props.addStaffMember(item);
+        props.navigation.navigate('WaitTimes3')
+    };
+
     componentDidMount() {
         console.log("*************************", this.props.waitListFlow.waitListView);
         axios.get(`http://52.37.61.234:3001/staff/list/${this.props.waitListFlow.waitListView}`)
@@ -39,13 +46,21 @@ class JoinWaitListScreen2 extends React.Component {
 
     render() {
         console.log("here is the wait list flowwwwwwwwwww", this.props.waitListFlow.waitListView);
-        // console.log("here is the wait list flow part two", this.props.waitListFlow.waitListView);
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-                <View>
-                    {/*{this.state.data &&*/}
+                <View style={styles.buttonView}>
+                    <Button
+                        raised
+                        large
+                        title='First Available'
+                        borderRadius={18}
+                        containerViewStyle={{borderRadius: 18}}
+                        buttonStyle={styles.customerButton}
+                        onPress={() => this.selectItem(this.props)}
+                    />
+                </View>
+                <View style={{ marginTop: 40 }}>
                         <TouchableListComponent props={this.props} data={this.state.data} imageHeight={650}/>
-                    {/*}*/}
                 </View>
             </ScrollView>
         );
@@ -60,7 +75,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {setWaitListView})(JoinWaitListScreen2)
+export default connect(mapStateToProps, {setWaitListView, addStaffMember})(JoinWaitListScreen2)
 
 const styles = StyleSheet.create({
     container: {
@@ -98,5 +113,14 @@ const styles = StyleSheet.create({
     },
     pickerText: {
         color: 'white',
-    }
+    },
+    buttonView: {
+        height: 150,
+        marginTop: 15
+    },
+    customerButton: {
+        backgroundColor: '#2F553C',
+        width: 250,
+        height: 100
+    },
 });

@@ -33,7 +33,8 @@ class JoinWaitListScreen5 extends React.Component {
     handleSubmit = (props) => {
         const waitList = props.waitListFlow;
         const currentUser = props.currentUser;
-        axios.post(`http://52.37.61.234:3001/waitlist`, {
+        console.log('waitlist', waitList);
+        axios.post(`http://localhost:3001/waitlist`, {
             waitList,
             currentUser
         }, {
@@ -63,12 +64,27 @@ class JoinWaitListScreen5 extends React.Component {
                 <View style={styles.viewContainer}>
                     <View style={{ width: '100%', marginTop: 10 }}>
                         <Animatable.View animation="bounceIn">
-                            <Card style={styles.card}>
-                                <Card.Cover source={{ uri: this.props.waitListFlow.staff.staffpicture }} style={{ width: '100%' }}/>
-                                <Card.Content style={styles.cardName}>
-                                    <Title>{this.props.waitListFlow.staff.first_name} {this.props.waitListFlow.staff.last_name}</Title>
-                                </Card.Content>
-                            </Card>
+                            {this.props.waitListFlow.staff.id > 0 ?
+                                <Card style={styles.card}>
+                                    <Card.Cover source={{uri: this.props.waitListFlow.staff.staffpicture}}
+                                                style={{width: '100%'}}/>
+                                    <Card.Content style={styles.cardName}>
+                                        <Title>{this.props.waitListFlow.staff.first_name} {this.props.waitListFlow.staff.last_name}</Title>
+                                    </Card.Content>
+                                </Card>
+                                :
+                                <View style={styles.buttonView}>
+                                    <Button
+                                        raised
+                                        large
+                                        title='First Available'
+                                        borderRadius={18}
+                                        containerViewStyle={{borderRadius: 18}}
+                                        buttonStyle={styles.customerButton}
+                                        onPress={() => {}}
+                                    />
+                                </View>
+                            }
                         </Animatable.View>
                     </View>
                     <View style={{ width: '100%', marginTop: 10 }}>
@@ -140,6 +156,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
     },
+    buttonView: {
+        height: 150,
+        marginTop: 15,
+        width: '100%',
+        alignItems: 'center',
+    },
     name: {
         color: '#356044',
         fontSize: 40,
@@ -160,6 +182,11 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    customerButton: {
+        backgroundColor: '#2F553C',
+        width: 250,
+        height: 100
     },
     cardContent: {
         justifyContent: 'center',

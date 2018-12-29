@@ -30,16 +30,15 @@ class HomeScreen extends React.Component {
   };
 
     _getCurrentWaitTime = () => {
+        console.log("in the current wait time");
         this.setState({refreshing: false});
         axios.get(`http://52.37.61.234:3001/waitList/soonestStaffMember`)
             .then(res => {
-                console.log(res.data);
                 const soonestStaffMember = res.data;
                 this.setState({ soonestStaffMember });
             });
         axios.get(`http://52.37.61.234:3001/waitList/overallTimeInWaiting`)
             .then(res => {
-                console.log(res.data);
                 const waitTimeInWaiting = res.data;
                 this.setState({ waitTimeInWaiting });
             });
@@ -141,7 +140,7 @@ class HomeScreen extends React.Component {
             }
             <View style={styles.waitTimeView}>
                 <Text style={{ fontSize: 30 }}>Current Wait Time:</Text>
-                {this.state.waitTimeInProgress && this.state.waitTimeInWaiting ?
+                {this.state.soonestStaffMember && this.state.waitTimeInWaiting ?
                     <Text
                         style={{fontSize: 35}}>{this._waitTime(this.state.soonestStaffMember, this.state.waitTimeInWaiting)}</Text>
                     : null
