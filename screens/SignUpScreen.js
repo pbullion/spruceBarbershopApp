@@ -4,9 +4,9 @@ import {
     View,
     StyleSheet,
     Image,
-    Text
+    Text, Alert
 }
-from 'react-native';
+    from 'react-native';
 import { connect } from 'react-redux';
 import Expo from 'expo';
 import axios from 'axios';
@@ -34,9 +34,6 @@ class SignUpScreen extends Component {
                 </View>
                 <View style={styles.welcomeView}>
                     <Text style={styles.welcomeText}>
-                        Only sign up's from google and facebook work right now
-                    </Text>
-                    <Text style={styles.welcomeText}>
                         Sign up to be able to join the wait list from your phone!
                     </Text>
                 </View>
@@ -61,18 +58,13 @@ class SignUpScreen extends Component {
                             />
                         </Animatable.View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {}}>
-                        <Animatable.View animation="bounceInUp">
-                            <SocialIcon
-                                title='Sign Up With Email'
-                                button
-                                type='linkedin'
-                                style={{ padding: 20 }}
-                            />
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('SignUpPage')}>
+                        <Animatable.View animation="bounceInUp" style={styles.emailButton}>
+                            <Text style={styles.emailButtonText}>Sign up with Email</Text>
                         </Animatable.View>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate('App')}>
-                        <Animatable.View animation="bounceInDown" easing="ease-in" style={styles.customerButton}>
+                        <Animatable.View animation="bounceInUp" style={styles.customerButton}>
                             <Text style={styles.customerButtonText}>Go Back Home</Text>
                         </Animatable.View>
                     </TouchableOpacity>
@@ -84,20 +76,40 @@ class SignUpScreen extends Component {
 
 
 async function performLogin(user, props) {
-    axios.post(`http://52.37.61.234:3001/users`, {
-        user
-    }, {
+    axios.get(`http://localhost:3001/users/email/${user.email}`, {
         headers: {
             'content-type': 'application/json'
         }
     })
-        .then(function (response) {
-            props.signUpUser(response.data[0]);
-            props.navigation.navigate('WaitTimeList');
-        })
-        .catch(function (error) {
-            console.log('error', error)
-        })
+    .then(function (response) {
+        console.log(response);
+        if (response.data.length > 0) {
+            Alert.alert(
+                'You are already signed up!',
+                'Click below to go to the login',
+                [
+                    {text: 'Login', onPress: () => props.navigation.navigate('SignIn')},
+                    {text: 'Cancel', onPress: () => props.navigation.navigate('Home'), style: 'cancel'}
+                ],
+                { cancelable: false }
+            )
+        } else {
+            axios.post(`http://localhost:3001/users/socialSignUp`, {
+                user
+            }, {
+                headers: {
+                    'content-type': 'application/json'
+                }
+            })
+                .then(function (response) {
+                    props.signUpUser(response.data[0]);
+                    props.navigation.navigate('WaitTimeList');
+                })
+                .catch(function (error) {
+                    console.log('error', error)
+                })
+        }
+    });
 }
 
 async function signInWithGoogleAsync() {
@@ -193,6 +205,23 @@ const styles = StyleSheet.create({
         backgroundColor: '#356044',
         marginVertical: 15,
         borderRadius: 25,
+    },
+    emailButton: {
+        height: 50,
+        width: '100%',
+        justifyContent: 'center',
+        alignContent: 'center',
+        borderWidth: .5,
+        borderColor: '#5e59eb',
+        backgroundColor: '#5e59eb',
+        marginVertical: 15,
+        borderRadius: 25,
+    },
+    emailButtonText: {
+        color: '#ffffff',
+        fontSize: 20,
+        textAlign: 'center',
+        fontFamily: 'nanum-gothic'
     },
     customerButtonText: {
         color: '#ffffff',

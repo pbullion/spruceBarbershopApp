@@ -23,11 +23,45 @@ class WaitTimesScreen extends React.Component {
 
     _getCurrentWaitTime = () => {
         this.setState({refreshing: false});
+        axios.get(`http://52.37.61.234:3001/waitList/remainingTimesInProgress`)
+            .then(res => {
+                const remainingTimesInProgress = res.data;
+                this.setState({ remainingTimesInProgress });
+                axios.get(`http://52.37.61.234:3001/waitList`)
+                    .then(res => {
+                        const waitList = res.data;
+                        let i;
+                        const updatedWaitList = [];
+                        if (remainingTimesInProgress) {
+                            for (i = 0; i < waitList.length; i++) {
+                                if (i < remainingTimesInProgress.length) {
+                                    console.log('in the if');
+                                    console.log(remainingTimesInProgress[i]);
+                                    waitList[i].waitTime = remainingTimesInProgress[i];
+                                } else {
+                                    let n;
+                                    for (n = 0; n < waitList.length; n++) {
+                                        console.log('in the for loop');
+                                        console.log(waitList[n].waitTime);
+                                        console.log(waitList[n].time);
+                                        waitList[i].waitTime = waitList[n].time + waitList[n].waitTime;
+                                    }
+                                }
+                                updatedWaitList.push(waitList[i])
+                            }
+                            this.setState({updatedWaitList});
+                        } else {
+                            updatedWaitList.push(waitList);
+                            this.setState({updatedWaitList});
+                        }
+                        console.log("************here is the new waitlist", this.state.updatedWaitList);
+                    });
+            });
     };
 
     _getWaitList = () => {
         this.setState({refreshing: false});
-        axios.get(`http://localhost:3001/waitList`)
+        axios.get(`http://52.37.61.234:3001/waitList`)
             .then(res => {
                 const currentWaitList = res.data;
                 this.setState({ currentWaitList });
@@ -36,7 +70,7 @@ class WaitTimesScreen extends React.Component {
 
     _getInProgressList = () => {
         this.setState({refreshing: false});
-        axios.get(`http://localhost:3001/waitList/inProgressList`)
+        axios.get(`http://52.37.61.234:3001/waitList/inProgressList`)
             .then(res => {
                 const inProgressList = res.data;
                 this.setState({ inProgressList });
@@ -54,7 +88,6 @@ class WaitTimesScreen extends React.Component {
     },
   };
     handlePress(item) {
-        console.log("here is the item in the press", item);
         Alert.alert(
             'Add or remove Customer',
             '',
@@ -67,9 +100,8 @@ class WaitTimesScreen extends React.Component {
         )
     }
     handlePressInProgress(item) {
-        console.log("here is the item in the press", item);
         Alert.alert(
-            'Add or remove Customer',
+            'Remove customer from waitlist',
             '',
             [
                 {text: 'Finished', onPress: () => this.finishCustomer(item)},
@@ -80,14 +112,14 @@ class WaitTimesScreen extends React.Component {
     }
 
     addCustomer(item) {
-        axios.put(`http://localhost:3001/waitList/start/${item.waitlistid}`)
+        axios.put(`http://52.37.61.234:3001/waitList/start/${item.waitlistid}`)
             .then(res => {
                 console.log('added');
                 this._onRefresh();
             });
     }
     finishCustomer(item) {
-        axios.put(`http://localhost:3001/waitList/done/${item.waitlistid}`)
+        axios.put(`http://52.37.61.234:3001/waitList/done/${item.waitlistid}`)
             .then(res => {
                 console.log('added');
                 this._onRefresh();
@@ -95,7 +127,7 @@ class WaitTimesScreen extends React.Component {
     }
 
     removeCustomer(item) {
-        axios.delete(`http://localhost:3001/waitList/${item.waitlistid}`)
+        axios.delete(`http://52.37.61.234:3001/waitList/${item.waitlistid}`)
             .then(res => {
                 console.log('deleted');
                 this._onRefresh();
@@ -103,6 +135,7 @@ class WaitTimesScreen extends React.Component {
     }
 
     componentDidMount() {
+        this._getCurrentWaitTime();
         this._getWaitList();
         this._getInProgressList();
     }
@@ -147,49 +180,95 @@ class WaitTimesScreen extends React.Component {
                   />
               </View>
           }
+          {this.props.currentUser.staff ?
+              <View>
+                  <Text style={styles.header}>In Progress</Text>
+              </View>
+              : null
+          }
           {(this.props.currentUser.staff && this.state.inProgressList) ? this.state.inProgressList.map((item, index) => {
               return (
-                  <Grid style={{ height: 35 }} key={index}>
-                      <Col size={1}><Text style={[styles.waitListItem]}>{index + 1}</Text></Col>
-                      <Col size={1}><Text style={[styles.waitListItem]}>25</Text></Col>
-                          <TouchableOpacity
-                              onPress={() => this.handlePressInProgress(item)}
-                          >
-                              <Col size={2}><Text
-                                  style={[styles.waitListItem]}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text></Col>
-                          </TouchableOpacity>
-                      {item.staff_first_name ?
-                          <Col size={2}><Text style={[styles.waitListItem]}>{item.staff_first_name} {item.staff_last_name.charAt(0)}</Text></Col>
-                          : <Col size={2}><Text style={[styles.waitListItem]}> </Text></Col>}
-                  </Grid>
+                  <TouchableOpacity onPress={() => this.handlePressInProgress(item)} key={index}>
+                      <View style={styles.waitListCard}>
+                          <View>
+                              <Text>{index + 1}</Text>
+                          </View>
+                          <View style={styles.waitListCardRemainingTime}>
+                              <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Remaining Time</Text>
+                              <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center', marginTop: 5}}>ex min.</Text>
+                          </View>
+                          <View style={styles.waitListCardInfo}>
+                              <Text style={{fontWeight: 'bold', fontSize: 20}}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text>
+                              <Text style={{paddingTop: 5}}>{item.name}</Text>
+                              <Text style={{paddingTop: 5}}>{item.time} min.</Text>
+                              <Text style={{paddingTop: 5}}>Staff: {item.staff_first_name ? item.staff_first_name : "First Available"}</Text>
+                          </View>
+                      </View>
+                  </TouchableOpacity>
               )
           }) : null
           }
-          <Grid>
-              <Col size={1}><Text style={styles.waitListHeader}>Pos</Text></Col>
-              <Col size={1}><Text style={styles.waitListHeader}>Min.</Text></Col>
-              <Col size={2}><Text style={styles.waitListHeader}>Name</Text></Col>
-              <Col size={2}><Text style={styles.waitListHeader}>Staff</Text></Col>
-          </Grid>
-          {this.state.currentWaitList ? this.state.currentWaitList.map((item, index) => {
+          <View>
+              <Text style={styles.header}>Wait List</Text>
+          </View>
+          {this.state.updatedWaitList ? this.state.updatedWaitList.map((item, index) => {
+              console.log("in progress list", this.state.updatedWaitList);
               return (
-                      <Grid style={{ height: 35 }} key={index}>
-                          <Col size={1}><Text style={[styles.waitListItem]}>{index + 1}</Text></Col>
-                          <Col size={1}><Text style={[styles.waitListItem]}>25</Text></Col>
-                          {this.props.currentUser.staff ?
-                              <TouchableOpacity
-                                  onPress={() => this.handlePress(item)}
-                              >
-                                  <Col size={2}><Text
-                                      style={[styles.waitListItem]}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text></Col>
-                              </TouchableOpacity> :
-                              <Col size={2}><Text
-                                  style={[styles.waitListItem]}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text></Col>
-                          }
-                          {item.staff_first_name ?
-                              <Col size={2}><Text style={[styles.waitListItem]}>{item.staff_first_name} {item.staff_last_name.charAt(0)}</Text></Col>
-                              : <Col size={2}><Text style={[styles.waitListItem]}> </Text></Col>}
-                    </Grid>
+                  <View key={index}>
+                  {this.props.currentUser.staff ?
+                          <TouchableOpacity onPress={() => this.handlePress(item)}>
+                              <View style={styles.waitListCard}>
+                                  <View>
+                                      <Text>{index + 1}</Text>
+                                  </View>
+                                  <View style={styles.waitListCardRemainingTime}>
+                                      <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait
+                                          Time</Text>
+                                      <Text style={{
+                                          fontWeight: 'bold',
+                                          fontSize: 15,
+                                          textAlign: 'center',
+                                          marginTop: 5
+                                      }}>{item.waitTime} min.</Text>
+                                  </View>
+                                  <View style={styles.waitListCardInfo}>
+                                      <Text style={{
+                                          fontWeight: 'bold',
+                                          fontSize: 20
+                                      }}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text>
+                                      <Text style={{paddingTop: 5}}>{item.name}</Text>
+                                      <Text style={{paddingTop: 5}}>{item.time} min.</Text>
+                                      <Text
+                                          style={{paddingTop: 5}}>Staff: {item.staff_first_name ? item.staff_first_name : "First Available"}</Text>
+                                  </View>
+                              </View>
+                          </TouchableOpacity> :
+                          <View style={styles.waitListCard}>
+                              <View>
+                                  <Text>{index + 1}</Text>
+                              </View>
+                              <View style={styles.waitListCardRemainingTime}>
+                                  <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait Time</Text>
+                                  <Text style={{
+                                      fontWeight: 'bold',
+                                      fontSize: 15,
+                                      textAlign: 'center',
+                                      marginTop: 5
+                                  }}>{item.waitTime} min.</Text>
+                              </View>
+                              <View style={styles.waitListCardInfo}>
+                                  <Text style={{
+                                      fontWeight: 'bold',
+                                      fontSize: 20
+                                  }}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text>
+                                  <Text style={{paddingTop: 5}}>{item.name}</Text>
+                                  <Text style={{paddingTop: 5}}>{item.time} min.</Text>
+                                  <Text
+                                      style={{paddingTop: 5}}>Staff: {item.staff_first_name ? item.staff_first_name : "First Available"}</Text>
+                              </View>
+                          </View>
+                  }
+                  </View>
               )
           }) : null
           }
@@ -213,6 +292,11 @@ const styles = StyleSheet.create({
         flex: 1,
         width: '100%',
         backgroundColor: '#ffffff',
+    },
+    header: {
+        margin: 10,
+        fontWeight: 'bold',
+        fontSize: 30,
     },
     contentContainer: {
         width: '100%',
@@ -279,4 +363,49 @@ const styles = StyleSheet.create({
         backgroundColor: '#2F553C',
         width: 150
     },
+    waitListCard: {
+        backgroundColor: '#fff',
+        height: 115,
+        paddingHorizontal: 20,
+        width: '100%',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        flexDirection: 'row',
+        borderBottomWidth: .2,
+        borderBottomColor: '#000'
+    },
+    waitListCardRemainingTime: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        padding: 20,
+        marginLeft: 10,
+        width: '35%'
+    },
+    waitListCardInfo: {
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        padding: 20,
+        width: '65%'
+    },
 });
+
+
+{/*<Grid style={{ height: 35 }} key={index}>*/}
+{/*<Col size={1}><Text style={[styles.waitListItem]}>{index + 1}</Text></Col>*/}
+{/*<Col size={1}><Text style={[styles.waitListItem]}>{item.waitTime}</Text></Col>*/}
+{/*{this.props.currentUser.staff ?*/}
+{/*<TouchableOpacity*/}
+{/*onPress={() => this.handlePress(item)}*/}
+{/*>*/}
+{/*<Col size={2}><Text*/}
+{/*style={[styles.waitListItem]}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text></Col>*/}
+{/*</TouchableOpacity> :*/}
+{/*<Col size={2}><Text*/}
+{/*style={[styles.waitListItem]}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text></Col>*/}
+{/*}*/}
+{/*{item.staff_first_name ?*/}
+{/*<Col size={2}><Text style={[styles.waitListItem]}>{item.staff_first_name} {item.staff_last_name.charAt(0)}</Text></Col>*/}
+{/*: <Col size={2}><Text style={[styles.waitListItem]}> </Text></Col>}*/}
+{/*</Grid>*/}

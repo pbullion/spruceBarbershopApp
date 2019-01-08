@@ -32,9 +32,6 @@ class LoginScreen extends Component {
                     <Text style={styles.welcomeText}>
                         Log In
                     </Text>
-                    <Text style={{ fontSize: 15, paddingTop: 50 }}>
-                        Only logins from google or facebook work right now
-                    </Text>
                 </View>
                 <View style={{ width: '100%', paddingHorizontal: 10 }}>
                     <View>

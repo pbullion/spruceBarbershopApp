@@ -107,7 +107,7 @@ class HomeScreen extends React.Component {
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
-            {this.state.update ? <Text style={{ fontSize: 30, marginBottom: 20, textAlign: 'center' }}>{this.state.update[0].update}</Text> : null}
+            {this.state.update ? <Text style={{ fontSize: 25, marginBottom: 20, paddingHorizontal: 10, textAlign: 'center' }}>{this.state.update[0].update}</Text> : null}
             <View style={styles.imageBackgroundView}>
             {!this.props.currentUser.isLoggedIn ?
                 <View style={styles.buttonView}>
@@ -131,21 +131,21 @@ class HomeScreen extends React.Component {
                     />
                 </View> :
                 <View style={styles.welcomeUser}>
-                    <Image style={styles.userImage} source={{uri: this.props.currentUser.pictureurl}} />
+                    {this.props.currentUser.pictureurl ? <Image style={styles.userImage} source={{uri: this.props.currentUser.pictureurl}} /> : null}
                     <Text style={{ fontSize: 25, paddingBottom: 10 }}>Welcome, {this.props.currentUser.first_name}</Text>
                     <TouchableOpacity onPress={() => this.handlePress()}>
                         <Text style={{ fontSize: 25 }}>LOG OUT</Text>
                     </TouchableOpacity>
                 </View>
             }
-            <View style={styles.waitTimeView}>
-                <Text style={{ fontSize: 30 }}>Current Wait Time:</Text>
-                {this.state.soonestStaffMember && this.state.waitTimeInWaiting ?
-                    <Text
-                        style={{fontSize: 35}}>{this._waitTime(this.state.soonestStaffMember, this.state.waitTimeInWaiting)}</Text>
-                    : null
-                }
-            </View>
+            {/*<View style={styles.waitTimeView}>*/}
+                {/*<Text style={{ fontSize: 30 }}>Current Wait Time:</Text>*/}
+                {/*{this.state.soonestStaffMember && this.state.waitTimeInWaiting ?*/}
+                    {/*<Text*/}
+                        {/*style={{fontSize: 35}}>{this._waitTime(this.state.soonestStaffMember, this.state.waitTimeInWaiting)}</Text>*/}
+                    {/*: null*/}
+                {/*}*/}
+            {/*</View>*/}
                 <Grid style={{ paddingTop: 10 }}>
                     <Col size={1}><Text style={styles.tableHeader}>Business Hours</Text></Col>
                 </Grid>
