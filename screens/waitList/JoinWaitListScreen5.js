@@ -44,7 +44,7 @@ class JoinWaitListScreen5 extends React.Component {
             }
         })
             .then(function (response) {
-                props.navigation.navigate('WaitTimeList');
+                props.navigation.navigate('WaitTimeList', {refresh: true});
             })
             .catch(function (error) {
                 console.log('error', error)

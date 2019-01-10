@@ -140,7 +140,7 @@ class WaitTimesScreen extends React.Component {
         this._getInProgressList();
     }
 
-  render() {
+    render() {
     return (
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           refreshControl={
@@ -212,7 +212,6 @@ class WaitTimesScreen extends React.Component {
               <Text style={styles.header}>Wait List</Text>
           </View>
           {this.state.updatedWaitList ? this.state.updatedWaitList.map((item, index) => {
-              console.log("in progress list", this.state.updatedWaitList);
               return (
                   <View key={index}>
                   {this.props.currentUser.staff ?

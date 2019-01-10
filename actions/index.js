@@ -4,7 +4,9 @@ import {
     SIGN_OUT_USER,
     ADD_STAFF_TO_WAITLIST,
     ADD_SERVICE_TO_WAITLIST,
-    SET_WAITLIST_VIEW
+    SET_WAITLIST_VIEW,
+    REFRESH_TRUE,
+    REFRESH_FALSE
 } from "../constants";
 
 export const signInUser = (user) => {
@@ -30,8 +32,22 @@ export const signUpUser = (user) => {
     return action
 };
 
+export const refreshTrue = (boolean) => {
+    const action = {
+        type: REFRESH_TRUE,
+        boolean
+    };
+    return action
+};
+export const refreshFalse = (boolean) => {
+    const action = {
+        type: REFRESH_FALSE,
+        boolean
+    };
+    return action
+};
+
 export const addStaffMember = (staff) => {
-    console.log('********************** staff', staff);
     const action = {
         type: ADD_STAFF_TO_WAITLIST,
         staff
