@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Dimensions,
     ScrollView,
     StyleSheet,
     Text, View,
@@ -67,7 +68,7 @@ class JoinWaitListScreen5 extends React.Component {
                             {this.props.waitListFlow.staff.id > 0 ?
                                 <Card style={styles.card}>
                                     <Card.Cover source={{uri: this.props.waitListFlow.staff.staffpicture}}
-                                                style={{width: '100%'}}/>
+                                                style={styles.cardCover}/>
                                     <Card.Content style={styles.cardName}>
                                         <Title>{this.props.waitListFlow.staff.first_name} {this.props.waitListFlow.staff.last_name}</Title>
                                     </Card.Content>
@@ -182,6 +183,10 @@ const styles = StyleSheet.create({
         marginVertical: 8,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    cardCover: {
+        width: '100%',
+        height: Dimensions.get('window').width > 500 ? 500 : 250
     },
     customerButton: {
         backgroundColor: '#2F553C',

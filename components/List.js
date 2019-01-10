@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, ScrollView, StyleSheet, Text, View, TouchableHighlight, TouchableOpacity} from 'react-native';
+import {Modal, ScrollView, StyleSheet, Text, View, Dimensions, TouchableOpacity} from 'react-native';
 import {
     Title,
     Paragraph,
@@ -73,7 +73,7 @@ export default class ListComponent extends React.Component {
                             <View style={{ width: '100%' }}>
                                 <Animatable.View animation="bounceIn">
                                     <Card style={styles.card}>
-                                        <Card.Cover source={{ uri: item.staffpicture }} style={{ width: '100%' }}/>
+                                        <Card.Cover source={{ uri: item.staffpicture }} style={styles.cardCover}/>
                                         <Card.Content>
                                             <Title>{item.first_name} {item.last_name}</Title>
                                             <Paragraph>
@@ -107,10 +107,15 @@ const styles = StyleSheet.create({
     },
     card: {
         marginHorizontal: 4,
-        marginVertical: 8
+        marginVertical: 8,
+        // height: 1000
+    },
+    cardCover: {
+        width: '100%',
+        height: Dimensions.get('window').width > 500 ? 500 : 250
     },
     modal: {
-        backgroundColor: 'green',
+        backgroundColor: '#356044',
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',

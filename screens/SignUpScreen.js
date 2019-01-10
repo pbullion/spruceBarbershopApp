@@ -76,7 +76,7 @@ class SignUpScreen extends Component {
 
 
 async function performLogin(user, props) {
-    axios.get(`http://localhost:3001/users/email/${user.email}`, {
+    axios.get(`http://52.37.61.234:3001/users/email/${user.email}`, {
         headers: {
             'content-type': 'application/json'
         }
@@ -94,7 +94,7 @@ async function performLogin(user, props) {
                 { cancelable: false }
             )
         } else {
-            axios.post(`http://localhost:3001/users/socialSignUp`, {
+            axios.post(`http://52.37.61.234:3001/users/socialSignUp`, {
                 user
             }, {
                 headers: {

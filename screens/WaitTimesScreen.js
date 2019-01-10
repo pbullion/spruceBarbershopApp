@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {Alert, Dimensions, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import {Col, Grid} from "react-native-easy-grid";
 import RefreshText from "../components/RefreshText";
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row',
-        borderBottomWidth: .2,
+        borderBottomWidth: Dimensions.get('window').width > 500 ? .5 : .2,
         borderBottomColor: '#000'
     },
     waitListCardRemainingTime: {
@@ -390,22 +390,3 @@ const styles = StyleSheet.create({
         width: '65%'
     },
 });
-
-
-{/*<Grid style={{ height: 35 }} key={index}>*/}
-{/*<Col size={1}><Text style={[styles.waitListItem]}>{index + 1}</Text></Col>*/}
-{/*<Col size={1}><Text style={[styles.waitListItem]}>{item.waitTime}</Text></Col>*/}
-{/*{this.props.currentUser.staff ?*/}
-{/*<TouchableOpacity*/}
-{/*onPress={() => this.handlePress(item)}*/}
-{/*>*/}
-{/*<Col size={2}><Text*/}
-{/*style={[styles.waitListItem]}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text></Col>*/}
-{/*</TouchableOpacity> :*/}
-{/*<Col size={2}><Text*/}
-{/*style={[styles.waitListItem]}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text></Col>*/}
-{/*}*/}
-{/*{item.staff_first_name ?*/}
-{/*<Col size={2}><Text style={[styles.waitListItem]}>{item.staff_first_name} {item.staff_last_name.charAt(0)}</Text></Col>*/}
-{/*: <Col size={2}><Text style={[styles.waitListItem]}> </Text></Col>}*/}
-{/*</Grid>*/}

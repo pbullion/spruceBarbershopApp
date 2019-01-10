@@ -69,7 +69,7 @@ class SignUpPageScreen extends Component {
 
 async function performSignUp(first_name, last_name, email, phone_number, password, confirmPassword, props) {
     if (password === confirmPassword) {
-        axios.post(`http://localhost:3001/users`, {
+        axios.post(`http://52.37.61.234:3001/users`, {
             first_name, last_name, email, phone_number, password
         }, {
             headers: {
