@@ -57,7 +57,7 @@ class TouchableServicesList extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log('********************touchable list state********************', state.waitListFlow);
+    // console.log('********************touchable list state********************', state.waitListFlow);
     return {
         currentUser: state.currentUser,
         waitListFlow: state.waitListFlow

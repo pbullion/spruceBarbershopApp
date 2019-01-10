@@ -5,10 +5,10 @@ const refresh = (state = {}, action) => {
     let refresh = null;
     switch(action.type) {
         case REFRESH_TRUE:
-            refresh = true;
+            refresh = Object.assign({refreshStatus: true});
             return refresh;
         case REFRESH_FALSE:
-            refresh = false;
+            refresh = Object.assign({refreshStatus: false});
             return refresh;
         default:
             return state;

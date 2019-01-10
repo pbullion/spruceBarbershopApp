@@ -29,7 +29,7 @@ class JoinWaitListScreen4 extends React.Component {
     };
 
     componentDidMount() {
-        console.log("*************************", this.props.waitListFlow.waitListView);
+        // console.log("*************************", this.props.waitListFlow.waitListView);
         axios.get(`http://52.37.61.234:3001/services/category/${this.props.waitListFlow.waitListView}`)
             .then(res => {
                 const data = res.data;
@@ -51,7 +51,7 @@ class JoinWaitListScreen4 extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log('state*******in the join wait list map 3', state);
+    // console.log('state*******in the join wait list map 3', state);
     return {
         currentUser: state.currentUser,
         waitListFlow: state.waitListFlow

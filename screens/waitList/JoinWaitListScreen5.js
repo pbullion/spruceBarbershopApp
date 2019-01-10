@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import axios from "axios";
-import { setWaitListView } from "../../actions";
+import { setWaitListView, refreshTrue } from "../../actions";
 import { Button } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
 import {Card, Paragraph, Title} from "react-native-paper";
@@ -34,7 +34,7 @@ class JoinWaitListScreen5 extends React.Component {
     handleSubmit = (props) => {
         const waitList = props.waitListFlow;
         const currentUser = props.currentUser;
-        console.log('waitlist', waitList);
+        // console.log('waitlist', waitList);
         axios.post(`http://52.37.61.234:3001/waitlist`, {
             waitList,
             currentUser
@@ -44,7 +44,9 @@ class JoinWaitListScreen5 extends React.Component {
             }
         })
             .then(function (response) {
-                props.navigation.navigate('WaitTimeList', {refresh: true});
+                console.log(props);
+                props.refreshTrue(true);
+                props.navigation.navigate('WaitTimeList');
             })
             .catch(function (error) {
                 console.log('error', error)
@@ -124,14 +126,16 @@ class JoinWaitListScreen5 extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log('state*******in the join wait list map final page', state);
+    // console.log('state*******in the join wait list map final page', state);
     return {
         currentUser: state.currentUser,
-        waitListFlow: state.waitListFlow
+        waitListFlow: state.waitListFlow,
+        refresh: state.refresh.refreshStatus
     }
 }
+const mapDispatchToProps = { setWaitListView, refreshTrue };
 
-export default connect(mapStateToProps, {setWaitListView})(JoinWaitListScreen5)
+export default connect(mapStateToProps, mapDispatchToProps)(JoinWaitListScreen5)
 
 const styles = StyleSheet.create({
     container: {
