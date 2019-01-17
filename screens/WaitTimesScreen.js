@@ -10,7 +10,8 @@ class WaitTimesScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            refreshing: false
+            refreshing: false,
+            updatedWaitList: [],
         }
     }
 
@@ -35,26 +36,31 @@ class WaitTimesScreen extends React.Component {
                         if (remainingTimesInProgress) {
                             for (i = 0; i < waitList.length; i++) {
                                 if (i < remainingTimesInProgress.length) {
-                                    console.log('in the if');
-                                    console.log(remainingTimesInProgress[i]);
+                                    // console.log('in the if');
+                                    // console.log(remainingTimesInProgress[i]);
                                     waitList[i].waitTime = remainingTimesInProgress[i];
                                 } else {
                                     let n;
                                     for (n = 0; n < waitList.length; n++) {
-                                        console.log('in the for loop');
-                                        console.log(waitList[n].waitTime);
-                                        console.log(waitList[n].time);
+                                        // console.log('in the for loop');
+                                        // console.log(waitList[n].waitTime);
+                                        // console.log(waitList[n].time);
                                         waitList[i].waitTime = waitList[n].time + waitList[n].waitTime;
                                     }
                                 }
                                 updatedWaitList.push(waitList[i])
                             }
-                            this.setState({updatedWaitList});
+                            console.log("sdjfslkdjflksdflk", updatedWaitList.length);
+                            this.setState(prevState => ({
+                                updatedWaitList: [...prevState, updatedWaitList]
+                            }))
                         } else {
                             updatedWaitList.push(waitList);
-                            this.setState({updatedWaitList});
-                        }
-                        console.log("************here is the new waitlist", this.state.updatedWaitList);
+                            console.log("sdjfslkdjflksdflk", updatedWaitList.length);
+                            this.setState(prevState => ({
+                                updatedWaitList: [...prevState, updatedWaitList]
+                            }))                        }
+                        // console.log("************here is the new waitlist", this.state.updatedWaitList);
                     });
             });
     };
@@ -135,12 +141,11 @@ class WaitTimesScreen extends React.Component {
     }
 
     componentDidMount() {
-        this._getCurrentWaitTime();
-        this._getWaitList();
-        this._getInProgressList();
+        this._onRefresh();
     }
 
     render() {
+        console.log('updated wait listksdflkjsdflkjsdkljfklsdjf', this.state.updatedWaitList);
     return (
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           refreshControl={
@@ -211,7 +216,7 @@ class WaitTimesScreen extends React.Component {
           <View>
               <Text style={styles.header}>Wait List</Text>
           </View>
-          {this.state.updatedWaitList ? this.state.updatedWaitList.map((item, index) => {
+          {this.state.updatedWaitList[0] ? this.state.updatedWaitList[0].map((item, index) => {
               return (
                   <View key={index}>
                   {this.props.currentUser.staff ?
