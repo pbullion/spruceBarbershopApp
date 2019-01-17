@@ -19,6 +19,7 @@ class WaitTimesScreen extends React.Component {
         this.setState({refreshing: true});
         this._getCurrentWaitTime();
         this._getWaitList();
+        this._getStaff();
         this._getInProgressList();
     };
 
@@ -71,6 +72,16 @@ class WaitTimesScreen extends React.Component {
             .then(res => {
                 const currentWaitList = res.data;
                 this.setState({ currentWaitList });
+            });
+    };
+
+    _getStaff = () => {
+        this.setState({refreshing: false});
+        axios.get(`http://localhost:3001/staff/working`)
+            .then(res => {
+                const staff = res.data;
+                console.log("here is the staff", staff);
+                this.setState({ staff });
             });
     };
 
@@ -145,7 +156,6 @@ class WaitTimesScreen extends React.Component {
     }
 
     render() {
-        console.log('updated wait listksdflkjsdflkjsdkljfklsdjf', this.state.updatedWaitList);
     return (
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           refreshControl={
@@ -216,66 +226,142 @@ class WaitTimesScreen extends React.Component {
           <View>
               <Text style={styles.header}>Wait List</Text>
           </View>
-          {this.state.updatedWaitList[0] ? this.state.updatedWaitList[0].map((item, index) => {
+          {this.state.staff ? this.state.staff.map((item, index) => {
+              console.log(item);
               return (
                   <View key={index}>
-                  {this.props.currentUser.staff ?
-                          <TouchableOpacity onPress={() => this.handlePress(item)}>
-                              <View style={styles.waitListCard}>
-                                  <View>
-                                      <Text>{index + 1}</Text>
-                                  </View>
-                                  <View style={styles.waitListCardRemainingTime}>
-                                      <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait
-                                          Time</Text>
-                                      <Text style={{
-                                          fontWeight: 'bold',
-                                          fontSize: 15,
-                                          textAlign: 'center',
-                                          marginTop: 5
-                                      }}>{item.waitTime} min.</Text>
-                                  </View>
-                                  <View style={styles.waitListCardInfo}>
-                                      <Text style={{
-                                          fontWeight: 'bold',
-                                          fontSize: 20
-                                      }}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text>
-                                      <Text style={{paddingTop: 5}}>{item.name}</Text>
-                                      <Text style={{paddingTop: 5}}>{item.time} min.</Text>
-                                      <Text
-                                          style={{paddingTop: 5}}>Staff: {item.staff_first_name ? item.staff_first_name : "First Available"}</Text>
-                                  </View>
-                              </View>
-                          </TouchableOpacity> :
-                          <View style={styles.waitListCard}>
-                              <View>
-                                  <Text>{index + 1}</Text>
-                              </View>
-                              <View style={styles.waitListCardRemainingTime}>
-                                  <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait Time</Text>
-                                  <Text style={{
-                                      fontWeight: 'bold',
-                                      fontSize: 15,
-                                      textAlign: 'center',
-                                      marginTop: 5
-                                  }}>{item.waitTime} min.</Text>
-                              </View>
-                              <View style={styles.waitListCardInfo}>
-                                  <Text style={{
-                                      fontWeight: 'bold',
-                                      fontSize: 20
-                                  }}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text>
-                                  <Text style={{paddingTop: 5}}>{item.name}</Text>
-                                  <Text style={{paddingTop: 5}}>{item.time} min.</Text>
-                                  <Text
-                                      style={{paddingTop: 5}}>Staff: {item.staff_first_name ? item.staff_first_name : "First Available"}</Text>
-                              </View>
+                      <Text>{item.first_name} {item.last_name}</Text>
+                      <TouchableOpacity
+                          onPress={() => this.props.navigation.navigate('WaitTimes')}
+                      >
+                          <View style={styles.joinWaitListButton}>
+                              <Text style={styles.joinWaitListButtonText}>Join {item.first_name}'s wait list</Text>
                           </View>
-                  }
+                      </TouchableOpacity>
+                      {this.state.updatedWaitList[0] ? this.state.updatedWaitList[0].map((item2, index) => {
+                          if (item.last_name === item2.staff_last_name) {
+                              return (
+                                      <View key={index}>
+                                          {this.props.currentUser.staff ?
+                                              <TouchableOpacity onPress={() => this.handlePress(item2)}>
+                                                  <View style={styles.waitListCard}>
+                                                      <View>
+                                                          <Text>{index + 1}</Text>
+                                                      </View>
+                                                      <View style={styles.waitListCardRemainingTime}>
+                                                          <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait
+                                                              Time</Text>
+                                                          <Text style={{
+                                                              fontWeight: 'bold',
+                                                              fontSize: 15,
+                                                              textAlign: 'center',
+                                                              marginTop: 5
+                                                          }}>{item2.waitTime} min.</Text>
+                                                      </View>
+                                                      <View style={styles.waitListCardInfo}>
+                                                          <Text style={{
+                                                              fontWeight: 'bold',
+                                                              fontSize: 20
+                                                          }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
+                                                          <Text style={{paddingTop: 5}}>{item2.name}</Text>
+                                                          <Text style={{paddingTop: 5}}>{item2.time} min.</Text>
+                                                          <Text
+                                                              style={{paddingTop: 5}}>Staff: {item2.staff_first_name ? item2.staff_first_name : "First Available"}</Text>
+                                                      </View>
+                                                  </View>
+                                              </TouchableOpacity> :
+                                              <View style={styles.waitListCard}>
+                                                  <View>
+                                                      <Text>{index + 1}</Text>
+                                                  </View>
+                                                  <View style={styles.waitListCardRemainingTime}>
+                                                      <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait Time</Text>
+                                                      <Text style={{
+                                                          fontWeight: 'bold',
+                                                          fontSize: 15,
+                                                          textAlign: 'center',
+                                                          marginTop: 5
+                                                      }}>{item2.waitTime} min.</Text>
+                                                  </View>
+                                                  <View style={styles.waitListCardInfo}>
+                                                      <Text style={{
+                                                          fontWeight: 'bold',
+                                                          fontSize: 20
+                                                      }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
+                                                      <Text style={{paddingTop: 5}}>{item2.name}</Text>
+                                                      <Text style={{paddingTop: 5}}>{item2.time} min.</Text>
+                                                  </View>
+                                              </View>
+                                          }
+                                      </View>
+                              )
+                          }
+                      }) : null};
                   </View>
               )
-          }) : null
-          }
+          }) : null };
+
+
+          {/*{this.state.updatedWaitList[0] ? this.state.updatedWaitList[0].map((item, index) => {*/}
+              {/*return (*/}
+                  {/*<View key={index}>*/}
+                  {/*{this.props.currentUser.staff ?*/}
+                          {/*<TouchableOpacity onPress={() => this.handlePress(item)}>*/}
+                              {/*<View style={styles.waitListCard}>*/}
+                                  {/*<View>*/}
+                                      {/*<Text>{index + 1}</Text>*/}
+                                  {/*</View>*/}
+                                  {/*<View style={styles.waitListCardRemainingTime}>*/}
+                                      {/*<Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait*/}
+                                          {/*Time</Text>*/}
+                                      {/*<Text style={{*/}
+                                          {/*fontWeight: 'bold',*/}
+                                          {/*fontSize: 15,*/}
+                                          {/*textAlign: 'center',*/}
+                                          {/*marginTop: 5*/}
+                                      {/*}}>{item.waitTime} min.</Text>*/}
+                                  {/*</View>*/}
+                                  {/*<View style={styles.waitListCardInfo}>*/}
+                                      {/*<Text style={{*/}
+                                          {/*fontWeight: 'bold',*/}
+                                          {/*fontSize: 20*/}
+                                      {/*}}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text>*/}
+                                      {/*<Text style={{paddingTop: 5}}>{item.name}</Text>*/}
+                                      {/*<Text style={{paddingTop: 5}}>{item.time} min.</Text>*/}
+                                      {/*<Text*/}
+                                          {/*style={{paddingTop: 5}}>Staff: {item.staff_first_name ? item.staff_first_name : "First Available"}</Text>*/}
+                                  {/*</View>*/}
+                              {/*</View>*/}
+                          {/*</TouchableOpacity> :*/}
+                          {/*<View style={styles.waitListCard}>*/}
+                              {/*<View>*/}
+                                  {/*<Text>{index + 1}</Text>*/}
+                              {/*</View>*/}
+                              {/*<View style={styles.waitListCardRemainingTime}>*/}
+                                  {/*<Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait Time</Text>*/}
+                                  {/*<Text style={{*/}
+                                      {/*fontWeight: 'bold',*/}
+                                      {/*fontSize: 15,*/}
+                                      {/*textAlign: 'center',*/}
+                                      {/*marginTop: 5*/}
+                                  {/*}}>{item.waitTime} min.</Text>*/}
+                              {/*</View>*/}
+                              {/*<View style={styles.waitListCardInfo}>*/}
+                                  {/*<Text style={{*/}
+                                      {/*fontWeight: 'bold',*/}
+                                      {/*fontSize: 20*/}
+                                  {/*}}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text>*/}
+                                  {/*<Text style={{paddingTop: 5}}>{item.name}</Text>*/}
+                                  {/*<Text style={{paddingTop: 5}}>{item.time} min.</Text>*/}
+                                  {/*<Text*/}
+                                      {/*style={{paddingTop: 5}}>Staff: {item.staff_first_name ? item.staff_first_name : "First Available"}</Text>*/}
+                              {/*</View>*/}
+                          {/*</View>*/}
+                  {/*}*/}
+                  {/*</View>*/}
+              {/*)*/}
+          {/*}) : null*/}
+          {/*}*/}
       </ScrollView>
     );
   }
