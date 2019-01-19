@@ -25,16 +25,16 @@ class WaitTimesScreen extends React.Component {
 
     _getCurrentWaitTime = () => {
         this.setState({refreshing: false});
-        axios.get(`http://52.37.61.234:3001/waitList/remainingTimesInProgress`)
+        axios.get(`http://52.37.61.234:3001/waitList/inProgressList`)
             .then(res => {
-                const remainingTimesInProgress = res.data;
-                this.setState({ remainingTimesInProgress });
+                const inProgressList = res.data;
+                this.setState({ inProgressList });
                 axios.get(`http://52.37.61.234:3001/waitList`)
                     .then(res => {
                         const waitList = res.data;
                         let i;
                         const updatedWaitList = [];
-                        if (remainingTimesInProgress) {
+                        if (inProgressList) {
                             for (i = 0; i < waitList.length; i++) {
                                 if (i < remainingTimesInProgress.length) {
                                     // console.log('in the if');
@@ -51,13 +51,11 @@ class WaitTimesScreen extends React.Component {
                                 }
                                 updatedWaitList.push(waitList[i])
                             }
-                            console.log("sdjfslkdjflksdflk", updatedWaitList.length);
                             this.setState(prevState => ({
                                 updatedWaitList: [...prevState, updatedWaitList]
                             }))
                         } else {
                             updatedWaitList.push(waitList);
-                            console.log("sdjfslkdjflksdflk", updatedWaitList.length);
                             this.setState(prevState => ({
                                 updatedWaitList: [...prevState, updatedWaitList]
                             }))                        }
@@ -80,16 +78,16 @@ class WaitTimesScreen extends React.Component {
         axios.get(`http://localhost:3001/staff/working`)
             .then(res => {
                 const staff = res.data;
-                console.log("here is the staff", staff);
                 this.setState({ staff });
             });
     };
 
     _getInProgressList = () => {
         this.setState({refreshing: false});
-        axios.get(`http://52.37.61.234:3001/waitList/inProgressList`)
+        axios.get(`http://localhost:3001/waitList/inProgressList`)
             .then(res => {
                 const inProgressList = res.data;
+                console.log('in progress', inProgressList);
                 this.setState({ inProgressList });
             });
     };
@@ -131,14 +129,12 @@ class WaitTimesScreen extends React.Component {
     addCustomer(item) {
         axios.put(`http://52.37.61.234:3001/waitList/start/${item.waitlistid}`)
             .then(res => {
-                console.log('added');
                 this._onRefresh();
             });
     }
     finishCustomer(item) {
         axios.put(`http://52.37.61.234:3001/waitList/done/${item.waitlistid}`)
             .then(res => {
-                console.log('added');
                 this._onRefresh();
             });
     }
@@ -146,7 +142,6 @@ class WaitTimesScreen extends React.Component {
     removeCustomer(item) {
         axios.delete(`http://52.37.61.234:3001/waitList/${item.waitlistid}`)
             .then(res => {
-                console.log('deleted');
                 this._onRefresh();
             });
     }
@@ -223,21 +218,22 @@ class WaitTimesScreen extends React.Component {
               )
           }) : null
           }
-          <View>
-              <Text style={styles.header}>Wait List</Text>
-          </View>
           {this.state.staff ? this.state.staff.map((item, index) => {
-              console.log(item);
+              // console.log(item);
               return (
-                  <View key={index}>
-                      <Text>{item.first_name} {item.last_name}</Text>
+                  <View style={{paddingBottom: 20, justifyContent: 'center', alignItems: 'center'}} key={index}>
+                      <View style={styles.nameHeader}>
+                        <Text style={{fontSize: 25, textAlign: 'center'}}>{item.first_name} {item.last_name}</Text>
+                      </View>
+                      {this.props.currentUser.isLoggedIn ?
                       <TouchableOpacity
                           onPress={() => this.props.navigation.navigate('WaitTimes')}
                       >
-                          <View style={styles.joinWaitListButton}>
-                              <Text style={styles.joinWaitListButtonText}>Join {item.first_name}'s wait list</Text>
+                          <View style={styles.joinStaffWaitListButton}>
+                              <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait list</Text>
                           </View>
                       </TouchableOpacity>
+                          : null}
                       {this.state.updatedWaitList[0] ? this.state.updatedWaitList[0].map((item2, index) => {
                           if (item.last_name === item2.staff_last_name) {
                               return (
@@ -300,68 +296,6 @@ class WaitTimesScreen extends React.Component {
                   </View>
               )
           }) : null };
-
-
-          {/*{this.state.updatedWaitList[0] ? this.state.updatedWaitList[0].map((item, index) => {*/}
-              {/*return (*/}
-                  {/*<View key={index}>*/}
-                  {/*{this.props.currentUser.staff ?*/}
-                          {/*<TouchableOpacity onPress={() => this.handlePress(item)}>*/}
-                              {/*<View style={styles.waitListCard}>*/}
-                                  {/*<View>*/}
-                                      {/*<Text>{index + 1}</Text>*/}
-                                  {/*</View>*/}
-                                  {/*<View style={styles.waitListCardRemainingTime}>*/}
-                                      {/*<Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait*/}
-                                          {/*Time</Text>*/}
-                                      {/*<Text style={{*/}
-                                          {/*fontWeight: 'bold',*/}
-                                          {/*fontSize: 15,*/}
-                                          {/*textAlign: 'center',*/}
-                                          {/*marginTop: 5*/}
-                                      {/*}}>{item.waitTime} min.</Text>*/}
-                                  {/*</View>*/}
-                                  {/*<View style={styles.waitListCardInfo}>*/}
-                                      {/*<Text style={{*/}
-                                          {/*fontWeight: 'bold',*/}
-                                          {/*fontSize: 20*/}
-                                      {/*}}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text>*/}
-                                      {/*<Text style={{paddingTop: 5}}>{item.name}</Text>*/}
-                                      {/*<Text style={{paddingTop: 5}}>{item.time} min.</Text>*/}
-                                      {/*<Text*/}
-                                          {/*style={{paddingTop: 5}}>Staff: {item.staff_first_name ? item.staff_first_name : "First Available"}</Text>*/}
-                                  {/*</View>*/}
-                              {/*</View>*/}
-                          {/*</TouchableOpacity> :*/}
-                          {/*<View style={styles.waitListCard}>*/}
-                              {/*<View>*/}
-                                  {/*<Text>{index + 1}</Text>*/}
-                              {/*</View>*/}
-                              {/*<View style={styles.waitListCardRemainingTime}>*/}
-                                  {/*<Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait Time</Text>*/}
-                                  {/*<Text style={{*/}
-                                      {/*fontWeight: 'bold',*/}
-                                      {/*fontSize: 15,*/}
-                                      {/*textAlign: 'center',*/}
-                                      {/*marginTop: 5*/}
-                                  {/*}}>{item.waitTime} min.</Text>*/}
-                              {/*</View>*/}
-                              {/*<View style={styles.waitListCardInfo}>*/}
-                                  {/*<Text style={{*/}
-                                      {/*fontWeight: 'bold',*/}
-                                      {/*fontSize: 20*/}
-                                  {/*}}>{item.customer_first_name} {item.customer_last_name.charAt(0)}</Text>*/}
-                                  {/*<Text style={{paddingTop: 5}}>{item.name}</Text>*/}
-                                  {/*<Text style={{paddingTop: 5}}>{item.time} min.</Text>*/}
-                                  {/*<Text*/}
-                                      {/*style={{paddingTop: 5}}>Staff: {item.staff_first_name ? item.staff_first_name : "First Available"}</Text>*/}
-                              {/*</View>*/}
-                          {/*</View>*/}
-                  {/*}*/}
-                  {/*</View>*/}
-              {/*)*/}
-          {/*}) : null*/}
-          {/*}*/}
       </ScrollView>
     );
   }
@@ -435,6 +369,28 @@ const styles = StyleSheet.create({
           marginVertical: 15,
           borderRadius: 25,
         },
+      nameHeader: {
+          width: '100%',
+          justifyContent: 'center',
+          alignContent: 'center',
+      },
+      joinStaffWaitListButton: {
+          height: 25,
+          width: 175,
+          justifyContent: 'center',
+          alignContent: 'center',
+          borderWidth: .5,
+          borderColor: '#2F553C',
+          backgroundColor: '#2F553C',
+          marginVertical: 5,
+          borderRadius: 25,
+        },
+      joinStaffWaitListButtonText: {
+          color: '#fff',
+          fontSize: 15,
+          textAlign: 'center',
+          fontFamily: 'nanum-gothic'
+    },
       joinWaitListButtonText: {
           color: '#fff',
           fontSize: 25,

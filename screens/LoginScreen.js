@@ -3,16 +3,16 @@ import {
     TouchableOpacity,
     View,
     StyleSheet,
-    Image,
-    Text
+    Text, Image
 }
-from 'react-native';
+    from 'react-native';
 import { connect } from 'react-redux';
-import Expo from 'expo';
-import { signInUser } from "../actions";
+import BackgroundVideo from '../assets/videos/ovme-master.mp4';
+import Expo, { Video } from 'expo';import { signInUser } from "../actions";
 import { SocialIcon, FormInput, FormLabel } from 'react-native-elements'
 import axios from "axios";
 import * as Animatable from "react-native-animatable";
+import spruceLogo from "../assets/images/logos/spruceLogo.png";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -28,10 +28,18 @@ class LoginScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <View style={styles.welcomeView}>
-                    <Text style={styles.welcomeText}>
-                        Log In
-                    </Text>
+                <Video
+                    source={BackgroundVideo}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={false}
+                    resizeMode="cover"
+                    shouldPlay
+                    isLooping
+                    style={styles.video}
+                />
+                <View style={styles.logoContainer}>
+                    <Image style={styles.logo} source={spruceLogo} />
                 </View>
                 <View style={{ width: '100%', paddingHorizontal: 10 }}>
                     <View>
@@ -140,7 +148,6 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'space-around',
         alignItems: 'center',
-        backgroundColor: '#356044'
     },
     socialLogins: {
         flexDirection: 'row',
@@ -150,6 +157,13 @@ const styles = StyleSheet.create({
     },
     backButtonText: {
         fontSize: 15
+    },
+    video: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
     },
     welcomeView: {
         width: '100%',
@@ -171,6 +185,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#356044',
         marginVertical: 15,
         borderRadius: 25,
+    },
+    logoContainer: {
+        width: '100%',
+        alignItems: 'center',
+    },
+    logo: {
+        width: 150,
+        height: 150
     },
     customerButtonText: {
         color: '#ffffff',

@@ -8,7 +8,9 @@ import {
 }
     from 'react-native';
 import { connect } from 'react-redux';
-import Expo from 'expo';
+import BackgroundVideo from '../assets/videos/ovme-master.mp4';
+import Expo, { Video } from 'expo';
+
 import axios from 'axios';
 import { signUpUser } from "../actions";
 import { SocialIcon } from 'react-native-elements'
@@ -29,13 +31,18 @@ class SignUpScreen extends Component {
     render() {
         return (
             <View style={styles.container}>
+                <Video
+                    source={BackgroundVideo}
+                    rate={1.0}
+                    volume={1.0}
+                    isMuted={false}
+                    resizeMode="cover"
+                    shouldPlay
+                    isLooping
+                    style={styles.video}
+                />
                 <View style={styles.logoContainer}>
                     <Image style={styles.logo} source={spruceLogo} />
-                </View>
-                <View style={styles.welcomeView}>
-                    <Text style={styles.welcomeText}>
-                        Sign up to be able to join the wait list from your phone!
-                    </Text>
                 </View>
                 <View style={{ width: '100%', paddingHorizontal: 10 }}>
                     <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
@@ -216,6 +223,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#5e59eb',
         marginVertical: 15,
         borderRadius: 25,
+    },
+    video: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
     },
     emailButtonText: {
         color: '#ffffff',
