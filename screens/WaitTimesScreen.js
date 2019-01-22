@@ -211,11 +211,8 @@ class WaitTimesScreen extends React.Component {
               </View>
           }
           {this.state.staff ? this.state.staff.map((item, index) => {
-              console.log(moment().format('H:mm'));
               const day = moment().format('dddd').toLowerCase() + '_start';
-              console.log(day);
-              {moment().format('H:mm').isBefore(moment(item[day]).format('H:mm')) ? console.log("TRUE") : console.log("FALSE")}
-              // console.log('testing 12jrojlfs', item[day]);
+              // {moment().format('H:mm').isBefore(moment(item[day]).format('H:mm')) ? console.log("TRUE") : console.log("FALSE")}
               return (
                   <View style={{paddingVertical: 20, justifyContent: 'center', alignItems: 'center', borderBottomWidth: .3, width: '100%'}} key={index}>
                       <View style={styles.nameHeader}>
@@ -244,7 +241,7 @@ class WaitTimesScreen extends React.Component {
                                           <TouchableOpacity onPress={() => this.handlePress(item2)}>
                                               <View style={styles.waitListCard}>
                                                   <View>
-                                                      <Text>{index + 1}</Text>
+                                                      <Text>{index < 1 ? "IP" : index + 1}</Text>
                                                   </View>
                                                   <View style={styles.waitListCardRemainingTime}>
                                                       <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait
@@ -263,17 +260,16 @@ class WaitTimesScreen extends React.Component {
                                                       }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
                                                       <Text style={{paddingTop: 5}}>{item2.name}</Text>
                                                       <Text style={{paddingTop: 5}}>{item2.time} min.</Text>
-                                                      <Text
-                                                          style={{paddingTop: 5}}>Staff: {item2.staff_first_name ? item2.staff_first_name : "First Available"}</Text>
+                                                      <Text style={{paddingTop: 5}}>progress: {item2.in_progress ? "in progress" : "Waiting"}</Text>
                                                   </View>
                                               </View>
                                           </TouchableOpacity> :
                                           <View style={styles.waitListCard}>
                                               <View>
-                                                  <Text>{index + 1}</Text>
+                                                  <Text>{index < 1 ? "IP" : index}</Text>
                                               </View>
                                               <View style={styles.waitListCardRemainingTime}>
-                                                  <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait Time</Text>
+                                                  <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
                                                   <Text style={{
                                                       fontWeight: 'bold',
                                                       fontSize: 15,
@@ -288,6 +284,7 @@ class WaitTimesScreen extends React.Component {
                                                   }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
                                                   <Text style={{paddingTop: 5}}>{item2.name}</Text>
                                                   <Text style={{paddingTop: 5}}>{item2.time} min.</Text>
+                                                  <Text style={{paddingTop: 5}}>progress: {item2.in_progress ? "in progress" : "Waiting"}</Text>
                                               </View>
                                           </View>
                                       }
