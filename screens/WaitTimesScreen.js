@@ -1,10 +1,10 @@
 import React from 'react';
 import {Alert, Dimensions, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import connect from "react-redux/es/connect/connect";
-import {Col, Grid} from "react-native-easy-grid";
 import RefreshText from "../components/RefreshText";
 import {Button} from "react-native-elements";
 import axios from "axios";
+import moment from 'moment';
 
 class WaitTimesScreen extends React.Component {
     constructor(props) {
@@ -211,6 +211,11 @@ class WaitTimesScreen extends React.Component {
               </View>
           }
           {this.state.staff ? this.state.staff.map((item, index) => {
+              console.log(moment().format('H:mm'));
+              const day = moment().format('dddd').toLowerCase() + '_start';
+              console.log(day);
+              {moment().format('H:mm').isBefore(moment(item[day]).format('H:mm')) ? console.log("TRUE") : console.log("FALSE")}
+              // console.log('testing 12jrojlfs', item[day]);
               return (
                   <View style={{paddingVertical: 20, justifyContent: 'center', alignItems: 'center', borderBottomWidth: .3, width: '100%'}} key={index}>
                       <View style={styles.nameHeader}>
