@@ -42,18 +42,18 @@ class LoginScreen extends Component {
                     <Image style={styles.logo} source={spruceLogo} />
                 </View>
                 <View style={{ width: '100%', paddingHorizontal: 10 }}>
-                    <View>
-                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Email</FormLabel>
-                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={() => {}} focus/>
+                    {/*<View>*/}
+                        {/*<FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Email</FormLabel>*/}
+                        {/*<FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={() => {}} focus/>*/}
 
-                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Password</FormLabel>
-                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={() => {}} focus/>
-                    </View>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('App')}>
-                        <Animatable.View animation="bounceInDown" style={styles.logInButton}>
-                            <Text style={styles.logInButtonText}>Log In</Text>
-                        </Animatable.View>
-                    </TouchableOpacity>
+                        {/*<FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Password</FormLabel>*/}
+                        {/*<FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={() => {}} focus/>*/}
+                    {/*</View>*/}
+                    {/*<TouchableOpacity onPress={() => this.props.navigation.navigate('App')}>*/}
+                        {/*<Animatable.View animation="bounceInDown" style={styles.logInButton}>*/}
+                            {/*<Text style={styles.logInButtonText}>Log In</Text>*/}
+                        {/*</Animatable.View>*/}
+                    {/*</TouchableOpacity>*/}
                     <View style={styles.socialLogins}>
                         <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
                             <Animatable.View animation="bounceInDown">
