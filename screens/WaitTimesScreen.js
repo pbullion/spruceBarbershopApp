@@ -17,100 +17,51 @@ class WaitTimesScreen extends React.Component {
 
     _onRefresh = () => {
         this.setState({refreshing: true});
-        // this._getCurrentWaitTime();
-        // this._getWaitList();
         this._getStaff();
-        // this._getInProgressList();
-    };
-
-    _getCurrentWaitTime = () => {
-        this.setState({refreshing: false});
-        axios.get(`http://52.37.61.234:3001/waitList`)
-            .then(res => {
-                const inProgressList = res.data;
-                this.setState({ inProgressList });
-                axios.get(`http://52.37.61.234:3001/waitList`)
-                    .then(res => {
-                        const waitList = res.data;
-                        let i;
-                        const updatedWaitList = [];
-                        for (i = 0; i < waitList.length; i++) {
-                            let staffMember = waitList[i].staff_last_name;
-                            this.setState(prevState => ({
-                                staffMember: waitList[i]
-                            }))
-                        }
-                        // const waitList = res.data;
-                        // let i;
-                        // const updatedWaitList = [];
-                        // if (inProgressList) {
-                        //     for (i = 0; i < waitList.length; i++) {
-                        //
-                        //         // if (i < remainingTimesInProgress.length) {
-                        //         //     // console.log('in the if');
-                        //         //     // console.log(remainingTimesInProgress[i]);
-                        //         //     waitList[i].waitTime = remainingTimesInProgress[i];
-                        //         // } else {
-                        //         //     let n;
-                        //         //     for (n = 0; n < waitList.length; n++) {
-                        //         //         // console.log('in the for loop');
-                        //         //         // console.log(waitList[n].waitTime);
-                        //         //         // console.log(waitList[n].time);
-                        //         //         waitList[i].waitTime = waitList[n].time + waitList[n].waitTime;
-                        //         //     }
-                        //         // }
-                        //         // updatedWaitList.push(waitList[i])
-                        //     }
-                        //     this.setState(prevState => ({
-                        //         updatedWaitList: [...prevState, updatedWaitList]
-                        //     }))
-                        // } else {
-                        //     updatedWaitList.push(waitList);
-                        //     this.setState(prevState => ({
-                        //         updatedWaitList: [...prevState, updatedWaitList]
-                        //     }))                        }
-                        // console.log("************here is the new waitlist", this.state.updatedWaitList);
-                    });
-            });
-    };
-
-    _getWaitList = () => {
-        this.setState({refreshing: false});
-        axios.get(`http://52.37.61.234:3001/waitList`)
-            .then(res => {
-                const currentWaitList = res.data;
-                this.setState({ currentWaitList });
-            });
     };
 
     _getStaff = () => {
         this.setState({refreshing: false});
-        axios.get(`http://localhost:3001/staff/working`)
+        axios.get(`http://52.37.61.234:3001/staff/working`)
             .then(res => {
                 const staff = res.data;
                 let i;
                 this.setState({staff});
                 for (i = 0; i < staff.length; i++) {
                     const staffid = staff[i].staffid;
-                    axios.get(`http://localhost:3001/waitlist/staff/${staffid}`)
+                    axios.get(`http://52.37.61.234:3001/waitlist/staffmember/${staffid}`)
                         .then((res) => {
                             if (res.data.length > 0) {
-                                this.setState({[res.data[0].staff_last_name]: res.data});
+                                const updatedWaitList = [];
+                                for (let i = 0; i < res.data.length; i++) {
+                                    if (res.data[i].in_progress) {
+                                        res.data[i].remainingTime = res.data[i].time - parseInt(moment(res.data[i].start_time, "h:mm").fromNow(true), 10);
+                                        console.log(res.data[i].remainingTime);
+                                        console.log(parseInt(moment(res.data[i].start_time, "h:mm").fromNow(true), 10));
+                                        if (!res.data[i].remainingTime) {
+                                            res.data[i].remainingTime = res.data[i].time;
+                                        }
+                                        updatedWaitList.push(res.data[i]);
+                                    } else if (res.data[i].waiting) {
+                                        if (i === 0) {
+                                            console.log(res.data[i].remainingTime);
+                                            res.data[i].remainingTime = 0
+                                        } else if (i === 1) {
+                                            console.log(res.data[i].remainingTime);
+                                            res.data[i].remainingTime = res.data[i - 1].remainingTime
+                                        } else {
+                                            console.log(res.data[i].remainingTime);
+                                            res.data[i].remainingTime = res.data[i - 1].remainingTime + res.data[i - 1].time
+                                        }
+                                        updatedWaitList.push(res.data[i]);
+                                    }
+                                }
+                                this.setState({[res.data[0].staff_last_name]: updatedWaitList});
                             }
                         });
                 }
             });
     };
-
-    // _getInProgressList = () => {
-    //     this.setState({refreshing: false});
-    //     axios.get(`http://localhost:3001/waitList/inProgressList`)
-    //         .then(res => {
-    //             const inProgressList = res.data;
-    //             console.log('in progress', inProgressList);
-    //             this.setState({ inProgressList });
-    //         });
-    // };
 
   static navigationOptions = {
     title: 'Wait List',
@@ -128,6 +79,7 @@ class WaitTimesScreen extends React.Component {
             '',
             [
                 {text: 'Add', onPress: () => this.addCustomer(item)},
+                {text: 'Finished', onPress: () => this.finishCustomer(item)},
                 {text: 'Delete', onPress: () => this.removeCustomer(item)},
                 {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
             ],
@@ -211,12 +163,11 @@ class WaitTimesScreen extends React.Component {
               </View>
           }
           {this.state.staff ? this.state.staff.map((item, index) => {
-              const day = moment().format('dddd').toLowerCase() + '_start';
-              // {moment().format('H:mm').isBefore(moment(item[day]).format('H:mm')) ? console.log("TRUE") : console.log("FALSE")}
               return (
                   <View style={{paddingVertical: 20, justifyContent: 'center', alignItems: 'center', borderBottomWidth: .3, width: '100%'}} key={index}>
                       <View style={styles.nameHeader}>
                         <Text style={{fontSize: 25, textAlign: 'center'}}>{item.first_name} {item.last_name}</Text>
+                        <Text style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item.barber ? "Barber" : "Stylist"}</Text>
                       </View>
                       {this.props.currentUser.isLoggedIn ?
                       <TouchableOpacity
@@ -235,23 +186,23 @@ class WaitTimesScreen extends React.Component {
                               </View>
                           </TouchableOpacity>}
                       {this.state[item.last_name] ? this.state[item.last_name].map((item2, index) => {
+                          console.log(parseInt(moment(item2.start_time, "h:mm").fromNow(true), 10));
                               return (
                                   <View key={index}>
                                       {this.props.currentUser.staff ?
                                           <TouchableOpacity onPress={() => this.handlePress(item2)}>
                                               <View style={styles.waitListCard}>
                                                   <View>
-                                                      <Text>{index < 1 ? "IP" : index + 1}</Text>
+                                                      <Text>{index < 1 ? null : index}</Text>
                                                   </View>
                                                   <View style={styles.waitListCardRemainingTime}>
-                                                      <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>Wait
-                                                          Time</Text>
+                                                      <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
                                                       <Text style={{
                                                           fontWeight: 'bold',
                                                           fontSize: 15,
                                                           textAlign: 'center',
                                                           marginTop: 5
-                                                      }}>{item2.waitTime} min.</Text>
+                                                      }}>{item2.remainingTime} min.</Text>
                                                   </View>
                                                   <View style={styles.waitListCardInfo}>
                                                       <Text style={{
@@ -260,13 +211,13 @@ class WaitTimesScreen extends React.Component {
                                                       }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
                                                       <Text style={{paddingTop: 5}}>{item2.name}</Text>
                                                       <Text style={{paddingTop: 5}}>{item2.time} min.</Text>
-                                                      <Text style={{paddingTop: 5}}>progress: {item2.in_progress ? "in progress" : "Waiting"}</Text>
+                                                      <Text style={{paddingTop: 5}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}</Text>
                                                   </View>
                                               </View>
                                           </TouchableOpacity> :
                                           <View style={styles.waitListCard}>
                                               <View>
-                                                  <Text>{index < 1 ? "IP" : index}</Text>
+                                                  <Text>{index < 1 ? null : index}</Text>
                                               </View>
                                               <View style={styles.waitListCardRemainingTime}>
                                                   <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
@@ -275,7 +226,7 @@ class WaitTimesScreen extends React.Component {
                                                       fontSize: 15,
                                                       textAlign: 'center',
                                                       marginTop: 5
-                                                  }}>{item2.waitTime} min.</Text>
+                                                  }}>{item2.remainingTime} min.</Text>
                                               </View>
                                               <View style={styles.waitListCardInfo}>
                                                   <Text style={{
@@ -284,7 +235,7 @@ class WaitTimesScreen extends React.Component {
                                                   }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
                                                   <Text style={{paddingTop: 5}}>{item2.name}</Text>
                                                   <Text style={{paddingTop: 5}}>{item2.time} min.</Text>
-                                                  <Text style={{paddingTop: 5}}>progress: {item2.in_progress ? "in progress" : "Waiting"}</Text>
+                                                  <Text style={{paddingTop: 5}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}</Text>
                                               </View>
                                           </View>
                                       }
