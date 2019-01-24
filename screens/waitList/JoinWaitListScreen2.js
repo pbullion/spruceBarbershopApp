@@ -45,21 +45,9 @@ class JoinWaitListScreen2 extends React.Component {
     }
 
     render() {
-        // console.log("here is the wait list flowwwwwwwwwww", this.props.waitListFlow.waitListView);
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-                <View style={styles.buttonView}>
-                    <Button
-                        raised
-                        large
-                        title='First Available'
-                        borderRadius={18}
-                        containerViewStyle={{borderRadius: 18}}
-                        buttonStyle={styles.customerButton}
-                        onPress={() => this.selectItem(this.props)}
-                    />
-                </View>
-                <View style={{ marginTop: 40 }}>
+                <View>
                         <TouchableListComponent props={this.props} data={this.state.data} imageHeight={650}/>
                 </View>
             </ScrollView>
@@ -68,7 +56,6 @@ class JoinWaitListScreen2 extends React.Component {
 }
 
 function mapStateToProps(state) {
-    console.log('state*******in the join wait list map 2', state);
     return {
         currentUser: state.currentUser,
         waitListFlow: state.waitListFlow

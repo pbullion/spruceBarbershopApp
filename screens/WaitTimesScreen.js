@@ -20,6 +20,19 @@ class WaitTimesScreen extends React.Component {
         this._getStaff();
     };
 
+    _timeConvert = time => {
+        const num = time;
+        const hours = (num / 60);
+        const rhours = Math.floor(hours);
+        const minutes = (hours - rhours) * 60;
+        const rminutes = Math.round(minutes);
+        if (rminutes < 10) {
+            return rhours + ":0" + rminutes
+        } else {
+            return rhours + ":" + rminutes;
+        }
+    };
+
     _getStaff = () => {
         this.setState({refreshing: false});
         axios.get(`http://52.37.61.234:3001/staff/working`)
@@ -36,21 +49,16 @@ class WaitTimesScreen extends React.Component {
                                 for (let i = 0; i < res.data.length; i++) {
                                     if (res.data[i].in_progress) {
                                         res.data[i].remainingTime = res.data[i].time - parseInt(moment(res.data[i].start_time, "h:mm").fromNow(true), 10);
-                                        console.log(res.data[i].remainingTime);
-                                        console.log(parseInt(moment(res.data[i].start_time, "h:mm").fromNow(true), 10));
                                         if (!res.data[i].remainingTime) {
                                             res.data[i].remainingTime = res.data[i].time;
                                         }
                                         updatedWaitList.push(res.data[i]);
                                     } else if (res.data[i].waiting) {
                                         if (i === 0) {
-                                            console.log(res.data[i].remainingTime);
                                             res.data[i].remainingTime = 0
                                         } else if (i === 1) {
-                                            console.log(res.data[i].remainingTime);
                                             res.data[i].remainingTime = res.data[i - 1].remainingTime
                                         } else {
-                                            console.log(res.data[i].remainingTime);
                                             res.data[i].remainingTime = res.data[i - 1].remainingTime + res.data[i - 1].time
                                         }
                                         updatedWaitList.push(res.data[i]);
@@ -168,6 +176,7 @@ class WaitTimesScreen extends React.Component {
                       <View style={styles.nameHeader}>
                         <Text style={{fontSize: 25, textAlign: 'center'}}>{item.first_name} {item.last_name}</Text>
                         <Text style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item.barber ? "Barber" : "Stylist"}</Text>
+                        <Text style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>here is where their current wait time will go</Text>
                       </View>
                       {this.props.currentUser.isLoggedIn ?
                       <TouchableOpacity
@@ -179,14 +188,13 @@ class WaitTimesScreen extends React.Component {
                       </TouchableOpacity>
                           :
                           <TouchableOpacity
-                              onPress={() => this.props.navigation.navigate('SignUp')}
+                              onPress={() => this.props.navigation.navigate('SignIn')}
                           >
                               <View style={styles.joinStaffWaitListButton}>
                                   <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait list</Text>
                               </View>
                           </TouchableOpacity>}
                       {this.state[item.last_name] ? this.state[item.last_name].map((item2, index) => {
-                          console.log(parseInt(moment(item2.start_time, "h:mm").fromNow(true), 10));
                               return (
                                   <View key={index}>
                                       {this.props.currentUser.staff ?
@@ -202,7 +210,9 @@ class WaitTimesScreen extends React.Component {
                                                           fontSize: 15,
                                                           textAlign: 'center',
                                                           marginTop: 5
-                                                      }}>{item2.remainingTime} min.</Text>
+                                                      }}>
+                                                          {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
+                                                     </Text>
                                                   </View>
                                                   <View style={styles.waitListCardInfo}>
                                                       <Text style={{
@@ -226,7 +236,9 @@ class WaitTimesScreen extends React.Component {
                                                       fontSize: 15,
                                                       textAlign: 'center',
                                                       marginTop: 5
-                                                  }}>{item2.remainingTime} min.</Text>
+                                                  }}>
+                                                      {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
+                                                  </Text>
                                               </View>
                                               <View style={styles.waitListCardInfo}>
                                                   <Text style={{
