@@ -171,30 +171,45 @@ class WaitTimesScreen extends React.Component {
               </View>
           }
           {this.state.staff ? this.state.staff.map((item, index) => {
-              return (
-                  <View style={{paddingVertical: 20, justifyContent: 'center', alignItems: 'center', borderBottomWidth: .3, width: '100%'}} key={index}>
-                      <View style={styles.nameHeader}>
-                        <Text style={{fontSize: 25, textAlign: 'center'}}>{item.first_name} {item.last_name}</Text>
-                        <Text style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item.barber ? "Barber" : "Stylist"}</Text>
-                        <Text style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>here is where their current wait time will go</Text>
-                      </View>
-                      {this.props.currentUser.isLoggedIn ?
-                      <TouchableOpacity
-                          onPress={() => this.props.navigation.navigate('WaitTimes')}
-                      >
-                          <View style={styles.joinStaffWaitListButton}>
-                              <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait list</Text>
+              if (item.isWorking) {
+                  return (
+                      <View style={{
+                          paddingVertical: 20,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          borderBottomWidth: .3,
+                          width: '100%'
+                      }} key={index}>
+                          <View style={styles.nameHeader}>
+                              <Text
+                                  style={{fontSize: 25, textAlign: 'center'}}>{item.first_name} {item.last_name}</Text>
+                              <Text style={{
+                                  fontSize: 20,
+                                  textAlign: 'center',
+                                  paddingVertical: 3
+                              }}>{item.barber ? "Barber" : "Stylist"}</Text>
+                              <Text style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>here is where their
+                                  current wait time will go</Text>
                           </View>
-                      </TouchableOpacity>
-                          :
-                          <TouchableOpacity
-                              onPress={() => this.props.navigation.navigate('SignIn')}
-                          >
-                              <View style={styles.joinStaffWaitListButton}>
-                                  <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait list</Text>
-                              </View>
-                          </TouchableOpacity>}
-                      {this.state[item.last_name] ? this.state[item.last_name].map((item2, index) => {
+                          {this.props.currentUser.isLoggedIn ?
+                              <TouchableOpacity
+                                  onPress={() => this.props.navigation.navigate('WaitTimes')}
+                              >
+                                  <View style={styles.joinStaffWaitListButton}>
+                                      <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait
+                                          list</Text>
+                                  </View>
+                              </TouchableOpacity>
+                              :
+                              <TouchableOpacity
+                                  onPress={() => this.props.navigation.navigate('SignIn')}
+                              >
+                                  <View style={styles.joinStaffWaitListButton}>
+                                      <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait
+                                          list</Text>
+                                  </View>
+                              </TouchableOpacity>}
+                          {this.state[item.last_name] ? this.state[item.last_name].map((item2, index) => {
                               return (
                                   <View key={index}>
                                       {this.props.currentUser.staff ?
@@ -204,7 +219,11 @@ class WaitTimesScreen extends React.Component {
                                                       <Text>{index < 1 ? null : index}</Text>
                                                   </View>
                                                   <View style={styles.waitListCardRemainingTime}>
-                                                      <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
+                                                      <Text style={{
+                                                          fontWeight: 'bold',
+                                                          fontSize: 15,
+                                                          textAlign: 'center'
+                                                      }}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
                                                       <Text style={{
                                                           fontWeight: 'bold',
                                                           fontSize: 15,
@@ -212,7 +231,7 @@ class WaitTimesScreen extends React.Component {
                                                           marginTop: 5
                                                       }}>
                                                           {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
-                                                     </Text>
+                                                      </Text>
                                                   </View>
                                                   <View style={styles.waitListCardInfo}>
                                                       <Text style={{
@@ -221,7 +240,8 @@ class WaitTimesScreen extends React.Component {
                                                       }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
                                                       <Text style={{paddingTop: 5}}>{item2.name}</Text>
                                                       <Text style={{paddingTop: 5}}>{item2.time} min.</Text>
-                                                      <Text style={{paddingTop: 5}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}</Text>
+                                                      <Text
+                                                          style={{paddingTop: 5}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}</Text>
                                                   </View>
                                               </View>
                                           </TouchableOpacity> :
@@ -230,7 +250,11 @@ class WaitTimesScreen extends React.Component {
                                                   <Text>{index < 1 ? null : index}</Text>
                                               </View>
                                               <View style={styles.waitListCardRemainingTime}>
-                                                  <Text style={{fontWeight: 'bold', fontSize: 15, textAlign: 'center'}}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
+                                                  <Text style={{
+                                                      fontWeight: 'bold',
+                                                      fontSize: 15,
+                                                      textAlign: 'center'
+                                                  }}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
                                                   <Text style={{
                                                       fontWeight: 'bold',
                                                       fontSize: 15,
@@ -247,15 +271,17 @@ class WaitTimesScreen extends React.Component {
                                                   }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
                                                   <Text style={{paddingTop: 5}}>{item2.name}</Text>
                                                   <Text style={{paddingTop: 5}}>{item2.time} min.</Text>
-                                                  <Text style={{paddingTop: 5}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}</Text>
+                                                  <Text
+                                                      style={{paddingTop: 5}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}</Text>
                                               </View>
                                           </View>
                                       }
                                   </View>
                               )
-                      }) : null};
-                  </View>
-              )
+                          }) : null};
+                      </View>
+                  )
+              }
           }) : null };
       </ScrollView>
     );

@@ -53,13 +53,13 @@ export default class ListComponent extends React.Component {
                                     Schedule
                                 </Text>
                             </View>
-                            <Text style={styles.hoursText}>Monday: {this.state.item.monday}</Text>
-                            <Text style={styles.hoursText}>Tuesday: {this.state.item.tuesday}</Text>
-                            <Text style={styles.hoursText}>Wednesday: {this.state.item.wednesday}</Text>
-                            <Text style={styles.hoursText}>Thursday: {this.state.item.thursday}</Text>
-                            <Text style={styles.hoursText}>Friday: {this.state.item.friday}</Text>
-                            <Text style={styles.hoursText}>Saturday: {this.state.item.saturday}</Text>
-                            <Text style={styles.hoursText}>Sunday: {this.state.item.sunday}</Text>
+                            <Text style={styles.hoursText}>Monday: {this.state.item.monday_start} - {this.state.item.monday_end}</Text>
+                            <Text style={styles.hoursText}>Tuesday: {this.state.item.tuesday_start} - {this.state.item.tuesday_end}</Text>
+                            <Text style={styles.hoursText}>Wednesday: {this.state.item.wednesday_start} - {this.state.item.wednesday_end}</Text>
+                            <Text style={styles.hoursText}>Thursday: {this.state.item.thursday_start} - {this.state.item.thursday_end}</Text>
+                            <Text style={styles.hoursText}>Friday: {this.state.item.friday_start} - {this.state.item.friday_end}</Text>
+                            <Text style={styles.hoursText}>Saturday: {this.state.item.saturday_start} - {this.state.item.saturday_end}</Text>
+                            <Text style={styles.hoursText}>Sunday: {this.state.item.sunday_start} - {this.state.item.sunday_end}</Text>
                                 <TouchableOpacity style={styles.customerButton} onPress={() => this.hideModal(!this.state.modalVisible)}>
                                     <Animatable.View animation="bounceInDown">
                                         <Text style={styles.customerButtonText}>Return</Text>

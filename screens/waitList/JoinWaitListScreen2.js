@@ -36,8 +36,8 @@ class JoinWaitListScreen2 extends React.Component {
     };
 
     componentDidMount() {
-        // console.log("*************************", this.props.waitListFlow.waitListView);
-        axios.get(`http://52.37.61.234:3001/staff/list/${this.props.waitListFlow.waitListView}`)
+        console.log("*************************", this.props.waitListFlow.waitListView);
+        axios.get(`http://localhost:3001/staff/list/${this.props.waitListFlow.waitListView}`)
             .then(res => {
                 const data = res.data;
                 this.setState({ data });
