@@ -14,7 +14,7 @@ import Expo, { Video } from 'expo';
 import axios from 'axios';
 import { signUpUser } from "../actions";
 import { SocialIcon } from 'react-native-elements'
-import spruceLogo from '../assets/images/logos/spruceLogo.png'
+import spruceLogo from '../assets/images/logos/Brooke_Spruce_3-17_green-05-eps.png'
 import * as Animatable from 'react-native-animatable';
 
 class SignUpScreen extends Component {

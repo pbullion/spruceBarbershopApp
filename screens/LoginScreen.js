@@ -12,7 +12,7 @@ import Expo, { Video } from 'expo';import { signInUser } from "../actions";
 import { SocialIcon, FormInput, FormLabel } from 'react-native-elements'
 import axios from "axios";
 import * as Animatable from "react-native-animatable";
-import spruceLogo from "../assets/images/logos/spruceLogo.png";
+import spruceLogo from "../assets/images/logos/Brooke_Spruce_3-17_green-05-eps.png";
 
 class LoginScreen extends Component {
     constructor(props) {
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
         left: 0,
         bottom: 0,
         right: 0,
+        opacity: 1
     },
     welcomeView: {
         width: '100%',
@@ -191,8 +192,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logo: {
-        width: 150,
-        height: 150
+        width: 500,
+        height: 400
     },
     customerButtonText: {
         color: '#ffffff',
