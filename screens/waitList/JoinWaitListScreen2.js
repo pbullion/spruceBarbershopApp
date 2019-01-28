@@ -1,14 +1,12 @@
 import React from 'react';
 import {
     ScrollView,
-    StyleSheet,
-    Text, View,
+    StyleSheet, View,
 } from 'react-native';
 import { connect } from 'react-redux';
 import axios from "axios";
 import { setWaitListView, addStaffMember } from "../../actions";
 import TouchableListComponent from "../../components/TouchableList";
-import {Button} from "react-native-elements";
 
 class JoinWaitListScreen2 extends React.Component {
     constructor(props) {
@@ -36,7 +34,6 @@ class JoinWaitListScreen2 extends React.Component {
     };
 
     componentDidMount() {
-        console.log("*************************", this.props.waitListFlow.waitListView);
         axios.get(`http://52.37.61.234:3001/staff/list/${this.props.waitListFlow.waitListView}`)
             .then(res => {
                 const data = res.data;

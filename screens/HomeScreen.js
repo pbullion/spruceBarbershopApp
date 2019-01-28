@@ -32,25 +32,12 @@ class HomeScreen extends React.Component {
     _getCurrentWaitTime = () => {
         console.log("in the current wait time");
         this.setState({refreshing: false});
-        axios.get(`http://52.37.61.234:3001/waitList/soonestStaffMember`)
+        axios.get(`http://52.37.61.234:3001/waitlist/totals`)
             .then(res => {
-                const soonestStaffMember = res.data;
-                this.setState({ soonestStaffMember });
+                console.log(res.data);
+                const currentWaitTime = res.data[0].lowestWait.time.waittime;
+                this.setState({ currentWaitTime });
             });
-        axios.get(`http://52.37.61.234:3001/waitList/overallTimeInWaiting`)
-            .then(res => {
-                const waitTimeInWaiting = res.data;
-                this.setState({ waitTimeInWaiting });
-            });
-    };
-
-    _waitTime = (time1, time2) => {
-        let num = time1 + time2;
-        let hours = (num / 60);
-        let rhours = Math.floor(hours);
-        let minutes = (hours - rhours) * 60;
-        let rminutes = Math.round(minutes);
-        return rhours + " hours and " + rminutes + " minutes";
     };
 
     _getSpecials = () => {
@@ -86,10 +73,7 @@ class HomeScreen extends React.Component {
     };
 
     componentDidMount() {
-        this._getCurrentWaitTime();
-        this._getSpecials();
-        this._getBusinessHours();
-        this._getUpdate();
+        this._onRefresh();
     };
     handlePress = () => {
         this.props.signOutUser();
@@ -138,14 +122,12 @@ class HomeScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
             }
-            {/*<View style={styles.waitTimeView}>*/}
-                {/*<Text style={{ fontSize: 30 }}>Current Wait Time:</Text>*/}
-                {/*{this.state.soonestStaffMember && this.state.waitTimeInWaiting ?*/}
-                    {/*<Text*/}
-                        {/*style={{fontSize: 35}}>{this._waitTime(this.state.soonestStaffMember, this.state.waitTimeInWaiting)}</Text>*/}
-                    {/*: null*/}
-                {/*}*/}
-            {/*</View>*/}
+            <View style={styles.waitTimeView}>
+                <Text style={{ fontSize: 30 }}>Current Wait Time</Text>
+                <Text style={{ fontSize: 24 }}>For First Available</Text>
+                    <Text
+                        style={{fontSize: 35}}>{this.state.currentWaitTime} min.</Text>
+            </View>
                 <Grid style={{ paddingTop: 10 }}>
                     <Col size={1}><Text style={styles.tableHeader}>Business Hours</Text></Col>
                 </Grid>

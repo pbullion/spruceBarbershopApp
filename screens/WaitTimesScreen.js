@@ -5,6 +5,7 @@ import RefreshText from "../components/RefreshText";
 import {Button} from "react-native-elements";
 import axios from "axios";
 import moment from 'moment';
+import { addStaffMember } from "../actions";
 
 class WaitTimesScreen extends React.Component {
     constructor(props) {
@@ -18,6 +19,7 @@ class WaitTimesScreen extends React.Component {
     _onRefresh = () => {
         this.setState({refreshing: true});
         this._getStaff();
+        this._getStaffWaitTimes();
     };
 
     _timeConvert = time => {
@@ -33,6 +35,15 @@ class WaitTimesScreen extends React.Component {
         }
     };
 
+    _getStaffWaitTimes = () => {
+        this.setState({refreshing: false});
+        axios.get(`http://localhost:3001/waitlist/totals`)
+            .then(res => {
+                const waitTimesForStaff = res.data[1];
+                console.log("waittimes for staff", waitTimesForStaff);
+                this.setState({waitTimesForStaff});
+            });
+    };
     _getStaff = () => {
         this.setState({refreshing: false});
         axios.get(`http://52.37.61.234:3001/staff/working`)
@@ -105,6 +116,10 @@ class WaitTimesScreen extends React.Component {
             { cancelable: false }
         )
     }
+    handleJoinStaffWaitlist(item) {
+        this.props.addStaffMember(item);
+        this.props.navigation.navigate('WaitTimes3')
+    };
 
     addCustomer(item) {
         axios.put(`http://52.37.61.234:3001/waitList/start/${item.waitlistid}`)
@@ -188,12 +203,20 @@ class WaitTimesScreen extends React.Component {
                                   textAlign: 'center',
                                   paddingVertical: 3
                               }}>{item.barber ? "Barber" : "Stylist"}</Text>
-                              <Text style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>here is where their
-                                  current wait time will go</Text>
+                              {this.state.waitTimesForStaff ? this.state.waitTimesForStaff.map((item3, index) => {
+                                  for (let i = 0; i < this.state.waitTimesForStaff.length; i++) {
+                                      if (item3.time.staffid === item.staffid) {
+                                          return (
+                                              <Text key={index} style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item3.time.waittime > 60 ? this._timeConvert(item3.time.waittime) : item3.time.waittime + " min."}</Text>
+                                          )
+                                      }
+                                  }
+                              }) : null}
+
                           </View>
                           {this.props.currentUser.isLoggedIn ?
                               <TouchableOpacity
-                                  onPress={() => this.props.navigation.navigate('WaitTimes')}
+                                  onPress={() => this.handleJoinStaffWaitlist(item)}
                               >
                                   <View style={styles.joinStaffWaitListButton}>
                                       <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait
@@ -296,7 +319,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(WaitTimesScreen)
+export default connect(mapStateToProps, {addStaffMember})(WaitTimesScreen)
 
 const styles = StyleSheet.create({
     container: {

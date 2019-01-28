@@ -34,7 +34,7 @@ class JoinWaitListScreen5 extends React.Component {
     handleSubmit = (props) => {
         const waitList = props.waitListFlow;
         const currentUser = props.currentUser;
-        // console.log('waitlist', waitList);
+        console.log('waitlist', waitList);
         axios.post(`http://52.37.61.234:3001/waitlist`, {
             waitList,
             currentUser
