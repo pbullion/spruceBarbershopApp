@@ -30,13 +30,15 @@ class HomeScreen extends React.Component {
   };
 
     _getCurrentWaitTime = () => {
-        console.log("in the current wait time");
         this.setState({refreshing: false});
         axios.get(`http://52.37.61.234:3001/waitlist/totals`)
             .then(res => {
-                console.log(res.data);
-                const currentWaitTime = res.data[0].lowestWait.time.waittime;
-                this.setState({ currentWaitTime });
+                if (res.data[0].lowestWait.time.waittime) {
+                    const currentWaitTime = res.data[0].lowestWait.time.waittime;
+                    this.setState({ currentWaitTime })
+                } else {
+                    this.setState({currentWaitTime: 0})
+                }
             });
     };
 
@@ -60,7 +62,12 @@ class HomeScreen extends React.Component {
         axios.get(`http://52.37.61.234:3001/homeScreen/update`)
             .then(res => {
                 const update = res.data;
-                this.setState({ update });
+                if (update.length > 0) {
+                    this.setState({ update });
+                    this.setState({ isThereAnUpdate: true });
+                } else {
+                    this.setState({ isThereAnUpdate: false });
+                }
             });
     };
 
@@ -91,7 +98,7 @@ class HomeScreen extends React.Component {
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
-            {this.state.update ? <Text style={{ fontSize: 25, marginBottom: 20, paddingHorizontal: 10, textAlign: 'center' }}>{this.state.update[0].update}</Text> : null}
+            {this.state.isThereAnUpdate ? <Text style={{ fontSize: 25, marginBottom: 20, paddingHorizontal: 10, textAlign: 'center' }}>{this.state.update[0].update}</Text> : null}
             <View style={styles.imageBackgroundView}>
             {!this.props.currentUser.isLoggedIn ?
                 <View style={styles.buttonView}>
@@ -122,12 +129,12 @@ class HomeScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
             }
-            <View style={styles.waitTimeView}>
-                <Text style={{ fontSize: 30 }}>Current Wait Time</Text>
-                <Text style={{ fontSize: 24 }}>For First Available</Text>
-                    <Text
-                        style={{fontSize: 35}}>{this.state.currentWaitTime} min.</Text>
-            </View>
+            {/*<View style={styles.waitTimeView}>*/}
+                {/*<Text style={{ fontSize: 30 }}>Current Wait Time</Text>*/}
+                {/*<Text style={{ fontSize: 24 }}>For First Available</Text>*/}
+                    {/*<Text*/}
+                        {/*style={{fontSize: 35}}>{this.state.currentWaitTime ? this.state.currentWaitTime : "0"} min.</Text>*/}
+            {/*</View>*/}
                 <Grid style={{ paddingTop: 10 }}>
                     <Col size={1}><Text style={styles.tableHeader}>Business Hours</Text></Col>
                 </Grid>

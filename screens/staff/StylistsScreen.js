@@ -29,6 +29,7 @@ export default class StylistsScreen extends React.Component {
     componentDidMount() {
         axios.get(`http://52.37.61.234:3001/staff/list/stylist`)
             .then(res => {
+                console.log("this should be stylists", res.data);
                 const data = res.data;
                 this.setState({ data });
             });

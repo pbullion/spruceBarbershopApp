@@ -37,11 +37,12 @@ class WaitTimesScreen extends React.Component {
 
     _getStaffWaitTimes = () => {
         this.setState({refreshing: false});
-        axios.get(`http://localhost:3001/waitlist/totals`)
+        axios.get(`http://52.37.61.234:3001/waitlist/totals`)
             .then(res => {
+                const lowestStaffWait = res.data[0].lowestWait;
                 const waitTimesForStaff = res.data[1];
-                console.log("waittimes for staff", waitTimesForStaff);
                 this.setState({waitTimesForStaff});
+                this.setState({lowestStaffWait});
             });
     };
     _getStaff = () => {
@@ -51,6 +52,7 @@ class WaitTimesScreen extends React.Component {
                 const staff = res.data;
                 let i;
                 this.setState({staff});
+                console.log(this.state.staff);
                 for (i = 0; i < staff.length; i++) {
                     const staffid = staff[i].staffid;
                     axios.get(`http://52.37.61.234:3001/waitlist/staffmember/${staffid}`)
@@ -59,7 +61,7 @@ class WaitTimesScreen extends React.Component {
                                 const updatedWaitList = [];
                                 for (let i = 0; i < res.data.length; i++) {
                                     if (res.data[i].in_progress) {
-                                        res.data[i].remainingTime = res.data[i].time - parseInt(moment(res.data[i].start_time, "h:mm").fromNow(true), 10);
+                                        res.data[i].remainingTime = res.data[i].time - parseInt(moment(res.data[i].start_time, "HH:mm").fromNow(true), 10);
                                         if (!res.data[i].remainingTime) {
                                             res.data[i].remainingTime = res.data[i].time;
                                         }
@@ -116,6 +118,15 @@ class WaitTimesScreen extends React.Component {
             { cancelable: false }
         )
     }
+
+    handleFirstAvailable(id) {
+        axios.get(`http://52.37.61.234:3001/staff/${id}`)
+            .then(res => {
+                this.handleJoinStaffWaitlist(res.data);
+                this.props.navigation.navigate('WaitTimes3')
+            });
+    }
+
     handleJoinStaffWaitlist(item) {
         this.props.addStaffMember(item);
         this.props.navigation.navigate('WaitTimes3')
@@ -157,10 +168,10 @@ class WaitTimesScreen extends React.Component {
           <RefreshText/>
           {this.props.currentUser.isLoggedIn ?
               <TouchableOpacity
-                  onPress={() => this.props.navigation.navigate('WaitTimes')}
+                  onPress={() => this.handleFirstAvailable(this.state.lowestStaffWait.time.staffid)}
               >
                   <View style={styles.joinWaitListButton}>
-                      <Text style={styles.joinWaitListButtonText}>Join the wait list</Text>
+                      <Text style={styles.joinWaitListButtonText}>First Available</Text>
                   </View>
               </TouchableOpacity>
               :
@@ -206,8 +217,9 @@ class WaitTimesScreen extends React.Component {
                               {this.state.waitTimesForStaff ? this.state.waitTimesForStaff.map((item3, index) => {
                                   for (let i = 0; i < this.state.waitTimesForStaff.length; i++) {
                                       if (item3.time.staffid === item.staffid) {
+                                          console.log('item 3', item3);
                                           return (
-                                              <Text key={index} style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item3.time.waittime > 60 ? this._timeConvert(item3.time.waittime) : item3.time.waittime + " min."}</Text>
+                                              <Text key={index} style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item3.time.waittime > 60 ? this._timeConvert(item3.time.waittime) : item3.time.waittime + " min."} wait time</Text>
                                           )
                                       }
                                   }
@@ -385,8 +397,8 @@ const styles = StyleSheet.create({
           alignContent: 'center',
       },
       joinStaffWaitListButton: {
-          height: 25,
-          width: 175,
+          height: 35,
+          width: 200,
           justifyContent: 'center',
           alignContent: 'center',
           borderWidth: .5,

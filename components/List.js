@@ -1,5 +1,5 @@
 import React from 'react';
-import {Modal, ScrollView, StyleSheet, Text, View, Dimensions, TouchableOpacity} from 'react-native';
+import {Modal, ScrollView, StyleSheet, Text, View, Dimensions, TouchableOpacity, Image} from 'react-native';
 import {
     Title,
     Paragraph,
@@ -7,6 +7,7 @@ import {
 } from 'react-native-paper';
 import * as Animatable from "react-native-animatable";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
+import spruceLogo from "../assets/images/logos/spruceLogo.png";
 
 export default class ListComponent extends React.Component {
     constructor(props) {
@@ -28,6 +29,37 @@ export default class ListComponent extends React.Component {
         };
     }
 
+    convertTime = (time) => {
+        console.log(time);
+        if (time) {
+            const newtime = time.split(':'); // convert to array
+
+// fetch
+            const hours = Number(newtime[0]);
+            const minutes = Number(newtime[1]);
+            const seconds = Number(newtime[2]);
+
+// calculate
+            let timeValue;
+
+            if (hours > 0 && hours <= 12) {
+                timeValue = "" + hours;
+            } else if (hours > 12) {
+                timeValue = "" + (hours - 12);
+            } else if (hours === 0) {
+                timeValue = "12";
+            }
+
+            timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+            timeValue += (hours >= 12) ? " P.M." : " A.M.";  // get AM/PM
+
+            console.log(timeValue);
+            return timeValue;
+        } else {
+            return "OFF"
+        }
+    };
+
     setModalVisible = (visible, item) => {
         this.setState({modalVisible: visible});
         this.setState({item: item});
@@ -46,6 +78,9 @@ export default class ListComponent extends React.Component {
                         visible={this.state.modalVisible}>
                         <View style={styles.modal}>
                             <View style={{padding: 15, justifyContent: 'center', alignItems: 'center'}}>
+                                <View style={styles.logoContainer}>
+                                    <Image style={styles.logo} source={{ uri: this.state.item.staffpicture }} />
+                                </View>
                                 <Text style={{ padding: 0, fontSize: 40, color: '#ffffff'}}>
                                     {this.state.item.first_name} {this.state.item.last_name}'s
                                 </Text>
@@ -53,17 +88,15 @@ export default class ListComponent extends React.Component {
                                     Schedule
                                 </Text>
                             </View>
-                            <Text style={styles.hoursText}>Monday: {this.state.item.monday_start} - {this.state.item.monday_end}</Text>
-                            <Text style={styles.hoursText}>Tuesday: {this.state.item.tuesday_start} - {this.state.item.tuesday_end}</Text>
-                            <Text style={styles.hoursText}>Wednesday: {this.state.item.wednesday_start} - {this.state.item.wednesday_end}</Text>
-                            <Text style={styles.hoursText}>Thursday: {this.state.item.thursday_start} - {this.state.item.thursday_end}</Text>
-                            <Text style={styles.hoursText}>Friday: {this.state.item.friday_start} - {this.state.item.friday_end}</Text>
-                            <Text style={styles.hoursText}>Saturday: {this.state.item.saturday_start} - {this.state.item.saturday_end}</Text>
-                            <Text style={styles.hoursText}>Sunday: {this.state.item.sunday_start} - {this.state.item.sunday_end}</Text>
+                            <Text style={styles.hoursText}>Monday: {this.convertTime(this.state.item.monday_start)} - {this.convertTime(this.state.item.monday_end)}</Text>
+                            <Text style={styles.hoursText}>Tuesday: {this.convertTime(this.state.item.tuesday_start)} - {this.convertTime(this.state.item.tuesday_end)}</Text>
+                            <Text style={styles.hoursText}>Wednesday: {this.convertTime(this.state.item.wednesday_start)} - {this.convertTime(this.state.item.wednesday_end)}</Text>
+                            <Text style={styles.hoursText}>Thursday: {this.convertTime(this.state.item.thursday_start)} - {this.convertTime(this.state.item.thursday_end)}</Text>
+                            <Text style={styles.hoursText}>Friday: {this.convertTime(this.state.item.friday_start)} - {this.convertTime(this.state.item.friday_end)}</Text>
+                            <Text style={styles.hoursText}>Saturday: {this.convertTime(this.state.item.saturday_start)} - {this.convertTime(this.state.item.saturday_end)}</Text>
+                            <Text style={styles.hoursText}>Sunday: {this.convertTime(this.state.item.sunday_start)} - {this.convertTime(this.state.item.sunday_end)}</Text>
                                 <TouchableOpacity style={styles.customerButton} onPress={() => this.hideModal(!this.state.modalVisible)}>
-                                    <Animatable.View animation="bounceInDown">
-                                        <Text style={styles.customerButtonText}>Return</Text>
-                                    </Animatable.View>
+                                    <Text style={styles.customerButtonText}>Return</Text>
                                 </TouchableOpacity>
                         </View>
                     </Modal>
@@ -125,6 +158,16 @@ const styles = StyleSheet.create({
       padding: 10,
       fontSize: 20,
       color: '#ffffff'
+    },
+    logoContainer: {
+        width: '100%',
+        alignItems: 'center',
+        marginBottom: 20
+    },
+    logo: {
+        width: 150,
+        height: 150,
+        borderRadius: 70,
     },
     customerButton: {
         height: 50,

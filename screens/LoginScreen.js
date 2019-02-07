@@ -192,8 +192,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logo: {
-        width: 500,
-        height: 400
+        width: "100%",
+        height: 300
     },
     customerButtonText: {
         color: '#ffffff',
