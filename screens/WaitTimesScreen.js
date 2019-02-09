@@ -166,14 +166,15 @@ class WaitTimesScreen extends React.Component {
           />
       }
           <RefreshText/>
+          {/*<TouchableOpacity*/}
+          {/*onPress={() => this.handleFirstAvailable(this.state.lowestStaffWait.time.staffid)}*/}
+          {/*>*/}
+          {/*<View style={styles.joinWaitListButton}>*/}
+          {/*<Text style={styles.joinWaitListButtonText}>First Available</Text>*/}
+          {/*</View>*/}
+          {/*</TouchableOpacity>*/}
           {this.props.currentUser.isLoggedIn ?
-              <TouchableOpacity
-                  onPress={() => this.handleFirstAvailable(this.state.lowestStaffWait.time.staffid)}
-              >
-                  <View style={styles.joinWaitListButton}>
-                      <Text style={styles.joinWaitListButtonText}>First Available</Text>
-                  </View>
-              </TouchableOpacity>
+              null
               :
               <View style={styles.buttonView}>
                   <Button
@@ -439,8 +440,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row',
-        borderBottomWidth: Dimensions.get('window').width > 500 ? .5 : .2,
-        borderBottomColor: '#000'
+        // borderBottomWidth: Dimensions.get('window').width > 500 ? .5 : .2,
+        // borderBottomColor: '#000'
     },
     waitListCardRemainingTime: {
         flexDirection: 'column',

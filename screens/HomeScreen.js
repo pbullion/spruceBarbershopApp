@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
 import {Col, Grid} from "react-native-easy-grid";
 import axios from "axios";
-import { Button } from "react-native-elements";
+import { Button, Icon, SocialIcon } from "react-native-elements";
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -99,67 +99,100 @@ class HomeScreen extends React.Component {
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
             {this.state.isThereAnUpdate ? <Text style={{ fontSize: 25, marginBottom: 20, paddingHorizontal: 10, textAlign: 'center' }}>{this.state.update[0].update}</Text> : null}
-            <View style={styles.imageBackgroundView}>
-            {!this.props.currentUser.isLoggedIn ?
-                <View style={styles.buttonView}>
-                    <Button
-                        raised
-                        large
-                        title='Sign Up'
-                        borderRadius={18}
-                        containerViewStyle={{borderRadius: 18}}
-                        buttonStyle={styles.customerButton}
-                        onPress={() => this.props.navigation.navigate('SignUp')}
-                    />
-                    <Button
-                        raised
-                        large
-                        title='Log In'
-                        borderRadius={18}
-                        containerViewStyle={{borderRadius: 18}}
-                        buttonStyle={styles.customerButton}
-                        onPress={() => this.props.navigation.navigate('SignIn')}
-                    />
-                </View> :
-                <View style={styles.welcomeUser}>
-                    {this.props.currentUser.pictureurl ? <Image style={styles.userImage} source={{uri: this.props.currentUser.pictureurl}} /> : null}
-                    <Text style={{ fontSize: 25, paddingBottom: 10 }}>Welcome, {this.props.currentUser.first_name}</Text>
-                    <TouchableOpacity onPress={() => this.handlePress()}>
-                        <Text style={{ fontSize: 25 }}>LOG OUT</Text>
-                    </TouchableOpacity>
-                </View>
-            }
+            <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center' }}>
+                <SocialIcon
+                    raised={true}
+                    type='facebook'
+                />
+                <SocialIcon
+                    raised={true}
+                    type='instagram'
+                />
+            </View>
+            <View style={styles.loginAndCurrentUser}>
+                {!this.props.currentUser.isLoggedIn ?
+                    <View style={styles.buttonView}>
+                        <Button
+                            raised
+                            large
+                            title='Log In'
+                            borderRadius={18}
+                            containerViewStyle={{borderRadius: 18}}
+                            buttonStyle={styles.customerButton}
+                            onPress={() => this.props.navigation.navigate('SignIn')}
+                        />
+                        <Button
+                            raised
+                            large
+                            title='Sign Up'
+                            borderRadius={18}
+                            containerViewStyle={{borderRadius: 18}}
+                            buttonStyle={styles.customerButton}
+                            onPress={() => this.props.navigation.navigate('SignUp')}
+                        />
+                    </View> :
+                    <View style={styles.userView}>
+                        <View style={{ width: '50%' }}>
+                            {this.props.currentUser.pictureurl ? <Image style={styles.userImage} source={{uri: this.props.currentUser.pictureurl}} /> : null}
+                        </View>
+                        <View style={{ width: '50%', alignItems: 'center', }}>
+                            <Text style={{ fontSize: 25, paddingBottom: 10 }}>Welcome, {this.props.currentUser.first_name}</Text>
+                            <TouchableOpacity onPress={() => this.handlePress()}>
+                                <Text style={{ fontSize: 25 }}>LOG OUT</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                }
+            </View>
             {/*<View style={styles.waitTimeView}>*/}
                 {/*<Text style={{ fontSize: 30 }}>Current Wait Time</Text>*/}
                 {/*<Text style={{ fontSize: 24 }}>For First Available</Text>*/}
                     {/*<Text*/}
                         {/*style={{fontSize: 35}}>{this.state.currentWaitTime ? this.state.currentWaitTime : "0"} min.</Text>*/}
             {/*</View>*/}
-                <Grid style={{ paddingTop: 10 }}>
-                    <Col size={1}><Text style={styles.tableHeader}>Business Hours</Text></Col>
-                </Grid>
-                {this.state.businessHours ? this.state.businessHours.map((item, index) => {
-                    return (
-                        <Grid style={{ height: 35 }} key={index}>
-                            <Col size={2}><Text style={[styles.tableItem]}>{item.day}</Text></Col>
-                            <Col size={2}><Text style={[styles.tableItem]}>{item.hours}</Text></Col>
-                        </Grid>
-                    )
-                }) : null}
-                <Grid style={{ paddingTop: 10 }}>
-                    <Col size={1}><Text style={styles.specialHeader}>Specials</Text></Col>
-                </Grid>
-                <View style={{ paddingTop: 10 }}>
-                    {this.state.specials ? <Text style={styles.special}>{this.state.specials[0].special}</Text> : null}
+            <View style={{ width: '100%', backgroundColor: '#2F553C', flexDirection: 'row', paddingVertical: 15, marginTop: 10 }}>
+                <View style={{ width: '25%', marginTop: 100 }}>
+                    <Icon
+                        name='schedule'
+                        color='#ffffff'
+                        size={60}
+                    />
                 </View>
-                {this.state.specials ? this.state.specials.map((item, index) => {
-                    return (
-                        <View style={{ height: 35 }} key={index}>
-                            <Text style={[styles.specialItem]}>{item.type}</Text>
-                            {item.type_line2 ? <Text style={[styles.specialItem]}>{item.type_line2}</Text> : null}
-                        </View>
-                    )
-                }) : null}
+                <View style={{ width: '75%' }}>
+                    <Grid style={{ paddingTop: 10 }}>
+                        <Col size={1}><Text style={styles.tableHeader}>Business Hours</Text></Col>
+                    </Grid>
+                    {this.state.businessHours ? this.state.businessHours.map((item, index) => {
+                        return (
+                            <Grid style={{ height: 35 }} key={index}>
+                                <Col size={2}><Text style={[styles.tableItem]}>{item.day}</Text></Col>
+                                <Col size={2}><Text style={[styles.tableItem]}>{item.hours}</Text></Col>
+                            </Grid>
+                        )
+                    }) : null}
+                </View>
+            </View>
+            <View style={{ width: '100%', backgroundColor: '#2F553C', flexDirection: 'row', paddingBottom: 35 }}>
+                <View style={{ width: '75%' }}>
+                    <View style={{ paddingTop: 10 }}>
+                        {this.state.specials ? <Text style={styles.special}>{this.state.specials[0].special}</Text> : null}
+                    </View>
+                    {this.state.specials ? this.state.specials.map((item, index) => {
+                        return (
+                            <View style={{ height: 35 }} key={index}>
+                                <Text style={[styles.specialItem]}>{item.type}</Text>
+                                {item.type_line2 ? <Text style={[styles.specialItem]}>{item.type_line2}</Text> : null}
+                            </View>
+                        )
+                    }) : null}
+                </View>
+                <View style={{ width: '25%', marginTop: 100 }}>
+                    <Icon
+                        name='attach-money'
+                        color='#ffffff'
+                        size={60}
+                    />
+                </View>
             </View>
         </ScrollView>
     );
@@ -192,13 +225,14 @@ const styles = StyleSheet.create({
     buttonView: {
         justifyContent: 'space-around',
         alignItems: 'center',
-        flexDirection: 'row',
+        flexDirection: 'column',
         width: '100%',
-        marginBottom: 15
+        marginBottom: 15,
     },
     welcomeUser: {
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        // justifyContent: 'space-between',
+        flexDirection: 'row',
+        // alignItems: 'center',
         width: '100%'
     },
     userImage: {
@@ -212,10 +246,13 @@ const styles = StyleSheet.create({
     },
     customerButton: {
         backgroundColor: '#2F553C',
-        width: 150
+        width: 200,
+        marginTop: 35
     },
-    imageBackgroundView: {
-        width: '100%'
+    loginAndCurrentUser: {
+        width: '100%',
+        height: 175,
+        backgroundColor: '#ffffff',
     },
     image: {
         flexGrow:1,
@@ -259,19 +296,28 @@ const styles = StyleSheet.create({
         padding: 12,
     },
     special: {
-        color: '#000000',
+        color: '#ffffff',
         fontSize: 28,
         width: '100%',
         textAlign: 'center',
         marginBottom: 12,
     },
+    userView: {
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        flexDirection: 'row',
+        width: '100%',
+        marginBottom: 5,
+        marginTop: 10,
+        paddingHorizontal: 15
+    },
     specialItem: {
-        color: '#000',
+        color: '#ffffff',
         fontSize: 21,
         textAlign: 'center'
     },
     tableItem: {
-        color: '#000',
+        color: '#ffffff',
         fontSize: 18,
         textAlign: 'center'
     },

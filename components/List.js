@@ -8,6 +8,7 @@ import {
 import * as Animatable from "react-native-animatable";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
+import {ButtonGroup, Tile} from "react-native-elements";
 
 export default class ListComponent extends React.Component {
     constructor(props) {
@@ -15,6 +16,7 @@ export default class ListComponent extends React.Component {
         this.state = {
             data: null,
             modalVisible: false,
+            selectedIndex: 1,
             item: {
                 first_name: null,
                 last_name: null,
@@ -27,6 +29,7 @@ export default class ListComponent extends React.Component {
                 sunday: null,
             }
         };
+        this.updateIndex = this.updateIndex.bind(this)
     }
 
     convertTime = (time) => {
@@ -67,6 +70,36 @@ export default class ListComponent extends React.Component {
     hideModal = (visible) => {
         this.setState({modalVisible: visible});
     };
+    updateIndex (selectedIndex) {
+        this.setState({selectedIndex})
+    }
+    viewSelection = () => {
+        if (this.state.selectedIndex === 0) {
+            return (
+                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+            <Text style={styles.hoursText}>Monday: {this.convertTime(this.state.item.monday_start) !== "OFF" ? this.convertTime(this.state.item.monday_start) + " - " + this.convertTime(this.state.item.monday_end) : "OFF"}</Text>
+            <Text style={styles.hoursText}>Tuesday: {this.convertTime(this.state.item.tuesday_start) !== "OFF" ? this.convertTime(this.state.item.tuesday_start) + " - " + this.convertTime(this.state.item.tuesday_end) : "OFF"}</Text>
+        <Text style={styles.hoursText}>Wednesday: {this.convertTime(this.state.item.wednesday_start) !== "OFF" ? this.convertTime(this.state.item.wednesday_start) + " - " + this.convertTime(this.state.item.wednesday_end) : "OFF"}</Text>
+        <Text style={styles.hoursText}>Thursday: {this.convertTime(this.state.item.thursday_start) !== "OFF" ? this.convertTime(this.state.item.thursday_start) + " - " + this.convertTime(this.state.item.thursday_end) : "OFF"}</Text>
+        <Text style={styles.hoursText}>Friday: {this.convertTime(this.state.item.friday_start) !== "OFF" ? this.convertTime(this.state.item.friday_start) + " - " + this.convertTime(this.state.item.friday_end) : "OFF"}</Text>
+        <Text style={styles.hoursText}>Saturday: {this.convertTime(this.state.item.saturday_start) !== "OFF" ? this.convertTime(this.state.item.saturday_start) + " - " + this.convertTime(this.state.item.saturday_end) : "OFF"}</Text>
+        <Text style={styles.hoursText}>Sunday: {this.convertTime(this.state.item.sunday_start) !== "OFF" ? this.convertTime(this.state.item.sunday_start) + " - " + this.convertTime(this.state.item.sunday_end) : "OFF"}</Text>
+                </View>
+        )
+        } else if (this.state.selectedIndex === 1) {
+            return (
+                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <Text>COMING SOON</Text>
+                </View>
+                )
+        } else {
+            return (
+                <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                    <Text>COMING SOON</Text>
+                </View>
+            )
+        }
+    };
 
     render() {
         return (
@@ -77,27 +110,28 @@ export default class ListComponent extends React.Component {
                         presentationStyle="pageSheet"
                         visible={this.state.modalVisible}>
                         <View style={styles.modal}>
-                            <View style={{padding: 15, justifyContent: 'center', alignItems: 'center'}}>
-                                <View style={styles.logoContainer}>
-                                    <Image style={styles.logo} source={{ uri: this.state.item.staffpicture }} />
-                                </View>
-                                <Text style={{ padding: 0, fontSize: 40, color: '#ffffff'}}>
-                                    {this.state.item.first_name} {this.state.item.last_name}'s
-                                </Text>
-                                <Text style={{ padding: 0, fontSize: 40, color: '#ffffff'}}>
-                                    Schedule
-                                </Text>
-                            </View>
-                            <Text style={styles.hoursText}>Monday: {this.convertTime(this.state.item.monday_start)} - {this.convertTime(this.state.item.monday_end)}</Text>
-                            <Text style={styles.hoursText}>Tuesday: {this.convertTime(this.state.item.tuesday_start)} - {this.convertTime(this.state.item.tuesday_end)}</Text>
-                            <Text style={styles.hoursText}>Wednesday: {this.convertTime(this.state.item.wednesday_start)} - {this.convertTime(this.state.item.wednesday_end)}</Text>
-                            <Text style={styles.hoursText}>Thursday: {this.convertTime(this.state.item.thursday_start)} - {this.convertTime(this.state.item.thursday_end)}</Text>
-                            <Text style={styles.hoursText}>Friday: {this.convertTime(this.state.item.friday_start)} - {this.convertTime(this.state.item.friday_end)}</Text>
-                            <Text style={styles.hoursText}>Saturday: {this.convertTime(this.state.item.saturday_start)} - {this.convertTime(this.state.item.saturday_end)}</Text>
-                            <Text style={styles.hoursText}>Sunday: {this.convertTime(this.state.item.sunday_start)} - {this.convertTime(this.state.item.sunday_end)}</Text>
+                            <Tile
+                                imageSrc={{ uri: this.state.item.staffpicture }}
+                                title={this.state.item.first_name + " " + this.state.item.last_name}
+                                featured
+                                activeOpacity={.4}
+                                titleStyle={{ marginTop: 150, fontSize: 40 }}
+                            />
+                            <ButtonGroup
+                                buttons={['HOURS', 'REVIEWS', 'PICTURES']}
+                                selectedIndex={this.state.selectedIndex}
+                                onPress={selectedIndex => {
+                                    this.setState({ selectedIndex });
+                                }}
+                                containerStyle={{ marginBottom: 20 }}
+                                selectedIndexStyle={{ backgroundColor: 'green' }}
+                            />
+                            {this.viewSelection()}
+                            <View style={{ width: '100%', justifyContent: 'flex-end', alignItems: 'flex-end' }}>
                                 <TouchableOpacity style={styles.customerButton} onPress={() => this.hideModal(!this.state.modalVisible)}>
                                     <Text style={styles.customerButtonText}>Return</Text>
                                 </TouchableOpacity>
+                            </View>
                         </View>
                     </Modal>
                 {this.props.data ? this.props.data.map((item,index) => {
@@ -133,10 +167,10 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
     },
     contentContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
+        // justifyContent: 'center',
+        // alignItems: 'center',
         width: '100%',
-        padding: 5
+        height: '100%',
     },
     card: {
         marginHorizontal: 4,
@@ -148,16 +182,16 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').width > 500 ? 500 : 250
     },
     modal: {
-        backgroundColor: '#356044',
-        justifyContent: 'center',
-        alignItems: 'center',
+        // backgroundColor: '#356044',
+        // justifyContent: 'center',
+        // alignItems: 'center',
         width: '100%',
         height: '100%'
     },
     hoursText: {
       padding: 10,
       fontSize: 20,
-      color: '#ffffff'
+      color: '#000000'
     },
     logoContainer: {
         width: '100%',
@@ -165,9 +199,9 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     logo: {
-        width: 150,
-        height: 150,
-        borderRadius: 70,
+        width: "100%",
+        height: 225,
+        // borderRadius: 70,
     },
     customerButton: {
         height: 50,
