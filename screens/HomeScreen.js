@@ -1,19 +1,21 @@
 import React from 'react';
 import {
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  RefreshControl
+    Image,
+    ScrollView,
+    StyleSheet,
+    Text,
+    View,
+    TouchableOpacity,
+    RefreshControl,
+    Linking
 } from 'react-native';
-import { signOutUser } from "../actions";
+import {signInUser, signUpUser, signOutUser} from "../actions";
 import { connect } from 'react-redux';
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
 import {Col, Grid} from "react-native-easy-grid";
 import axios from "axios";
-import { Button, Icon, SocialIcon } from "react-native-elements";
+import { Icon, SocialIcon } from "react-native-elements";
+import Expp, { Constants, WebBrowser } from 'expo';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -33,12 +35,12 @@ class HomeScreen extends React.Component {
         this.setState({refreshing: false});
         axios.get(`http://52.37.61.234:3001/waitlist/totals`)
             .then(res => {
-                if (res.data[0].lowestWait.time.waittime) {
-                    const currentWaitTime = res.data[0].lowestWait.time.waittime;
-                    this.setState({ currentWaitTime })
-                } else {
-                    this.setState({currentWaitTime: 0})
-                }
+                // if (res.data[0].lowestWait.time.waittime) {
+                //     const currentWaitTime = res.data[0].lowestWait.time.waittime;
+                //     this.setState({ currentWaitTime })
+                // } else {
+                //     this.setState({currentWaitTime: 0})
+                // }
             });
     };
 
@@ -86,6 +88,14 @@ class HomeScreen extends React.Component {
         this.props.signOutUser();
     };
 
+    _facebookHandleOpenWithWebBrowser = () => {
+        WebBrowser.openBrowserAsync('https://www.facebook.com/sprucebarbershop/');
+    };
+
+    _instagramHandleOpenWithWebBrowser = () => {
+        WebBrowser.openBrowserAsync('https://www.instagram.com/sprucebarbershop/');
+    };
+
   render() {
       return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
@@ -103,33 +113,54 @@ class HomeScreen extends React.Component {
                 <SocialIcon
                     raised={true}
                     type='facebook'
+                    onPress={this._facebookHandleOpenWithWebBrowser}
                 />
                 <SocialIcon
                     raised={true}
                     type='instagram'
+                    onPress={this._instagramHandleOpenWithWebBrowser}
                 />
             </View>
             <View style={styles.loginAndCurrentUser}>
                 {!this.props.currentUser.isLoggedIn ?
                     <View style={styles.buttonView}>
-                        <Button
-                            raised
-                            large
-                            title='Log In'
-                            borderRadius={18}
-                            containerViewStyle={{borderRadius: 18}}
-                            buttonStyle={styles.customerButton}
-                            onPress={() => this.props.navigation.navigate('SignIn')}
-                        />
-                        <Button
-                            raised
-                            large
-                            title='Sign Up'
-                            borderRadius={18}
-                            containerViewStyle={{borderRadius: 18}}
-                            buttonStyle={styles.customerButton}
-                            onPress={() => this.props.navigation.navigate('SignUp')}
-                        />
+                        <Text style={{ fontSize: 20, margin: 10 }}>Log in / Sign Up</Text>
+                        {/*<Button*/}
+                            {/*raised*/}
+                            {/*large*/}
+                            {/*title='Log In'*/}
+                            {/*borderRadius={18}*/}
+                            {/*containerViewStyle={{borderRadius: 18}}*/}
+                            {/*buttonStyle={styles.customerButton}*/}
+                            {/*onPress={() => this.props.navigation.navigate('SignIn')}*/}
+                        {/*/>*/}
+                        {/*<Button*/}
+                            {/*raised*/}
+                            {/*large*/}
+                            {/*title='Sign Up'*/}
+                            {/*borderRadius={18}*/}
+                            {/*containerViewStyle={{borderRadius: 18}}*/}
+                            {/*buttonStyle={styles.customerButton}*/}
+                            {/*onPress={() => this.props.navigation.navigate('SignUp')}*/}
+                        {/*/>*/}
+                        <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-around' }}>
+                            <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
+                                    <SocialIcon
+                                        title='Google'
+                                        button
+                                        type='google-plus-official'
+                                        style={{ padding: 20, width: 150 }}
+                                    />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={signInWithFacebook.bind(this)}>
+                                    <SocialIcon
+                                        title='Facebook'
+                                        button
+                                        type='facebook'
+                                        style={{ padding: 20, width: 150 }}
+                                    />
+                            </TouchableOpacity>
+                        </View>
                     </View> :
                     <View style={styles.userView}>
                         <View style={{ width: '50%' }}>
@@ -150,7 +181,7 @@ class HomeScreen extends React.Component {
                     {/*<Text*/}
                         {/*style={{fontSize: 35}}>{this.state.currentWaitTime ? this.state.currentWaitTime : "0"} min.</Text>*/}
             {/*</View>*/}
-            <View style={{ width: '100%', backgroundColor: '#2F553C', flexDirection: 'row', paddingVertical: 15, marginTop: 10 }}>
+            <View style={{ width: '100%', backgroundColor: '#2F553C', flexDirection: 'row', paddingVertical: 10, marginTop: 10 }}>
                 <View style={{ width: '25%', marginTop: 100 }}>
                     <Icon
                         name='schedule'
@@ -207,7 +238,85 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {signOutUser})(HomeScreen)
+async function performLogin(user, props) {
+    axios.get(`http://52.37.61.234:3001/users/email/${user.email}`, {
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then(function (response) {
+            console.log(response);
+            if (response.data.length > 0) {
+                props.signInUser(response.data[0]);
+                props.navigation.navigate('WaitTimeList');
+            } else {
+                axios.post(`http://52.37.61.234:3001/users/socialSignUp`, {
+                    user
+                }, {
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                })
+                    .then(function (response) {
+                        props.signUpUser(response.data[0]);
+                        props.navigation.navigate('WaitTimeList');
+                    })
+                    .catch(function (error) {
+                        console.log('error', error)
+                    })
+            }
+        });
+}
+
+async function signInWithGoogleAsync() {
+    try {
+        const result = await Expo.Google.logInAsync({
+            iosClientId: '732604278812-g2vo8f8bg9dgge5815ihl7jqs3etri8a.apps.googleusercontent.com',
+            iosStandaloneAppClientId: '732604278812-22e53600nlruo7a89712cibvab927jbf.apps.googleusercontent.com',
+            scopes: ['profile', 'email'],
+        });
+
+        if (result.type === 'success') {
+            console.log(result.user);
+            let first_name = result.user.givenName;
+            let last_name = result.user.familyName;
+            let email = result.user.email;
+            let phone_number = '4093443814';
+            let pictureUrl = result.user.photoUrl;
+            let owner = false;
+            let staff = false;
+            let customer = true;
+            let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
+            performLogin(user, this.props)
+        } else {
+            return {cancelled: true};
+        }
+    } catch(e) {
+        return {error: true};
+    }
+}
+
+async function signInWithFacebook() {
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('360415578030850', {
+        permissions: ['public_profile', 'email'],
+    });
+    if (type === 'success') {
+        const response = await fetch(
+            `https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,first_name,last_name,picture.type(large)`
+        );
+        const { picture, email, first_name, last_name } = await response.json();
+        let phone_number = '4093443814';
+        let owner = false;
+        let staff = false;
+        let customer = true;
+        let pictureUrl = picture.data.url;
+        let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
+        console.log(user);
+        performLogin(user, this.props)
+    }
+}
+
+export default connect(mapStateToProps, {signInUser, signUpUser, signOutUser})(HomeScreen)
 
 const styles = StyleSheet.create({
     container: {
@@ -227,7 +336,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'column',
         width: '100%',
-        marginBottom: 15,
     },
     welcomeUser: {
         // justifyContent: 'space-between',
@@ -251,7 +359,7 @@ const styles = StyleSheet.create({
     },
     loginAndCurrentUser: {
         width: '100%',
-        height: 175,
+        // height: 150,
         backgroundColor: '#ffffff',
     },
     image: {
@@ -279,7 +387,7 @@ const styles = StyleSheet.create({
     },
     tableHeader: {
         color: '#ffffff',
-        fontSize: 23,
+        fontSize: 25,
         width: '100%',
         backgroundColor: '#2F553C',
         textAlign: 'center',

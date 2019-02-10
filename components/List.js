@@ -7,7 +7,6 @@ import {
 } from 'react-native-paper';
 import * as Animatable from "react-native-animatable";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
-import spruceLogo from "../assets/images/logos/spruceLogo.png";
 import {ButtonGroup, Tile} from "react-native-elements";
 
 export default class ListComponent extends React.Component {
@@ -16,7 +15,7 @@ export default class ListComponent extends React.Component {
         this.state = {
             data: null,
             modalVisible: false,
-            selectedIndex: 1,
+            selectedIndex: 0,
             item: {
                 first_name: null,
                 last_name: null,
@@ -77,13 +76,13 @@ export default class ListComponent extends React.Component {
         if (this.state.selectedIndex === 0) {
             return (
                 <View style={{ width: '100%', justifyContent: 'center', alignItems: 'center' }}>
-            <Text style={styles.hoursText}>Monday: {this.convertTime(this.state.item.monday_start) !== "OFF" ? this.convertTime(this.state.item.monday_start) + " - " + this.convertTime(this.state.item.monday_end) : "OFF"}</Text>
-            <Text style={styles.hoursText}>Tuesday: {this.convertTime(this.state.item.tuesday_start) !== "OFF" ? this.convertTime(this.state.item.tuesday_start) + " - " + this.convertTime(this.state.item.tuesday_end) : "OFF"}</Text>
-        <Text style={styles.hoursText}>Wednesday: {this.convertTime(this.state.item.wednesday_start) !== "OFF" ? this.convertTime(this.state.item.wednesday_start) + " - " + this.convertTime(this.state.item.wednesday_end) : "OFF"}</Text>
-        <Text style={styles.hoursText}>Thursday: {this.convertTime(this.state.item.thursday_start) !== "OFF" ? this.convertTime(this.state.item.thursday_start) + " - " + this.convertTime(this.state.item.thursday_end) : "OFF"}</Text>
-        <Text style={styles.hoursText}>Friday: {this.convertTime(this.state.item.friday_start) !== "OFF" ? this.convertTime(this.state.item.friday_start) + " - " + this.convertTime(this.state.item.friday_end) : "OFF"}</Text>
-        <Text style={styles.hoursText}>Saturday: {this.convertTime(this.state.item.saturday_start) !== "OFF" ? this.convertTime(this.state.item.saturday_start) + " - " + this.convertTime(this.state.item.saturday_end) : "OFF"}</Text>
-        <Text style={styles.hoursText}>Sunday: {this.convertTime(this.state.item.sunday_start) !== "OFF" ? this.convertTime(this.state.item.sunday_start) + " - " + this.convertTime(this.state.item.sunday_end) : "OFF"}</Text>
+                    <Text style={styles.hoursText}>Monday: {this.convertTime(this.state.item.monday_start) !== "OFF" ? this.convertTime(this.state.item.monday_start) + " - " + this.convertTime(this.state.item.monday_end) : "OFF"}</Text>
+                    <Text style={styles.hoursText}>Tuesday: {this.convertTime(this.state.item.tuesday_start) !== "OFF" ? this.convertTime(this.state.item.tuesday_start) + " - " + this.convertTime(this.state.item.tuesday_end) : "OFF"}</Text>
+                    <Text style={styles.hoursText}>Wednesday: {this.convertTime(this.state.item.wednesday_start) !== "OFF" ? this.convertTime(this.state.item.wednesday_start) + " - " + this.convertTime(this.state.item.wednesday_end) : "OFF"}</Text>
+                    <Text style={styles.hoursText}>Thursday: {this.convertTime(this.state.item.thursday_start) !== "OFF" ? this.convertTime(this.state.item.thursday_start) + " - " + this.convertTime(this.state.item.thursday_end) : "OFF"}</Text>
+                    <Text style={styles.hoursText}>Friday: {this.convertTime(this.state.item.friday_start) !== "OFF" ? this.convertTime(this.state.item.friday_start) + " - " + this.convertTime(this.state.item.friday_end) : "OFF"}</Text>
+                    <Text style={styles.hoursText}>Saturday: {this.convertTime(this.state.item.saturday_start) !== "OFF" ? this.convertTime(this.state.item.saturday_start) + " - " + this.convertTime(this.state.item.saturday_end) : "OFF"}</Text>
+                    <Text style={styles.hoursText}>Sunday: {this.convertTime(this.state.item.sunday_start) !== "OFF" ? this.convertTime(this.state.item.sunday_start) + " - " + this.convertTime(this.state.item.sunday_end) : "OFF"}</Text>
                 </View>
         )
         } else if (this.state.selectedIndex === 1) {
