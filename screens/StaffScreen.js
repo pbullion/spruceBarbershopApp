@@ -2,7 +2,7 @@ import React from 'react';
 import {View, StyleSheet} from "react-native";
 import GenericButton from "../components/buttons/GenericButton";
 import {Video} from "expo";
-import BackgroundVideo from "../assets/videos/ovme-master.mp4";
+import BackgroundVideo from "../assets/videos/spruceBackgroundVideo.mov";
 
 export default class StaffScreen extends React.Component {
   static navigationOptions = {

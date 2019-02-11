@@ -8,7 +8,7 @@ import {
 }
     from 'react-native';
 import { connect } from 'react-redux';
-import BackgroundVideo from '../assets/videos/ovme-master.mp4';
+import BackgroundVideo from '../assets/videos/spruceBackgroundVideo.mov';
 import Expo, { Video } from 'expo';
 
 import axios from 'axios';

@@ -4,7 +4,7 @@ import axios from 'axios/index';
 import GenericButton from "../components/buttons/GenericButton";
 import * as Animatable from "react-native-animatable";
 import {Video} from "expo";
-import BackgroundVideo from "../assets/videos/ovme-master.mp4";
+import BackgroundVideo from "../assets/videos/spruceBackgroundVideo.mov";
 
 export default class ProductsScreen extends React.Component {
     constructor(props) {

@@ -109,22 +109,11 @@ class HomeScreen extends React.Component {
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
             {this.state.isThereAnUpdate ? <Text style={{ fontSize: 25, marginBottom: 20, paddingHorizontal: 10, textAlign: 'center' }}>{this.state.update[0].update}</Text> : null}
-            <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center' }}>
-                <SocialIcon
-                    raised={true}
-                    type='facebook'
-                    onPress={this._facebookHandleOpenWithWebBrowser}
-                />
-                <SocialIcon
-                    raised={true}
-                    type='instagram'
-                    onPress={this._instagramHandleOpenWithWebBrowser}
-                />
-            </View>
             <View style={styles.loginAndCurrentUser}>
                 {!this.props.currentUser.isLoggedIn ?
                     <View style={styles.buttonView}>
-                        <Text style={{ fontSize: 20, margin: 10 }}>Log in / Sign Up</Text>
+                        <Text style={{ fontSize: 20, marginTop: 0 }}>Log in / Sign Up</Text>
+                        <Text style={{ fontSize: 20, marginBottom: 15 }}>using Google or Facebook</Text>
                         {/*<Button*/}
                             {/*raised*/}
                             {/*large*/}
@@ -222,6 +211,22 @@ class HomeScreen extends React.Component {
                         name='attach-money'
                         color='#ffffff'
                         size={60}
+                    />
+                </View>
+            </View>
+            <View style={styles.buttonView}>
+                <Text style={{ fontSize: 20, marginTop: 15 }}>CHECK US OUT ON</Text>
+                <Text style={{ fontSize: 20, marginBottom: 10 }}>FACEBOOK AND INSTAGRAM</Text>
+                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center' }}>
+                    <SocialIcon
+                        raised={true}
+                        type='facebook'
+                        onPress={this._facebookHandleOpenWithWebBrowser}
+                    />
+                    <SocialIcon
+                        raised={true}
+                        type='instagram'
+                        onPress={this._instagramHandleOpenWithWebBrowser}
                     />
                 </View>
             </View>
@@ -375,6 +380,7 @@ const styles = StyleSheet.create({
     logoContainer: {
         width: '100%',
         alignItems: 'center',
+        marginTop: 25
     },
     logo: {
         width: 250,
