@@ -108,30 +108,12 @@ class HomeScreen extends React.Component {
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
-            {this.state.isThereAnUpdate ? <Text style={{ fontSize: 25, marginBottom: 20, paddingHorizontal: 10, textAlign: 'center' }}>{this.state.update[0].update}</Text> : null}
+            {this.state.isThereAnUpdate ? <Text style={{ fontSize: 25, marginBottom: 20, paddingHorizontal: 10, textAlign: 'center', fontFamily: 'neutra-text-light'}}>{this.state.update[0].update}</Text> : null}
             <View style={styles.loginAndCurrentUser}>
                 {!this.props.currentUser.isLoggedIn ?
                     <View style={styles.buttonView}>
-                        <Text style={{ fontSize: 20, marginTop: 0 }}>Log in / Sign Up</Text>
-                        <Text style={{ fontSize: 20, marginBottom: 15 }}>using Google or Facebook</Text>
-                        {/*<Button*/}
-                            {/*raised*/}
-                            {/*large*/}
-                            {/*title='Log In'*/}
-                            {/*borderRadius={18}*/}
-                            {/*containerViewStyle={{borderRadius: 18}}*/}
-                            {/*buttonStyle={styles.customerButton}*/}
-                            {/*onPress={() => this.props.navigation.navigate('SignIn')}*/}
-                        {/*/>*/}
-                        {/*<Button*/}
-                            {/*raised*/}
-                            {/*large*/}
-                            {/*title='Sign Up'*/}
-                            {/*borderRadius={18}*/}
-                            {/*containerViewStyle={{borderRadius: 18}}*/}
-                            {/*buttonStyle={styles.customerButton}*/}
-                            {/*onPress={() => this.props.navigation.navigate('SignUp')}*/}
-                        {/*/>*/}
+                        <Text style={{ fontSize: 20, marginTop: 0, fontFamily: 'neutra-text-light'}}>Log in / Sign Up</Text>
+                        <Text style={{ fontSize: 20, marginBottom: 15, fontFamily: 'neutra-text-light'}}>using Google or Facebook</Text>
                         <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-around' }}>
                             <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
                                     <SocialIcon
@@ -215,8 +197,8 @@ class HomeScreen extends React.Component {
                 </View>
             </View>
             <View style={styles.buttonView}>
-                <Text style={{ fontSize: 20, marginTop: 15 }}>CHECK US OUT ON</Text>
-                <Text style={{ fontSize: 20, marginBottom: 10 }}>FACEBOOK AND INSTAGRAM</Text>
+                <Text style={{ fontSize: 20, marginTop: 15, fontFamily: 'neutra-text-light' }}>CHECK US OUT ON</Text>
+                <Text style={{ fontSize: 20, marginBottom: 10, fontFamily: 'neutra-text-light' }}>FACEBOOK AND INSTAGRAM</Text>
                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center' }}>
                     <SocialIcon
                         raised={true}
@@ -334,13 +316,14 @@ const styles = StyleSheet.create({
         paddingTop: 30,
         justifyContent: 'space-around',
         alignItems: 'center',
-        paddingBottom: 50
+        paddingBottom: 50,
     },
     buttonView: {
         justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'column',
         width: '100%',
+        fontFamily: 'neutra-text-light'
     },
     welcomeUser: {
         // justifyContent: 'space-between',
@@ -393,12 +376,13 @@ const styles = StyleSheet.create({
     },
     tableHeader: {
         color: '#ffffff',
-        fontSize: 25,
+        fontSize: 28,
         width: '100%',
         backgroundColor: '#2F553C',
         textAlign: 'center',
-        marginBottom: 15,
-        padding: 12,
+        marginBottom: 12,
+        padding: 5,
+        fontFamily: 'neutra-text-bold'
     },
     specialHeader: {
         color: '#ffffff',
@@ -408,6 +392,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: 10,
         padding: 12,
+        fontFamily: 'neutra-text-bold'
+
     },
     special: {
         color: '#ffffff',
@@ -415,6 +401,9 @@ const styles = StyleSheet.create({
         width: '100%',
         textAlign: 'center',
         marginBottom: 12,
+        padding: 5,
+        fontFamily: 'neutra-text-bold'
+
     },
     userView: {
         justifyContent: 'space-between',
@@ -428,12 +417,14 @@ const styles = StyleSheet.create({
     specialItem: {
         color: '#ffffff',
         fontSize: 21,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'neutra-text-light'
     },
     tableItem: {
         color: '#ffffff',
         fontSize: 18,
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'neutra-text-light'
     },
     head: { height: 40, backgroundColor: '#f1f8ff', alignItems: 'center' },
     tableHeaderText: { margin: 6, textAlign: 'center', fontWeight: 'bold' },

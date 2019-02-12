@@ -23,6 +23,7 @@
     "react-native-easy-grid": "^0.2.0",
     "react-native-elements": "^0.19.1",
     "react-native-foldview": "^1.2.1",
+    "react-native-image-header-scroll-view": "^0.10.0",
     "react-native-material-dropdown": "^0.11.1",
     "react-native-paper": "^2.2.4",
     "react-native-picker-dropdown": "^0.1.2",

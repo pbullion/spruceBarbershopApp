@@ -34,13 +34,13 @@ class TouchableServicesList extends React.Component {
                                 <TouchableOpacity onPress={() => this.selectItem(this.props, item)}>
                                     <Card style={styles.card}>
                                         <Card.Content style={styles.cardContent}>
-                                            <Title style={{ color: '#ffffff' }}>{item.name}</Title>
+                                            <Title style={{ color: '#ffffff', fontFamily: 'neutra-text-light', fontSize: 25 }}>{item.name.toUpperCase()}</Title>
                                             <Text style={styles.subTitle}>${item.price / 100}</Text>
-                                            <Text style={styles.subTitle}>{item.time} minutes</Text>
+                                            <Text style={styles.subTitle}>{item.time} MINUTES</Text>
                                             <View>
                                                 {item.description.map((item,index) => {
                                                     return (
-                                                        <Text key={index} style={{ textAlign: 'center', color: '#ffffff' }}>• {item}</Text>
+                                                        <Text key={index} style={{ textAlign: 'center', color: '#ffffff', fontFamily: 'neutra-text-light', padding: 3 }}>• {item.toUpperCase()}</Text>
                                                     )})
                                                 }
                                             </View>
@@ -57,7 +57,6 @@ class TouchableServicesList extends React.Component {
 }
 
 function mapStateToProps(state) {
-    // console.log('********************touchable list state********************', state.waitListFlow);
     return {
         currentUser: state.currentUser,
         waitListFlow: state.waitListFlow

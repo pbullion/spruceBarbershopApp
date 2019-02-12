@@ -35,7 +35,7 @@ class JoinWaitListScreen5 extends React.Component {
         const waitList = props.waitListFlow;
         const currentUser = props.currentUser;
         console.log('waitlist', waitList);
-        axios.post(`http://52.37.61.234:3001/waitlist`, {
+        axios.post(`http://localhost:3001/waitlist`, {
             waitList,
             currentUser
         }, {
@@ -72,7 +72,7 @@ class JoinWaitListScreen5 extends React.Component {
                                     <Card.Cover source={{uri: this.props.waitListFlow.staff.staffpicture}}
                                                 style={styles.cardCover}/>
                                     <Card.Content style={styles.cardName}>
-                                        <Title>{this.props.waitListFlow.staff.first_name} {this.props.waitListFlow.staff.last_name}</Title>
+                                        <Title style={{ fontFamily: 'neutra-text-bold', fontSize: 30, paddingTop: 12 }}>{this.props.waitListFlow.staff.first_name} {this.props.waitListFlow.staff.last_name}</Title>
                                     </Card.Content>
                                 </Card>
                                 :
@@ -94,13 +94,13 @@ class JoinWaitListScreen5 extends React.Component {
                         <Animatable.View animation="bounceInUp">
                             <Card style={styles.servicesCard}>
                                 <Card.Content style={styles.cardContent}>
-                                    <Title style={{ color: '#ffffff' }}>{this.props.waitListFlow.service.name}</Title>
+                                    <Title style={{ color: '#ffffff', fontFamily: 'neutra-text-light', fontSize: 25 }}>{this.props.waitListFlow.service.name.toUpperCase()}</Title>
                                     <Text style={styles.subTitle}>${this.props.waitListFlow.service.price / 100}</Text>
-                                    <Text style={styles.subTitle}>{this.props.waitListFlow.service.time} minutes</Text>
+                                    <Text style={styles.subTitle}>{this.props.waitListFlow.service.time} MINUTES</Text>
                                     <View>
                                         {this.props.waitListFlow.service.description.map((item,index) => {
                                             return (
-                                                <Text key={index} style={{ textAlign: 'center', color: '#ffffff' }}>• {item}</Text>
+                                                <Text key={index} style={{ textAlign: 'center', color: '#ffffff', fontFamily: 'neutra-text-light', padding: 3 }}>• {item.toUpperCase()}</Text>
                                             )})
                                         }
                                     </View>

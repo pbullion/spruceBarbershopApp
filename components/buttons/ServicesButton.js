@@ -6,7 +6,7 @@ import {
     View,
 } from 'react-native';
 
-class GenericButton extends React.Component {
+class ServicesButton extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -28,7 +28,7 @@ class GenericButton extends React.Component {
     }
 }
 
-export default GenericButton
+export default ServicesButton
 
 const styles = StyleSheet.create({
     customerButton: {
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
         alignContent: 'center',
         borderWidth: 2,
         borderColor: 'rgba(53, 96, 68, 1)',
-        // backgroundColor: 'rgba(53, 96, 68, 1)',
+        backgroundColor: 'rgba(53, 96, 68, 1)',
         marginVertical: 15,
         borderRadius: 5,
     },
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
         marginTop: 6,
-        fontFamily: 'neutra-text-bold'
+        fontFamily: 'neutra-text-light'
     },
     head: { height: 40, backgroundColor: '#f1f8ff', alignItems: 'center' },
     tableHeaderText: { margin: 6, textAlign: 'center', fontWeight: 'bold' },

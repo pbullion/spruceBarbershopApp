@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import { connect } from 'react-redux';
 import {addService, setWaitListView} from "../../actions";
-import GenericButton from "../../components/buttons/GenericButton";
+import ServicesButton from "../../components/buttons/ServicesButton";
 import * as Animatable from "react-native-animatable";
 
 class JoinWaitListScreen3 extends React.Component {
@@ -42,26 +42,25 @@ class JoinWaitListScreen3 extends React.Component {
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                 <View>
-                    <Text>Choose a Service</Text>
                     <View style={styles.buttons}>
                         <Animatable.View animation={this.state.animation} easing="ease-out">
-                            <GenericButton onPress={() => {this.handlePress('Hair')}} line1='Hair' line2='Cuts' />
+                            <ServicesButton onPress={() => {this.handlePress('Hair')}} line1='Hair' line2='Cuts' />
                         </Animatable.View>
                         <Animatable.View animation={this.state.animation} easing="ease-out">
-                            <GenericButton onPress={() => {this._changeAnimation(); this.handlePress('Coloring')}} line1='Hair' line2='Coloring' />
+                            <ServicesButton onPress={() => {this._changeAnimation(); this.handlePress('Coloring')}} line1='Hair' line2='Coloring' />
                         </Animatable.View>
                     </View>
                     <View style={styles.buttons}>
                         <Animatable.View animation={this.state.animation} easing="ease-out">
-                            <GenericButton onPress={() => {this._changeAnimation(); this.handlePress('Beard')}} line1='Beard' />
+                            <ServicesButton onPress={() => {this._changeAnimation(); this.handlePress('Beard')}} line1='Beard' />
                         </Animatable.View>
                         <Animatable.View animation={this.state.animation} easing="ease-out">
-                            <GenericButton onPress={() => {this._changeAnimation(); this.handlePress('Shave')}} line1='Shave' />
+                            <ServicesButton onPress={() => {this._changeAnimation(); this.handlePress('Shave')}} line1='Shave' />
                         </Animatable.View>
                     </View>
                     <View style={styles.buttons}>
                         <Animatable.View animation={this.state.animation} easing="ease-out">
-                            <GenericButton onPress={() => {this._changeAnimation(); this.handlePress('Additional')}} line1='Additional' line2='Services'/>
+                            <ServicesButton onPress={() => {this._changeAnimation(); this.handlePress('Additional')}} line1='Additional' line2='Services'/>
                         </Animatable.View>
                     </View>
                 </View>

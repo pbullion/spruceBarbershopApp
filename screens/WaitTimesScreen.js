@@ -2,10 +2,10 @@ import React from 'react';
 import {Alert, Dimensions, RefreshControl, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import connect from "react-redux/es/connect/connect";
 import RefreshText from "../components/RefreshText";
-import {Button} from "react-native-elements";
+import {Button, SocialIcon} from "react-native-elements";
 import axios from "axios";
 import moment from 'moment';
-import { addStaffMember } from "../actions";
+import {addStaffMember, signInUser, signUpUser} from "../actions";
 
 class WaitTimesScreen extends React.Component {
     constructor(props) {
@@ -176,27 +176,33 @@ class WaitTimesScreen extends React.Component {
           {this.props.currentUser.isLoggedIn ?
               null
               :
-              <View style={styles.buttonView}>
-                  <Button
-                      raised
-                      large
-                      title='Sign Up'
-                      borderRadius={18}
-                      containerViewStyle={{borderRadius: 18}}
-                      buttonStyle={styles.customerButton}
-                      onPress={() => this.props.navigation.navigate('SignUp')}
-                  />
-                  <Button
-                      raised
-                      large
-                      title='Log In'
-                      borderRadius={18}
-                      containerViewStyle={{borderRadius: 18}}
-                      buttonStyle={styles.customerButton}
-                      onPress={() => this.props.navigation.navigate('SignIn')}
-                  />
+              <View style={styles.logInView}>
+                  <Text style={{ fontSize: 20, marginTop: 10, fontFamily: 'neutra-text-light'}}>Log in / Sign Up</Text>
+                  <Text style={{ fontSize: 20, marginBottom: 2, fontFamily: 'neutra-text-light'}}>using Google or Facebook</Text>
+                  <Text style={{ fontSize: 20, marginBottom: 10, fontFamily: 'neutra-text-light'}}>to join the Wait List</Text>
+                  <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-around' }}>
+                      <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
+                          <SocialIcon
+                              title='Google'
+                              button
+                              type='google-plus-official'
+                              style={{ padding: 20, width: 150 }}
+                          />
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={signInWithFacebook.bind(this)}>
+                          <SocialIcon
+                              title='Facebook'
+                              button
+                              type='facebook'
+                              style={{ padding: 20, width: 150 }}
+                          />
+                      </TouchableOpacity>
+                  </View>
               </View>
           }
+          <View style={{width: '75%'}}>
+            <Text style={{ fontSize: 20, marginTop: 10, fontFamily: 'neutra-text-light', textAlign: 'center'}}>Joining the waitlist from your phone will add $1 to your final total</Text>
+          </View>
           {this.state.staff ? this.state.staff.map((item, index) => {
               if (item.isWorking) {
                   return (
@@ -209,23 +215,23 @@ class WaitTimesScreen extends React.Component {
                       }} key={index}>
                           <View style={styles.nameHeader}>
                               <Text
-                                  style={{fontSize: 25, textAlign: 'center'}}>{item.first_name} {item.last_name}</Text>
+                                  style={{fontSize: 25, textAlign: 'center', fontFamily: 'neutra-text-bold'}}>{item.first_name} {item.last_name}</Text>
                               <Text style={{
                                   fontSize: 20,
                                   textAlign: 'center',
-                                  paddingVertical: 3
+                                  paddingVertical: 3,
+                                  fontFamily: 'neutra-text-light'
                               }}>{item.barber ? "Barber" : "Stylist"}</Text>
-                              {this.state.waitTimesForStaff ? this.state.waitTimesForStaff.map((item3, index) => {
-                                  for (let i = 0; i < this.state.waitTimesForStaff.length; i++) {
-                                      if (item3.time.staffid === item.staffid) {
-                                          console.log('item 3', item3);
-                                          return (
-                                              <Text key={index} style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item3.time.waittime > 60 ? this._timeConvert(item3.time.waittime) : item3.time.waittime + " min."} wait time</Text>
-                                          )
-                                      }
-                                  }
-                              }) : null}
-
+                              {/*{this.state.waitTimesForStaff ? this.state.waitTimesForStaff.map((item3, index) => {*/}
+                                  {/*for (let i = 0; i < this.state.waitTimesForStaff.length; i++) {*/}
+                                      {/*if (item3.time.staffid === item.staffid) {*/}
+                                          {/*console.log('item 3', item3);*/}
+                                          {/*return (*/}
+                                              {/*<Text key={index} style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item3.time.waittime > 60 ? this._timeConvert(item3.time.waittime) : item3.time.waittime + " min."} wait time</Text>*/}
+                                          {/*)*/}
+                                      {/*}*/}
+                                  {/*}*/}
+                              {/*}) : null}*/}
                           </View>
                           {this.props.currentUser.isLoggedIn ?
                               <TouchableOpacity
@@ -236,15 +242,7 @@ class WaitTimesScreen extends React.Component {
                                           list</Text>
                                   </View>
                               </TouchableOpacity>
-                              :
-                              <TouchableOpacity
-                                  onPress={() => this.props.navigation.navigate('SignIn')}
-                              >
-                                  <View style={styles.joinStaffWaitListButton}>
-                                      <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait
-                                          list</Text>
-                                  </View>
-                              </TouchableOpacity>}
+                              : null}
                           {this.state[item.last_name] ? this.state[item.last_name].map((item2, index) => {
                               return (
                                   <View key={index}>
@@ -258,13 +256,15 @@ class WaitTimesScreen extends React.Component {
                                                       <Text style={{
                                                           fontWeight: 'bold',
                                                           fontSize: 15,
-                                                          textAlign: 'center'
+                                                          textAlign: 'center',
+                                                          fontFamily: 'neutra-text-light'
                                                       }}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
                                                       <Text style={{
                                                           fontWeight: 'bold',
                                                           fontSize: 15,
                                                           textAlign: 'center',
-                                                          marginTop: 5
+                                                          marginTop: 5,
+                                                          fontFamily: 'neutra-text-light'
                                                       }}>
                                                           {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
                                                       </Text>
@@ -272,12 +272,17 @@ class WaitTimesScreen extends React.Component {
                                                   <View style={styles.waitListCardInfo}>
                                                       <Text style={{
                                                           fontWeight: 'bold',
-                                                          fontSize: 20
+                                                          fontSize: 20,
+                                                          fontFamily: 'neutra-text-light'
                                                       }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
-                                                      <Text style={{paddingTop: 5}}>{item2.name}</Text>
-                                                      <Text style={{paddingTop: 5}}>{item2.time} min.</Text>
+                                                      <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.name}</Text>
+                                                      <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.time} min.</Text>
                                                       <Text
-                                                          style={{paddingTop: 5}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}</Text>
+                                                          style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}
+                                                      </Text>
+                                                      <Text
+                                                          style={{paddingTop: 5, fontFamily: 'neutra-text-bold', fontWeight: 'bold'}}>{item2.mobile_join ? "JOINED FROM APP" : null}
+                                                      </Text>
                                                   </View>
                                               </View>
                                           </TouchableOpacity> :
@@ -289,13 +294,15 @@ class WaitTimesScreen extends React.Component {
                                                   <Text style={{
                                                       fontWeight: 'bold',
                                                       fontSize: 15,
-                                                      textAlign: 'center'
+                                                      textAlign: 'center',
+                                                      fontFamily: 'neutra-text-light'
                                                   }}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
                                                   <Text style={{
                                                       fontWeight: 'bold',
                                                       fontSize: 15,
                                                       textAlign: 'center',
-                                                      marginTop: 5
+                                                      marginTop: 5,
+                                                      fontFamily: 'neutra-text-light'
                                                   }}>
                                                       {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
                                                   </Text>
@@ -303,12 +310,17 @@ class WaitTimesScreen extends React.Component {
                                               <View style={styles.waitListCardInfo}>
                                                   <Text style={{
                                                       fontWeight: 'bold',
-                                                      fontSize: 20
+                                                      fontSize: 20,
+                                                      fontFamily: 'neutra-text-light'
                                                   }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
-                                                  <Text style={{paddingTop: 5}}>{item2.name}</Text>
-                                                  <Text style={{paddingTop: 5}}>{item2.time} min.</Text>
+                                                  <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.name}</Text>
+                                                  <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.time} min.</Text>
                                                   <Text
-                                                      style={{paddingTop: 5}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}</Text>
+                                                      style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}
+                                                  </Text>
+                                                  <Text
+                                                      style={{paddingTop: 5, fontFamily: 'neutra-text-bold', fontWeight: 'bold'}}>{item2.mobile_join ? "JOINED FROM APP" : null}
+                                                  </Text>
                                               </View>
                                           </View>
                                       }
@@ -332,7 +344,85 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {addStaffMember})(WaitTimesScreen)
+async function performLogin(user, props) {
+    axios.get(`http://52.37.61.234:3001/users/email/${user.email}`, {
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then(function (response) {
+            console.log(response);
+            if (response.data.length > 0) {
+                props.signInUser(response.data[0]);
+                props.navigation.navigate('WaitTimeList');
+            } else {
+                axios.post(`http://52.37.61.234:3001/users/socialSignUp`, {
+                    user
+                }, {
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                })
+                    .then(function (response) {
+                        props.signUpUser(response.data[0]);
+                        props.navigation.navigate('WaitTimeList');
+                    })
+                    .catch(function (error) {
+                        console.log('error', error)
+                    })
+            }
+        });
+}
+
+async function signInWithGoogleAsync() {
+    try {
+        const result = await Expo.Google.logInAsync({
+            iosClientId: '732604278812-g2vo8f8bg9dgge5815ihl7jqs3etri8a.apps.googleusercontent.com',
+            iosStandaloneAppClientId: '732604278812-22e53600nlruo7a89712cibvab927jbf.apps.googleusercontent.com',
+            scopes: ['profile', 'email'],
+        });
+
+        if (result.type === 'success') {
+            console.log(result.user);
+            let first_name = result.user.givenName;
+            let last_name = result.user.familyName;
+            let email = result.user.email;
+            let phone_number = '4093443814';
+            let pictureUrl = result.user.photoUrl;
+            let owner = false;
+            let staff = false;
+            let customer = true;
+            let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
+            performLogin(user, this.props)
+        } else {
+            return {cancelled: true};
+        }
+    } catch(e) {
+        return {error: true};
+    }
+}
+
+async function signInWithFacebook() {
+    const { type, token } = await Expo.Facebook.logInWithReadPermissionsAsync('360415578030850', {
+        permissions: ['public_profile', 'email'],
+    });
+    if (type === 'success') {
+        const response = await fetch(
+            `https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,first_name,last_name,picture.type(large)`
+        );
+        const { picture, email, first_name, last_name } = await response.json();
+        let phone_number = '4093443814';
+        let owner = false;
+        let staff = false;
+        let customer = true;
+        let pictureUrl = picture.data.url;
+        let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
+        console.log(user);
+        performLogin(user, this.props)
+    }
+}
+
+export default connect(mapStateToProps, {signInUser, signUpUser, addStaffMember})(WaitTimesScreen)
 
 const styles = StyleSheet.create({
     container: {
@@ -365,6 +455,13 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingBottom: 3
     },
+    logInView: {
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        flexDirection: 'column',
+        width: '100%',
+        fontFamily: 'neutra-text-light'
+    },
     joinWaitList: {
         height: 75,
         width: '100%',
@@ -379,7 +476,7 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 20,
         textAlign: 'center',
-        fontFamily: 'nanum-gothic'
+        fontFamily: 'neutra-text-light'
     },
       joinWaitListButton: {
           height: 50,
@@ -391,7 +488,8 @@ const styles = StyleSheet.create({
           backgroundColor: '#2F553C',
           marginVertical: 15,
           borderRadius: 25,
-        },
+          fontFamily: 'neutra-text-bold'
+      },
       nameHeader: {
           width: '100%',
           justifyContent: 'center',
@@ -411,14 +509,15 @@ const styles = StyleSheet.create({
       joinStaffWaitListButtonText: {
           color: '#fff',
           fontSize: 15,
+          marginTop: 5,
           textAlign: 'center',
-          fontFamily: 'nanum-gothic'
-    },
+          fontFamily: 'neutra-text-light'
+      },
       joinWaitListButtonText: {
           color: '#fff',
           fontSize: 25,
           textAlign: 'center',
-          fontFamily: 'nanum-gothic'
+          fontFamily: 'neutra-text-light'
     },
     buttonView: {
         justifyContent: 'space-around',
