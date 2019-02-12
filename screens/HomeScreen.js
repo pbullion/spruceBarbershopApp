@@ -237,23 +237,47 @@ async function performLogin(user, props) {
                 props.signInUser(response.data[0]);
                 props.navigation.navigate('WaitTimeList');
             } else {
-                axios.post(`http://52.37.61.234:3001/users/socialSignUp`, {
-                    user
-                }, {
-                    headers: {
-                        'content-type': 'application/json'
-                    }
-                })
-                    .then(function (response) {
-                        props.signUpUser(response.data[0]);
-                        props.navigation.navigate('WaitTimeList');
-                    })
-                    .catch(function (error) {
-                        console.log('error', error)
-                    })
+                // go to sign up function
             }
         });
 }
+
+//
+// axios.post(`http://52.37.61.234:3001/users/socialSignUp`, {
+//     user
+// }, {
+//     headers: {
+//         'content-type': 'application/json'
+//     }
+// })
+//     .then(function (response) {
+//         props.signUpUser(response.data[0]);
+//         props.navigation.navigate('WaitTimeList');
+//     })
+//     .catch(function (error) {
+//         console.log('error', error)
+//     })
+//
+
+async function performSignUp(user, props) {
+
+    axios.get(`http://52.37.61.234:3001/users/socialSignUp`, {
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then(function (response) {
+            console.log(response);
+            if (response.data.length > 0) {
+                props.signInUser(response.data[0]);
+                props.navigation.navigate('WaitTimeList');
+            } else {
+                // go to sign up function
+            }
+        });
+}
+
+
 
 async function signInWithGoogleAsync() {
     try {

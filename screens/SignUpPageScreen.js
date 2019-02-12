@@ -33,25 +33,10 @@ class SignUpPageScreen extends Component {
                 </View>
                 <View style={{ width: '100%', paddingHorizontal: 10 }}>
                     <View>
-                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>First Name</FormLabel>
-                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={(value) => {this.setState({first_name: value})}} focus/>
-
-                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Last Name</FormLabel>
-                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={(value) => {this.setState({last_name: value})}} focus/>
-
-                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Email</FormLabel>
-                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={(value) => {this.setState({email: value})}} focus/>
-
                         <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Phone Number</FormLabel>
                         <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={(value) => {this.setState({phone_number: value})}} focus/>
-
-                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Password</FormLabel>
-                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={(value) => {this.setState({password: value})}} focus/>
-
-                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Confirm Password</FormLabel>
-                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={(value) => {this.setState({confirmPassword: value})}} focus/>
                     </View>
-                    <TouchableOpacity onPress={() => performSignUp(this.state.first_name, this.state.last_name, this.state.email, this.state.phone_number, this.state.password, this.state.confirmPassword, this.props)}>
+                    <TouchableOpacity onPress={() => performSignUp(this.state.phone_number, this.props)}>
                         <Animatable.View animation="bounceInDown" style={styles.logInButton}>
                             <Text style={styles.logInButtonText}>Sign Up</Text>
                         </Animatable.View>
