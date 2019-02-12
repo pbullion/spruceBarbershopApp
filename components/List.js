@@ -66,7 +66,7 @@ export default class ListComponent extends React.Component {
                 timeValue = "12";
             }
 
-            timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+            // timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
             timeValue += (hours >= 12) ? " P.M." : " A.M.";  // get AM/PM
 
             // console.log(timeValue);
