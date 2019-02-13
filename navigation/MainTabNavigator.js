@@ -4,6 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
+import MessagesScreen from '../screens/MessagesScreen';
 import StaffScreen from '../screens/StaffScreen';
 import BarbersScreen from '../screens/staff/BarbersScreen';
 import StylistsScreen from '../screens/staff/StylistsScreen';
@@ -84,6 +85,24 @@ ServicesStack.navigationOptions = {
     }
 };
 
+const MessagesStack = createStackNavigator({
+    Home: MessagesScreen
+});
+
+MessagesStack.navigationOptions = {
+    tabBarLabel: 'Messages',
+    tabBarIcon: ({ focused }) => (
+        <TabBarIcon
+            focused={focused}
+            name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
+        />
+    ),
+    tabBarOptions: {
+        activeTintColor: '#2F553C',
+        inactiveTintColor: '#a9a389',
+    }
+};
+
 const StaffStack = createStackNavigator({
   Home: StaffScreen,
   Barbers: BarbersScreen,
@@ -129,7 +148,8 @@ WaitTimesStack.navigationOptions = {
 
 export default createBottomTabNavigator({
     HomeStack,
-    StaffStack,
     WaitTimesStack,
+    MessagesStack,
+    StaffStack,
     ServicesStack,
 });

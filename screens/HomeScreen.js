@@ -134,7 +134,7 @@ class HomeScreen extends React.Component {
             <View style={styles.logoContainer}>
                 <Image style={styles.logo} source={spruceLogo} />
             </View>
-            {this.state.isThereAnUpdate ? <Text style={{ fontSize: 25, marginBottom: 20, paddingHorizontal: 10, textAlign: 'center', fontFamily: 'neutra-text-light'}}>{this.state.update[0].update}</Text> : null}
+            {this.state.isThereAnUpdate ? <Text style={{ fontSize: 25, marginBottom: 30, paddingHorizontal: 5, textAlign: 'center', fontFamily: 'neutra-text-bold'}}>{this.state.update[0].update}</Text> : null}
             <View style={styles.loginAndCurrentUser}>
                 {!this.props.currentUser.isLoggedIn ?
                     <View style={styles.buttonView}>
