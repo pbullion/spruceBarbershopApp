@@ -7,7 +7,6 @@ import {
     View,
     TouchableOpacity,
     RefreshControl,
-    Linking
 } from 'react-native';
 import {signInUser, signUpUser, signOutUser} from "../actions";
 import { connect } from 'react-redux';
@@ -15,7 +14,7 @@ import spruceLogo from "../assets/images/logos/spruceLogo.png";
 import {Col, Grid} from "react-native-easy-grid";
 import axios from "axios";
 import { Icon, SocialIcon } from "react-native-elements";
-import Expp, { Constants, WebBrowser } from 'expo';
+import { WebBrowser, Notifications, Permissions } from 'expo';
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -96,7 +95,34 @@ class HomeScreen extends React.Component {
         WebBrowser.openBrowserAsync('https://www.instagram.com/sprucebarbershop/');
     };
 
-  render() {
+    registerForPushNotifications = async () => {
+        const { status: existingStatus } = await Permissions.getAsync(
+            Permissions.NOTIFICATIONS
+        );
+        let finalStatus = existingStatus;
+
+        // only ask if permissions have not already been determined, because
+        // iOS won't necessarily prompt the user a second time.
+        if (existingStatus !== 'granted') {
+            // Android remote notification permissions are granted during the app
+            // install, so this will only ask on iOS
+            const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+            finalStatus = status;
+        }
+        // Stop here if the user did not grant permissions
+        if (finalStatus !== 'granted') {
+            return;
+        }
+        // Get the token that uniquely identifies this device
+        let token = await Notifications.getExpoPushTokenAsync();
+        console.log(token);
+        this.setState({token: token});
+    };
+    componentWillMount() {
+        this.registerForPushNotifications();
+    }
+
+    render() {
       return (
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
             refreshControl={
@@ -225,7 +251,7 @@ function mapStateToProps(state) {
     }
 }
 
-async function performLogin(user, props) {
+async function performLogin(user, props, token) {
     axios.get(`http://52.37.61.234:3001/users/email/${user.email}`, {
         headers: {
             'content-type': 'application/json'
@@ -236,48 +262,40 @@ async function performLogin(user, props) {
             if (response.data.length > 0) {
                 props.signInUser(response.data[0]);
                 props.navigation.navigate('WaitTimeList');
+            } else if (token) {
+                axios.post(`http://52.37.61.234:3001/users/socialSignUp`, {
+                    user,
+                    token
+                }, {
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                })
+                    .then(function (response) {
+                        props.signUpUser(response.data[0]);
+                        props.navigation.navigate('WaitTimeList');
+                    })
+                    .catch(function (error) {
+                        console.log('error', error)
+                    })
             } else {
-                // go to sign up function
+                axios.post(`http://52.37.61.234:3001/users/socialSignUp`, {
+                    user
+                }, {
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                })
+                    .then(function (response) {
+                        props.signUpUser(response.data[0]);
+                        props.navigation.navigate('WaitTimeList');
+                    })
+                    .catch(function (error) {
+                        console.log('error', error)
+                    })
             }
         });
 }
-
-//
-// axios.post(`http://52.37.61.234:3001/users/socialSignUp`, {
-//     user
-// }, {
-//     headers: {
-//         'content-type': 'application/json'
-//     }
-// })
-//     .then(function (response) {
-//         props.signUpUser(response.data[0]);
-//         props.navigation.navigate('WaitTimeList');
-//     })
-//     .catch(function (error) {
-//         console.log('error', error)
-//     })
-//
-
-async function performSignUp(user, props) {
-
-    axios.get(`http://52.37.61.234:3001/users/socialSignUp`, {
-        headers: {
-            'content-type': 'application/json'
-        }
-    })
-        .then(function (response) {
-            console.log(response);
-            if (response.data.length > 0) {
-                props.signInUser(response.data[0]);
-                props.navigation.navigate('WaitTimeList');
-            } else {
-                // go to sign up function
-            }
-        });
-}
-
-
 
 async function signInWithGoogleAsync() {
     try {
@@ -292,13 +310,13 @@ async function signInWithGoogleAsync() {
             let first_name = result.user.givenName;
             let last_name = result.user.familyName;
             let email = result.user.email;
-            let phone_number = '4093443814';
+            let phone_number = '';
             let pictureUrl = result.user.photoUrl;
             let owner = false;
             let staff = false;
             let customer = true;
             let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
-            performLogin(user, this.props)
+            performLogin(user, this.props, this.state.token)
         } else {
             return {cancelled: true};
         }
@@ -316,7 +334,7 @@ async function signInWithFacebook() {
             `https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,first_name,last_name,picture.type(large)`
         );
         const { picture, email, first_name, last_name } = await response.json();
-        let phone_number = '4093443814';
+        let phone_number = '';
         let owner = false;
         let staff = false;
         let customer = true;
