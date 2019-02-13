@@ -13,6 +13,7 @@ class WaitTimesScreen extends React.Component {
         this.state = {
             refreshing: false,
             updatedWaitList: [],
+            working: false
         }
     }
 
@@ -52,7 +53,11 @@ class WaitTimesScreen extends React.Component {
                 const staff = res.data;
                 let i;
                 this.setState({staff});
-                console.log(this.state.staff);
+                for (i=0; i < staff.length; i++) {
+                    if (staff[i].isWorking === true) {
+                        this.setState({working:true})
+                    }
+                }
                 for (i = 0; i < staff.length; i++) {
                     const staffid = staff[i].staffid;
                     axios.get(`http://52.37.61.234:3001/waitlist/staffmember/${staffid}`)
@@ -203,7 +208,7 @@ class WaitTimesScreen extends React.Component {
           <View style={{width: '75%'}}>
             <Text style={{ fontSize: 20, marginTop: 10, fontFamily: 'neutra-text-light', textAlign: 'center'}}>Joining the waitlist from your phone will add $1 to your final total</Text>
           </View>
-          {this.state.staff ? this.state.staff.map((item, index) => {
+          {this.state.working ? this.state.staff.map((item, index) => {
               if (item.isWorking) {
                   return (
                       <View style={{
@@ -330,7 +335,7 @@ class WaitTimesScreen extends React.Component {
                       </View>
                   )
               }
-          }) : null };
+          }) : <Text style={{fontFamily: 'neutra-text-light', fontSize: 40, marginTop: 100}}>We are closed</Text> };
       </ScrollView>
     );
   }

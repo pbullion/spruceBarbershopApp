@@ -7,6 +7,7 @@ import {
     View,
     TouchableOpacity,
     RefreshControl,
+    Alert
 } from 'react-native';
 import {signInUser, signUpUser, signOutUser} from "../actions";
 import { connect } from 'react-redux';
@@ -96,6 +97,7 @@ class HomeScreen extends React.Component {
     };
 
     registerForPushNotifications = async () => {
+        Expo.Notifications.setBadgeNumberAsync(0);
         const { status: existingStatus } = await Permissions.getAsync(
             Permissions.NOTIFICATIONS
         );
@@ -115,7 +117,6 @@ class HomeScreen extends React.Component {
         }
         // Get the token that uniquely identifies this device
         let token = await Notifications.getExpoPushTokenAsync();
-        console.log(token);
         this.setState({token: token});
     };
     componentWillMount() {
