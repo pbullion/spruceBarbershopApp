@@ -7,7 +7,7 @@ import {
 } from 'react-native-paper';
 import * as Animatable from "react-native-animatable";
 import TouchableItem from "react-navigation/src/views/TouchableItem";
-import {ButtonGroup, SocialIcon, Tile} from "react-native-elements";
+import {ButtonGroup, SocialIcon, Icon, Tile, Button} from "react-native-elements";
 import HeaderImageScrollView, { TriggeringView } from 'react-native-image-header-scroll-view';
 import {WebBrowser} from "expo";
 
@@ -41,6 +41,11 @@ export default class ListComponent extends React.Component {
     };
 
     _instagramHandleOpenWithWebBrowser = (link) => {
+        this.setState({modalVisible: false});
+        WebBrowser.openBrowserAsync(link);
+    };
+
+    _handleAppointmentBooking = (link) => {
         this.setState({modalVisible: false});
         WebBrowser.openBrowserAsync(link);
     };
@@ -142,6 +147,17 @@ export default class ListComponent extends React.Component {
                                     </View>
                                 )}
                             >
+                                {this.state.item.appt_only === true ?
+                                    <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center' }}>
+                                        <Button
+                                        title="Book an Appointment"
+                                        titleStyle={{fontFamily: 'neutra-text-light', color: 'blue'}}
+                                        buttonStyle={{ backgroundColor: '#356044', width: '100%', fontFamily: 'neutra-text-light' }}
+                                        containerStyle={{ width: '100%' }}
+                                        onPress={() => this._handleAppointmentBooking(this.state.item.appointment_link)}
+                                        />
+                                    </View>
+                                     : null}
                                 <View style={{ height: '100%' }}>
                                     <TriggeringView onHide={() => console.log("text hidden")}>
                                         <ButtonGroup

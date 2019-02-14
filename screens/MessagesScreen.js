@@ -3,6 +3,7 @@ import {View, StyleSheet, ScrollView, RefreshControl} from "react-native";
 import { ListItem, Icon } from 'react-native-elements';
 import RefreshText from "../components/RefreshText";
 import axios from "axios";
+import moment from 'moment';
 
 export default class StaffScreen extends React.Component {
     constructor(props) {
@@ -51,15 +52,21 @@ export default class StaffScreen extends React.Component {
             />
         }
             <RefreshText/>
-            <View style={{ width: '100%' }}>
+            <View style={{ width: '100%', marginTop: 5 }}>
                 {this.state.messages ? this.state.messages.map((l,i) => {
                     return (
                         <ListItem
-                            leftIcon={<Icon name={l.icon} type='font-awesome' color={l.iconcolor}/>}
                             key={i}
                             title={l.title}
+                            titleStyle={{fontFamily: 'neutra-text-bold', marginBottom: 3}}
+                            rightTitle={moment(l.date).format("ddd, MMM Do")}
+                            rightTitleStyle={{fontFamily: 'neutra-text-bold', color: '#000000'}}
+                            rightTitleNumberOfLines={2}
                             subtitle={l.body}
+                            subtitleNumberOfLines={4}
                             hideChevron
+                            subtitleStyle={{fontFamily: 'neutra-text-light', color: '#000000'}}
+                            containerStyle={{width: '100%', fontFamily: 'neutra-text-light'}}
                         />
                     )
                     }) : null}

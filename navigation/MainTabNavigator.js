@@ -148,8 +148,8 @@ WaitTimesStack.navigationOptions = {
 
 export default createBottomTabNavigator({
     HomeStack,
-    WaitTimesStack,
     MessagesStack,
+    WaitTimesStack,
     StaffStack,
     ServicesStack,
 });
