@@ -147,7 +147,7 @@ export default class ListComponent extends React.Component {
                                     </View>
                                 )}
                             >
-                                {this.state.item.appt_only === true ?
+                                {this.state.item.appt_only === true && this.state.item.appointment_link === true ?
                                     <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'center' }}>
                                         <Button
                                         title="Book an Appointment"
