@@ -1,24 +1,21 @@
 import React from 'react';
 import {
-    Dimensions,
     ScrollView,
     StyleSheet,
     Text, View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import axios from "axios";
-import { setWaitListView, refreshTrue } from "../../actions";
-import { Button } from "react-native-elements";
+import {addService2, setWaitListView} from "../../actions";
+import ServicesButton from "../../components/buttons/ServicesButton";
 import * as Animatable from "react-native-animatable";
-import {Card, Paragraph, Title} from "react-native-paper";
 
 class JoinWaitListScreen5 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             refreshing: false,
-            data: null
         };
+        this.handlePress = this.handlePress.bind(this);
     }
     static navigationOptions = {
         title: 'Join the Waitlist',
@@ -31,94 +28,41 @@ class JoinWaitListScreen5 extends React.Component {
         },
     };
 
-    handleSubmit = (props) => {
-        const waitList = props.waitListFlow;
-        const currentUser = props.currentUser;
-        console.log('waitlist', waitList);
-        axios.post(`http://52.37.61.234:3001/waitlist`, {
-            waitList,
-            currentUser
-        }, {
-            headers: {
-                'content-type': 'application/json'
-            }
-        })
-            .then(function (response) {
-                console.log(props);
-                props.refreshTrue(true);
-                props.navigation.navigate('WaitTimeList');
-            })
-            .catch(function (error) {
-                console.log('error', error)
-            })
+    handlePress = (serviceType) => {
+        this.props.setWaitListView(serviceType);
+        this.props.navigation.navigate('WaitTimes6');
     };
 
-    componentDidMount() {
-        axios.get(`http://52.37.61.234:3001/services/category/${this.props.waitListFlow.waitListView}`)
-            .then(res => {
-                const data = res.data;
-                this.setState({ data });
-            });
-    }
+    _changeAnimation = () => {
+        this.setState({animation: "fadeOutDown"});
+        this.setState({animation: null});
+    };
 
     render() {
         return (
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-                <View style={styles.viewContainer}>
-                    <View style={{ width: '100%', marginTop: 10 }}>
-                        <Animatable.View animation="bounceIn">
-                            {this.props.waitListFlow.staff.id > 0 ?
-                                <Card style={styles.card}>
-                                    <Card.Cover source={{uri: this.props.waitListFlow.staff.staffpicture}}
-                                                style={styles.cardCover}/>
-                                    <Card.Content style={styles.cardName}>
-                                        <Title style={{ fontFamily: 'neutra-text-bold', fontSize: 30, paddingTop: 12 }}>{this.props.waitListFlow.staff.first_name} {this.props.waitListFlow.staff.last_name}</Title>
-                                    </Card.Content>
-                                </Card>
-                                :
-                                <View style={styles.buttonView}>
-                                    <Button
-                                        raised
-                                        large
-                                        title='First Available'
-                                        borderRadius={18}
-                                        containerViewStyle={{borderRadius: 18}}
-                                        buttonStyle={styles.customerButton}
-                                        onPress={() => {}}
-                                    />
-                                </View>
-                            }
+                <View>
+                    <View style={styles.buttons}>
+                        <Animatable.View animation={this.state.animation} easing="ease-out">
+                            <ServicesButton onPress={() => {this.handlePress('Hair')}} line1='Hair' line2='Cuts' />
+                        </Animatable.View>
+                        <Animatable.View animation={this.state.animation} easing="ease-out">
+                            <ServicesButton onPress={() => {this._changeAnimation(); this.handlePress('Coloring')}} line1='Hair' line2='Coloring' />
                         </Animatable.View>
                     </View>
-                    <View style={{ width: '100%', marginTop: 10 }}>
-                        <Animatable.View animation="bounceInUp">
-                            <Card style={styles.servicesCard}>
-                                <Card.Content style={styles.cardContent}>
-                                    <Title style={{ color: '#ffffff', fontFamily: 'neutra-text-light', fontSize: 25 }}>{this.props.waitListFlow.service.name.toUpperCase()}</Title>
-                                    <Text style={styles.subTitle}>${this.props.waitListFlow.service.price / 100}</Text>
-                                    <Text style={styles.subTitle}>{this.props.waitListFlow.service.time} MINUTES</Text>
-                                    <View>
-                                        {this.props.waitListFlow.service.description.map((item,index) => {
-                                            return (
-                                                <Text key={index} style={{ textAlign: 'center', color: '#ffffff', fontFamily: 'neutra-text-light', padding: 3 }}>• {item.toUpperCase()}</Text>
-                                            )})
-                                        }
-                                    </View>
-                                </Card.Content>
-                            </Card>
+                    <View style={styles.buttons}>
+                        <Animatable.View animation={this.state.animation} easing="ease-out">
+                            <ServicesButton onPress={() => {this._changeAnimation(); this.handlePress('Beard')}} line1='Beard' />
+                        </Animatable.View>
+                        <Animatable.View animation={this.state.animation} easing="ease-out">
+                            <ServicesButton onPress={() => {this._changeAnimation(); this.handlePress('Shave')}} line1='Shave' />
                         </Animatable.View>
                     </View>
-                    <Button
-                        raised
-                        large
-                        title='SUBMIT'
-                        borderRadius={18}
-                        fontSize={22}
-                        color='#ffffff'
-                        containerViewStyle={{borderRadius: 18}}
-                        buttonStyle={styles.submitButton}
-                        onPress={() => this.handleSubmit(this.props)}
-                    />
+                    <View style={styles.buttons}>
+                        <Animatable.View animation={this.state.animation} easing="ease-out">
+                            <ServicesButton onPress={() => {this._changeAnimation(); this.handlePress('Additional')}} line1='Additional' line2='Services'/>
+                        </Animatable.View>
+                    </View>
                 </View>
             </ScrollView>
         );
@@ -126,84 +70,49 @@ class JoinWaitListScreen5 extends React.Component {
 }
 
 function mapStateToProps(state) {
-    // console.log('state*******in the join wait list map final page', state);
     return {
         currentUser: state.currentUser,
-        waitListFlow: state.waitListFlow,
-        refresh: state.refresh.refreshStatus
+        waitListFlow: state.waitListFlow
     }
 }
-const mapDispatchToProps = { setWaitListView, refreshTrue };
 
-export default connect(mapStateToProps, mapDispatchToProps)(JoinWaitListScreen5)
+export default connect(mapStateToProps, {setWaitListView, addService2})(JoinWaitListScreen5)
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
         backgroundColor: '#ffffff',
-        paddingBottom: 150
     },
     contentContainer: {
         width: '100%',
-        paddingTop: 5,
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    viewContainer: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    cardName: {
-        width: '100%',
+        paddingTop: 50,
         justifyContent: 'space-around',
         alignItems: 'center',
-    },
-    buttonView: {
-        height: 150,
-        marginTop: 15,
-        width: '100%',
-        alignItems: 'center',
+        paddingBottom: 50
     },
     name: {
         color: '#356044',
         fontSize: 40,
         marginBottom: 20
     },
+    dropdown: {
+        width: '80%'
+    },
     submitButton: {
         backgroundColor: '#356044',
         width: 200,
-        marginTop: 10
+        marginTop: 40
     },
-    card: {
-        marginHorizontal: 4,
-        marginVertical: 8
-    },
-    servicesCard: {
-        marginHorizontal: 4,
+    picker: {
+        alignSelf: 'stretch',
         backgroundColor: '#356044',
-        marginVertical: 8,
-        justifyContent: 'center',
-        alignItems: 'center',
+        paddingHorizontal: 20,
+        paddingVertical: 20,
+        margin: 20,
+        borderRadius: 10,
     },
-    cardCover: {
-        width: '100%',
-        height: Dimensions.get('window').width > 500 ? 500 : 250
-    },
-    customerButton: {
-        backgroundColor: '#2F553C',
-        width: 250,
-        height: 100
-    },
-    cardContent: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    subTitle: {
-        fontSize: 18,
-        paddingBottom: 5,
-        color: '#ffffff'
+    pickerText: {
+        color: 'white',
     }
 });

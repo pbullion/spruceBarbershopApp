@@ -9,7 +9,7 @@ import axios from "axios";
 import { setWaitListView } from "../../actions";
 import TouchableServicesList from "../../components/TouchableServicesList";
 
-class JoinWaitListScreen4 extends React.Component {
+class JoinWaitListScreen6 extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -42,7 +42,7 @@ class JoinWaitListScreen4 extends React.Component {
             <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
                 <View>
                     {this.state.data &&
-                        <TouchableServicesList props={this.props} data={this.state.data} imageHeight={650} secondService={false} />
+                        <TouchableServicesList props={this.props} data={this.state.data} imageHeight={650} secondService={true} />
                     }
                 </View>
             </ScrollView>
@@ -58,7 +58,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {setWaitListView})(JoinWaitListScreen4)
+export default connect(mapStateToProps, {setWaitListView})(JoinWaitListScreen6)
 
 const styles = StyleSheet.create({
     container: {

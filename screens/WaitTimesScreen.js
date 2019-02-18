@@ -65,10 +65,17 @@ class WaitTimesScreen extends React.Component {
                             if (res.data.length > 0) {
                                 const updatedWaitList = [];
                                 for (let i = 0; i < res.data.length; i++) {
+                                    // if (res.data[i].service2_id === 0) {
+                                    //     res.data[i].service2_time = 0
+                                    // } else {
+                                    //     res.data[i].service2_time = res.data[i].res.data[i].service2_time
+                                    // }
+                                    // console.log("******************", res.data[i].service2_time);
+                                    // console.log("asdfasdfasdfasdf", res.data[i].res.data[i].service2_time);
                                     if (res.data[i].in_progress) {
-                                        res.data[i].remainingTime = res.data[i].time - parseInt(moment(res.data[i].start_time, "HH:mm").fromNow(true), 10);
+                                        res.data[i].remainingTime = res.data[i].service1_time + res.data[i].service2_time - parseInt(moment(res.data[i].start_time, "HH:mm").fromNow(true), 10);
                                         if (!res.data[i].remainingTime) {
-                                            res.data[i].remainingTime = res.data[i].time;
+                                            res.data[i].remainingTime = res.data[i].service1_time + res.data[i].service2_time;
                                         }
                                         updatedWaitList.push(res.data[i]);
                                     } else if (res.data[i].waiting) {
@@ -77,7 +84,7 @@ class WaitTimesScreen extends React.Component {
                                         } else if (i === 1) {
                                             res.data[i].remainingTime = res.data[i - 1].remainingTime
                                         } else {
-                                            res.data[i].remainingTime = res.data[i - 1].remainingTime + res.data[i - 1].time
+                                            res.data[i].remainingTime = res.data[i - 1].remainingTime + res.data[i - 1].service1_time + res.data[i - 1].service2_time
                                         }
                                         updatedWaitList.push(res.data[i]);
                                     }
@@ -134,7 +141,8 @@ class WaitTimesScreen extends React.Component {
 
     handleJoinStaffWaitlist(item) {
         this.props.addStaffMember(item);
-        this.props.navigation.navigate('WaitTimes3')
+        console.log("here is the wait list current user", this.props.currentUser.shop);
+        {this.props.currentUser.shop === false ? this.props.navigation.navigate('WaitTimes3') : this.props.navigation.navigate('WaitListSignUp')}
     };
 
     addCustomer(item) {
@@ -278,10 +286,17 @@ class WaitTimesScreen extends React.Component {
                                                       <Text style={{
                                                           fontWeight: 'bold',
                                                           fontSize: 20,
-                                                          fontFamily: 'neutra-text-light'
+                                                          fontFamily: 'neutra-text-bold'
                                                       }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
-                                                      <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.name}</Text>
-                                                      <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.time} min.</Text>
+                                                      <View style={styles.waitListCardServices}>
+                                                          <View style={styles.waitListCardService}>
+                                                              <Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service1_name}</Text>
+                                                              <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service1_time} min.</Text>
+                                                          </View>
+                                                          {item2.service2_id ? <View style={styles.waitListCardService}><Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service2_name}</Text>
+                                                                  <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service2_time} min.</Text></View>
+                                                              : null}
+                                                      </View>
                                                       <Text
                                                           style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}
                                                       </Text>
@@ -316,10 +331,17 @@ class WaitTimesScreen extends React.Component {
                                                   <Text style={{
                                                       fontWeight: 'bold',
                                                       fontSize: 20,
-                                                      fontFamily: 'neutra-text-light'
+                                                      fontFamily: 'neutra-text-bold'
                                                   }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
-                                                  <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.name}</Text>
-                                                  <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.time} min.</Text>
+                                                  <View style={styles.waitListCardServices}>
+                                                      <View style={styles.waitListCardService}>
+                                                          <Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service1_name}</Text>
+                                                          <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service1_time} min.</Text>
+                                                      </View>
+                                                      {item2.service2_id ? <View style={styles.waitListCardService}><Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service2_name}</Text>
+                                                              <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service2_time} min.</Text></View>
+                                                          : null}
+                                                  </View>
                                                   <Text
                                                       style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}
                                                   </Text>
@@ -538,7 +560,7 @@ const styles = StyleSheet.create({
     },
     waitListCard: {
         backgroundColor: '#fff',
-        height: 115,
+        // height: 115,
         paddingHorizontal: 20,
         width: '100%',
         justifyContent: 'space-around',
@@ -557,9 +579,21 @@ const styles = StyleSheet.create({
     },
     waitListCardInfo: {
         flexDirection: 'column',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         alignItems: 'center',
         padding: 20,
         width: '65%'
+    },
+    waitListCardServices: {
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '50%'
+    },
+    waitListCardService: {
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%'
     },
 });

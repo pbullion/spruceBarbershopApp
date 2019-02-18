@@ -1,5 +1,5 @@
 import React from 'react';
-import {ScrollView, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {Alert, ScrollView, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import * as Animatable from "react-native-animatable";
 import {
     Title,
@@ -8,7 +8,7 @@ import {
     Caption
 } from 'react-native-paper';
 import connect from "react-redux/es/connect/connect";
-import {addService, addStaffMember} from "../actions";
+import {addService1, addService2, addStaffMember} from "../actions";
 
 class TouchableServicesList extends React.Component {
     constructor(props) {
@@ -19,9 +19,24 @@ class TouchableServicesList extends React.Component {
         this.selectItem = this.selectItem.bind(this);
     }
 
-    selectItem = (props, item) => {
-        this.props.addService(item);
-        props.props.navigation.navigate('WaitTimes5')
+    selectItem = (props, secondService, item) => {
+        console.log("******************************************************************", secondService);
+        if (!secondService) {
+            this.props.addService1(item);
+            Alert.alert(
+                'Would you like to select another service?',
+                '',
+                [
+                    {text: 'Yes', onPress: () => props.props.navigation.navigate('WaitTimes5')},
+                    {text: 'No', onPress: () => props.props.navigation.navigate('WaitTimes7')},
+                    {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+                ],
+                { cancelable: false }
+            );
+        } else {
+            this.props.addService2(item);
+            props.props.navigation.navigate('WaitTimes7')
+        }
     };
 
     render() {
@@ -31,7 +46,7 @@ class TouchableServicesList extends React.Component {
                     return (
                         <View style={{ width: '100%' }} key={index}>
                             <Animatable.View animation="bounceInUp">
-                                <TouchableOpacity onPress={() => this.selectItem(this.props, item)}>
+                                <TouchableOpacity onPress={() => this.selectItem(this.props, this.props.secondService, item)}>
                                     <Card style={styles.card}>
                                         <Card.Content style={styles.cardContent}>
                                             <Title style={{ color: '#ffffff', fontFamily: 'neutra-text-light', fontSize: 25 }}>{item.name.toUpperCase()}</Title>
@@ -63,7 +78,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, { addStaffMember, addService })(TouchableServicesList)
+export default connect(mapStateToProps, { addStaffMember, addService1, addService2 })(TouchableServicesList)
 
 const styles = StyleSheet.create({
     container: {

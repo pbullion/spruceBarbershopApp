@@ -7,12 +7,12 @@ import {
 }
     from 'react-native';
 import { connect } from 'react-redux';
-import { signInUser } from "../actions";
+import { signInUser, signInWaitListUser } from "../actions";
 import { FormInput, FormLabel } from 'react-native-elements'
 import axios from "axios";
 import * as Animatable from "react-native-animatable";
 
-class SignUpPageScreen extends Component {
+class WaitListSignUpScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,15 +33,23 @@ class SignUpPageScreen extends Component {
                 </View>
                 <View style={{ width: '100%', paddingHorizontal: 10 }}>
                     <View>
-                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }}>Phone Number</FormLabel>
-                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'nanum-gothic' }} onChangeText={(value) => {this.setState({phone_number: value})}} focus/>
+                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'neutra-text-bold' }}>First Name</FormLabel>
+                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'neutra-text-light' }} onChangeText={(value) => {this.setState({first_name: value})}} focus/>
                     </View>
-                    <TouchableOpacity onPress={() => performSignUp(this.state.phone_number, this.props)}>
+                    <View>
+                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'neutra-text-bold' }}>Last Name</FormLabel>
+                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'neutra-text-light' }} onChangeText={(value) => {this.setState({last_name: value})}} focus/>
+                    </View>
+                    <View>
+                        <FormLabel labelStyle={{ color: '#ffffff', fontFamily: 'neutra-text-bold' }}>Email</FormLabel>
+                        <FormInput inputStyle={{ color: '#ffffff', fontFamily: 'neutra-text-light' }} onChangeText={(value) => {this.setState({email: value})}} focus/>
+                    </View>
+                    <TouchableOpacity onPress={() => performSignUp(this.state.first_name, this.state.last_name, this.state.email, this.props)}>
                         <Animatable.View animation="bounceInDown" style={styles.logInButton}>
-                            <Text style={styles.logInButtonText}>Sign Up</Text>
+                            <Text style={styles.logInButtonText}>Join the List</Text>
                         </Animatable.View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('App')}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('WaitTimesList')}>
                         <Animatable.View animation="bounceInDown" style={styles.customerButton}>
                             <Text style={styles.customerButtonText}>Go Back Home</Text>
                         </Animatable.View>
@@ -52,35 +60,25 @@ class SignUpPageScreen extends Component {
     }
 }
 
-async function performSignUp(first_name, last_name, email, phone_number, password, confirmPassword, props) {
-    if (password === confirmPassword) {
-        axios.post(`http://52.37.61.234:3001/users`, {
-            first_name, last_name, email, phone_number, password
-        }, {
-            headers: {
-                'content-type': 'application/json'
-            }
+async function performSignUp(first_name, last_name, email, props) {
+    axios.post(`http://52.37.61.234:3001/users`, {
+        first_name, last_name, email
+    }, {
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+        .then(function (response) {
+            console.log(response.data);
+            props.signInWaitListUser(response.data[0]);
+            props.navigation.navigate('WaitTimes3');
         })
-            .then(function (response) {
-                props.signInUser(response.data[0]);
-                props.navigation.navigate('WaitTimeList');
-            })
-            .catch(function (error) {
-                console.log('error', error);
-            });
-    } else {
-        Alert.alert(
-            'Passwords do not match',
-            '',
-            [
-                {text: 'OK', onPress: () => {}},
-            ],
-            { cancelable: false }
-        )
-    }
+        .catch(function (error) {
+            console.log('error', error);
+        });
 }
 
-export default connect(null, { signInUser })(SignUpPageScreen)
+export default connect(null, { signInUser, signInWaitListUser })(WaitListSignUpScreen)
 
 const styles = StyleSheet.create({
     container: {
@@ -107,7 +105,7 @@ const styles = StyleSheet.create({
         fontSize: 50,
         color: '#ffffff',
         textAlign: 'center',
-        fontFamily: 'nanum-gothic'
+        fontFamily: 'neutra-text-light'
     },
     customerButton: {
         height: 50,

@@ -21,6 +21,9 @@ import JoinWaitListScreen2 from "../screens/waitList/JoinWaitListScreen2";
 import JoinWaitListScreen3 from "../screens/waitList/JoinWaitListScreen3";
 import JoinWaitListScreen4 from "../screens/waitList/JoinWaitListScreen4";
 import JoinWaitListScreen5 from "../screens/waitList/JoinWaitListScreen5";
+import JoinWaitListScreen6 from "../screens/waitList/JoinWaitListScreen6";
+import JoinWaitListScreen7 from "../screens/waitList/JoinWaitListScreen7";
+import WaitListSignUpScreen from "../screens/WaitListSignUpScreen";
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -130,6 +133,9 @@ const WaitTimesStack = createStackNavigator({
     WaitTimes3: JoinWaitListScreen3,
     WaitTimes4: JoinWaitListScreen4,
     WaitTimes5: JoinWaitListScreen5,
+    WaitTimes6: JoinWaitListScreen6,
+    WaitTimes7: JoinWaitListScreen7,
+    WaitListSignUp: WaitListSignUpScreen
 });
 
 WaitTimesStack.navigationOptions = {

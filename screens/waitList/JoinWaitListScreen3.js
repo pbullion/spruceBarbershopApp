@@ -5,7 +5,7 @@ import {
     Text, View,
 } from 'react-native';
 import { connect } from 'react-redux';
-import {addService, setWaitListView} from "../../actions";
+import {addService1, setWaitListView} from "../../actions";
 import ServicesButton from "../../components/buttons/ServicesButton";
 import * as Animatable from "react-native-animatable";
 
@@ -76,7 +76,7 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps, {setWaitListView, addService})(JoinWaitListScreen3)
+export default connect(mapStateToProps, {setWaitListView, addService1})(JoinWaitListScreen3)
 
 const styles = StyleSheet.create({
     container: {

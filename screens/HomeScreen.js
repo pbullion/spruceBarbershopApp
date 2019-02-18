@@ -9,6 +9,7 @@ import {
     RefreshControl,
     Alert
 } from 'react-native';
+import { AppAuth } from 'expo-app-auth';
 import {signInUser, signUpUser, signOutUser} from "../actions";
 import { connect } from 'react-redux';
 import spruceLogo from "../assets/images/logos/spruceLogo.png";
@@ -59,6 +60,9 @@ class HomeScreen extends React.Component {
                 this.setState({ businessHours });
             });
     };
+    handlePress = () => {
+        this.props.signOutUser();
+    };
 
     _getUpdate = () => {
         axios.get(`http://52.37.61.234:3001/homeScreen/update`)
@@ -83,9 +87,6 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         this._onRefresh();
-    };
-    handlePress = () => {
-        this.props.signOutUser();
     };
 
     _facebookHandleOpenWithWebBrowser = () => {
@@ -252,16 +253,15 @@ function mapStateToProps(state) {
     }
 }
 
-async function performLogin(user, props, token) {
+async function performLogin(user, accessToken, props, token) {
     axios.get(`http://52.37.61.234:3001/users/email/${user.email}`, {
         headers: {
             'content-type': 'application/json'
         }
     })
         .then(function (response) {
-            console.log(response);
             if (response.data.length > 0) {
-                props.signInUser(response.data[0]);
+                props.signInUser(response.data[0], accessToken);
                 props.navigation.navigate('WaitTimeList');
             } else if (token) {
                 axios.post(`http://52.37.61.234:3001/users/socialSignUp`, {
@@ -273,7 +273,7 @@ async function performLogin(user, props, token) {
                     }
                 })
                     .then(function (response) {
-                        props.signUpUser(response.data[0]);
+                        props.signUpUser(response.data[0], accessToken);
                         props.navigation.navigate('WaitTimeList');
                     })
                     .catch(function (error) {
@@ -288,7 +288,7 @@ async function performLogin(user, props, token) {
                     }
                 })
                     .then(function (response) {
-                        props.signUpUser(response.data[0]);
+                        props.signUpUser(response.data[0], accessToken);
                         props.navigation.navigate('WaitTimeList');
                     })
                     .catch(function (error) {
@@ -297,6 +297,27 @@ async function performLogin(user, props, token) {
             }
         });
 }
+// async function logOutAsync() {
+//     let clientId = '732604278812-g2vo8f8bg9dgge5815ihl7jqs3etri8a.apps.googleusercontent.com';
+//     await Expo.Google.logOutAsync(clientId, this.props.currentUser.accessToken);
+//     /* `accessToken` is now invalid and cannot be used to get data from the Google API with HTTP requests */
+//     this.props.signOutUser();
+//
+//
+//     // const { type, accessToken } = await Expo.Google.logInAsync({ clientId });
+//     // const result = await Expo.Google.logInAsync({
+//     //     iosClientId: '732604278812-g2vo8f8bg9dgge5815ihl7jqs3etri8a.apps.googleusercontent.com',
+//     //     iosStandaloneAppClientId: '732604278812-22e53600nlruo7a89712cibvab927jbf.apps.googleusercontent.com',
+//     //     scopes: ['profile', 'email'],
+//     // });
+//     //
+//     // if (result.type === 'success') {
+//     //     /* Log-Out */
+//     //     await Expo.Google.logOutAsync({ clientId}, result.accessToken );
+//     //     /* `accessToken` is now invalid and cannot be used to get data from the Google API with HTTP requests */
+//     //     this.props.signOutUser();
+//     // }
+// }
 
 async function signInWithGoogleAsync() {
     try {
@@ -307,7 +328,6 @@ async function signInWithGoogleAsync() {
         });
 
         if (result.type === 'success') {
-            console.log(result.user);
             let first_name = result.user.givenName;
             let last_name = result.user.familyName;
             let email = result.user.email;
@@ -317,7 +337,7 @@ async function signInWithGoogleAsync() {
             let staff = false;
             let customer = true;
             let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
-            performLogin(user, this.props, this.state.token)
+            performLogin(user, result.accessToken, this.props, this.state.token)
         } else {
             return {cancelled: true};
         }
@@ -341,7 +361,6 @@ async function signInWithFacebook() {
         let customer = true;
         let pictureUrl = picture.data.url;
         let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
-        console.log(user);
         performLogin(user, this.props)
     }
 }

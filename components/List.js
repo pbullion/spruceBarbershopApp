@@ -129,11 +129,11 @@ export default class ListComponent extends React.Component {
                         visible={this.state.modalVisible}>
                         <View style={styles.modal}>
                             <HeaderImageScrollView
-                                maxHeight={300}
+                                maxHeight={350}
                                 minHeight={100}
                                 headerImage={{ uri: this.state.item.staffpicture }}
                                 renderForeground={() => (
-                                    <View style={{ height: 300, justifyContent: "flex-end", alignItems: "center" }} >
+                                    <View style={{ height: 350, justifyContent: "flex-end", alignItems: "center" }} >
                                         <View style={styles.buttonView}>
                                             <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'flex-end' }}>
                                                 <SocialIcon

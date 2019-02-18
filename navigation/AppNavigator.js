@@ -4,7 +4,7 @@ import { createSwitchNavigator, createStackNavigator } from 'react-navigation';
 import MainTabNavigator from './MainTabNavigator';
 import LoginScreen from '../screens/LoginScreen';
 import SignUpScreen from '../screens/SignUpScreen';
-import SignUpPageScreen from '../screens/SignUpPageScreen';
+import SignUpPageScreen from '../screens/WaitListSignUpScreen';
 import SignedInTabNavigator from "./SignedInTabNavigator";
 const SignInStack = createStackNavigator({ SignIn: LoginScreen });
 const SignUpStack = createStackNavigator({ SignUp: SignUpScreen });
