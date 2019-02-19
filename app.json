@@ -20,6 +20,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "facebookScheme": "fb360415578030850",
+    "facebookAppId": "360415578030850",
+    "facebookDisplayName": "spruceBarbershopApp",
     "ios": {
       "bundleIdentifier": "com.poke.spruceBarbershopApp",
       "buildNumber": "0.0.40",
@@ -27,7 +30,7 @@
       "isTabletOnly": false,
       "config": {
         "googleSignIn": {
-          "reservedClientId": "com.googleusercontent.apps.732604278812-22e53600nlruo7a89712cibvab927jbf"
+          "reservedClientId": "com.googleusercontent.apps.968547614348-eokbatrmmtsfgademfaitubna2dafpgv"
         }
       }
     }

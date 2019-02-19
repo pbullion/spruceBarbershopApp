@@ -162,13 +162,13 @@ class HomeScreen extends React.Component {
                         </View>
                     </View> :
                     <View style={styles.userView}>
-                        <View style={{ width: '50%' }}>
+                        <View>
                             {this.props.currentUser.pictureurl ? <Image style={styles.userImage} source={{uri: this.props.currentUser.pictureurl}} /> : null}
                         </View>
-                        <View style={{ width: '50%', alignItems: 'center', }}>
-                            <Text style={{ fontSize: 25, paddingBottom: 10 }}>Welcome, {this.props.currentUser.first_name}</Text>
+                        <View style={{alignItems: 'center', }}>
+                            <Text style={{ fontSize: 25, paddingBottom: 10, fontFamily: 'neutra-text-bold' }}>Welcome, {this.props.currentUser.first_name}</Text>
                             <TouchableOpacity onPress={() => this.handlePress()}>
-                                <Text style={{ fontSize: 25 }}>LOG OUT</Text>
+                                <Text style={{ fontSize: 25, fontFamily: 'neutra-text-light' }}>LOG OUT</Text>
                             </TouchableOpacity>
                         </View>
                     </View>
@@ -322,8 +322,8 @@ async function performLogin(user, accessToken, props, token) {
 async function signInWithGoogleAsync() {
     try {
         const result = await Expo.Google.logInAsync({
-            iosClientId: '732604278812-g2vo8f8bg9dgge5815ihl7jqs3etri8a.apps.googleusercontent.com',
-            iosStandaloneAppClientId: '732604278812-22e53600nlruo7a89712cibvab927jbf.apps.googleusercontent.com',
+            iosClientId: '968547614348-eokbatrmmtsfgademfaitubna2dafpgv.apps.googleusercontent.com',
+            iosStandaloneAppClientId: '968547614348-t18b4fbe1liusiof5rmuot61ijl2h9le.apps.googleusercontent.com',
             scopes: ['profile', 'email'],
         });
 
@@ -395,11 +395,11 @@ const styles = StyleSheet.create({
     },
     userImage: {
         flexGrow:1,
-        height: 125,
-        width: 125,
+        height: 110,
+        width: 110,
         alignItems: 'center',
         justifyContent:'center',
-        borderRadius: 60,
+        borderRadius: 55,
         marginBottom: 10
     },
     customerButton: {
@@ -468,11 +468,11 @@ const styles = StyleSheet.create({
 
     },
     userView: {
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
         alignItems: 'center',
         flexDirection: 'row',
         width: '100%',
-        marginBottom: 5,
+        marginBottom: 0,
         marginTop: 10,
         paddingHorizontal: 15
     },

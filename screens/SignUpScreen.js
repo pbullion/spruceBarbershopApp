@@ -70,7 +70,7 @@ class SignUpScreen extends Component {
                             {/*<Text style={styles.emailButtonText}>Sign up with Email</Text>*/}
                         {/*</Animatable.View>*/}
                     {/*</TouchableOpacity>*/}
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('App')}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('WaitTimeList')}>
                         <Animatable.View animation="bounceInUp" style={styles.customerButton}>
                             <Text style={styles.customerButtonText}>Go Back Home</Text>
                         </Animatable.View>

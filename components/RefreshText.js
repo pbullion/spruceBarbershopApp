@@ -11,7 +11,7 @@ export default class RefreshText extends React.Component {
 
     render() {
         return (
-            <Text style={{ fontSize: 12 }}>Pull down to refresh</Text>
+            <Text style={{ fontSize: 13, marginBottom: 3 }}>Pull down to refresh</Text>
         );
     }
 }

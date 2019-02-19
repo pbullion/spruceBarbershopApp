@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    Alert,
     Dimensions,
     ScrollView,
     StyleSheet,
@@ -33,9 +34,8 @@ class JoinWaitListScreen7 extends React.Component {
 
     handleSubmit = (props) => {
         let waitList = props.waitListFlow;
-        let currentUser = null;
-        console.log(props.currentUser.shop);
-        if (props.currentUser.shop === false) {
+        let currentUser = props.currentUser;
+        if (props.currentUser.shop === false || null) {
             currentUser = props.currentUser;
         } else if (props.currentUser.shop === true) {
             currentUser = props.waitListUser;
@@ -50,11 +50,23 @@ class JoinWaitListScreen7 extends React.Component {
             }
         })
             .then(function (response) {
-                console.log(props);
-                props.refreshTrue(true);
-                props.resetWaitlist();
-                props.signOutWaitListUser();
-                props.navigation.navigate('WaitTimeList');
+                console.log(response.message);
+                if (response.message) {
+                    Alert.alert(
+                        'You are already on the list!',
+                        '',
+                        [
+                            {text: 'OK', onPress: () => props.props.navigation.navigate('WaitTimeList')}
+                        ],
+                        { cancelable: false }
+                    );
+                    // props.navigation.navigate('WaitTimeList');
+                } else {
+                    props.refreshTrue(true);
+                    props.resetWaitlist();
+                    props.signOutWaitListUser();
+                    props.navigation.navigate('WaitTimeList');
+                }
             })
             .catch(function (error) {
                 console.log('error', error)

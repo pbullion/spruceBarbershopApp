@@ -141,8 +141,8 @@ class WaitTimesScreen extends React.Component {
 
     handleJoinStaffWaitlist(item) {
         this.props.addStaffMember(item);
-        console.log("here is the wait list current user", this.props.currentUser.shop);
-        {this.props.currentUser.shop === false ? this.props.navigation.navigate('WaitTimes3') : this.props.navigation.navigate('WaitListSignUp')}
+        console.log("here is the wait list current user", this.props.currentUser);
+        {this.props.currentUser.shop === true ? this.props.navigation.navigate('WaitListSignUp') : this.props.navigation.navigate('WaitTimes3')}
     };
 
     addCustomer(item) {
@@ -405,7 +405,7 @@ async function signInWithGoogleAsync() {
     try {
         const result = await Expo.Google.logInAsync({
             iosClientId: '732604278812-g2vo8f8bg9dgge5815ihl7jqs3etri8a.apps.googleusercontent.com',
-            iosStandaloneAppClientId: '732604278812-22e53600nlruo7a89712cibvab927jbf.apps.googleusercontent.com',
+            iosStandaloneAppClientId: '968547614348-t18b4fbe1liusiof5rmuot61ijl2h9le.apps.googleusercontent.com',
             scopes: ['profile', 'email'],
         });
 

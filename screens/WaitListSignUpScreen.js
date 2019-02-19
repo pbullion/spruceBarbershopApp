@@ -49,7 +49,7 @@ class WaitListSignUpScreen extends Component {
                             <Text style={styles.logInButtonText}>Join the List</Text>
                         </Animatable.View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => this.props.navigation.navigate('WaitTimesList')}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('WaitTimeList')}>
                         <Animatable.View animation="bounceInDown" style={styles.customerButton}>
                             <Text style={styles.customerButtonText}>Go Back Home</Text>
                         </Animatable.View>
