@@ -20,7 +20,6 @@ class TouchableServicesList extends React.Component {
     }
 
     selectItem = (props, secondService, item) => {
-        console.log("******************************************************************", secondService);
         if (!secondService) {
             this.props.addService1(item);
             Alert.alert(

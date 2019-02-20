@@ -13,6 +13,7 @@ export default class ShaveServicesScreen extends React.Component {
         title: 'Shave Services',
         headerStyle: {
             backgroundColor: 'rgba(53, 96, 68, 1)',
+            fontFamily: 'neutra-text-bold'
         },
         headerTintColor: '#fff',
         headerTitleStyle: {

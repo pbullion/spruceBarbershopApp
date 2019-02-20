@@ -25,6 +25,7 @@ class JoinWaitListScreen7 extends React.Component {
         title: 'Join the Waitlist',
         headerStyle: {
             backgroundColor: 'rgba(53, 96, 68, 1)',
+            fontFamily: 'neutra-text-bold'
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -35,11 +36,14 @@ class JoinWaitListScreen7 extends React.Component {
     handleSubmit = (props) => {
         let waitList = props.waitListFlow;
         let currentUser = props.currentUser;
+        console.log("***********props.currentUser", props.currentUser);
         if (props.currentUser.shop === false || null) {
             currentUser = props.currentUser;
+            console.log("here is the current user", currentUser);
         } else if (props.currentUser.shop === true) {
             currentUser = props.waitListUser;
-            waitList.mobile_join = false
+            waitList.mobile_join = false;
+            console.log("here is the current user in the true statement", currentUser);
         }
         axios.post(`http://52.37.61.234:3001/waitlist`, {
             waitList,
@@ -50,17 +54,15 @@ class JoinWaitListScreen7 extends React.Component {
             }
         })
             .then(function (response) {
-                console.log(response.message);
-                if (response.message) {
+                if (response.data.message) {
                     Alert.alert(
                         'You are already on the list!',
                         '',
                         [
-                            {text: 'OK', onPress: () => props.props.navigation.navigate('WaitTimeList')}
+                            {text: 'OK', onPress: () => props.navigation.navigate('WaitTimeList')}
                         ],
                         { cancelable: false }
                     );
-                    // props.navigation.navigate('WaitTimeList');
                 } else {
                     props.refreshTrue(true);
                     props.resetWaitlist();

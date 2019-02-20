@@ -13,6 +13,7 @@ export default class BeardServicesScreen extends React.Component {
         title: 'Beard Services',
         headerStyle: {
             backgroundColor: 'rgba(53, 96, 68, 1)',
+            fontFamily: 'neutra-text-bold'
         },
         headerTintColor: '#fff',
         headerTitleStyle: {

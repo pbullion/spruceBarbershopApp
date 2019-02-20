@@ -260,7 +260,20 @@ async function performLogin(user, accessToken, props, token) {
         }
     })
         .then(function (response) {
-            if (response.data.length > 0) {
+            if (response.data.length > 0 && token) {
+                axios.put(`http://52.37.61.234:3001/users/socialSignUp`, {
+                    user,
+                    token
+                }, {
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                })
+                    .then(function (response) {
+                        props.signInUser(response.data[0], accessToken);
+                        props.navigation.navigate('WaitTimeList');
+                    })
+            } else if (response.data.length > 0) {
                 props.signInUser(response.data[0], accessToken);
                 props.navigation.navigate('WaitTimeList');
             } else if (token) {
@@ -361,7 +374,7 @@ async function signInWithFacebook() {
         let customer = true;
         let pictureUrl = picture.data.url;
         let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
-        performLogin(user, this.props)
+        performLogin(user, null, this.props, null)
     }
 }
 

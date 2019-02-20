@@ -39,7 +39,7 @@ export const signUpUser = (user, accessToken) => {
 };
 
 export const signInWaitListUser = (user) => {
-    console.log(user);
+    // console.log(user);
     const action = {
         type: SIGN_IN_WAITLIST_USER,
         user

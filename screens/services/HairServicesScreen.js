@@ -13,6 +13,7 @@ export default class HairServicesScreen extends React.Component {
         title: 'Hair Cut Services',
         headerStyle: {
             backgroundColor: 'rgba(53, 96, 68, 1)',
+            fontFamily: 'neutra-text-bold'
         },
         headerTintColor: '#fff',
         headerTitleStyle: {

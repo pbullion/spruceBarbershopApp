@@ -21,6 +21,7 @@ class JoinWaitListScreen3 extends React.Component {
         title: 'Join the Waitlist',
         headerStyle: {
             backgroundColor: 'rgba(53, 96, 68, 1)',
+            fontFamily: 'neutra-text-bold'
         },
         headerTintColor: '#fff',
         headerTitleStyle: {

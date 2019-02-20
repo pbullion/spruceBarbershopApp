@@ -13,6 +13,7 @@ export default class StylistsScreen extends React.Component {
         title: 'Stylists',
         headerStyle: {
             backgroundColor: 'rgba(53, 96, 68, 1)',
+            fontFamily: 'neutra-text-bold'
         },
         headerTintColor: '#fff',
         headerTitleStyle: {

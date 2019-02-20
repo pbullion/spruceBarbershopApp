@@ -70,8 +70,8 @@ class WaitTimesScreen extends React.Component {
                                     // } else {
                                     //     res.data[i].service2_time = res.data[i].res.data[i].service2_time
                                     // }
-                                    // console.log("******************", res.data[i].service2_time);
-                                    // console.log("asdfasdfasdfasdf", res.data[i].res.data[i].service2_time);
+                                    // // console.log("******************", res.data[i].service2_time);
+                                    // // console.log("asdfasdfasdfasdf", res.data[i].res.data[i].service2_time);
                                     if (res.data[i].in_progress) {
                                         res.data[i].remainingTime = res.data[i].service1_time + res.data[i].service2_time - parseInt(moment(res.data[i].start_time, "HH:mm").fromNow(true), 10);
                                         if (!res.data[i].remainingTime) {
@@ -100,6 +100,7 @@ class WaitTimesScreen extends React.Component {
     title: 'Wait List',
     headerStyle: {
         backgroundColor: 'rgba(53, 96, 68, 1)',
+        fontFamily: 'neutra-text-bold'
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
@@ -114,7 +115,7 @@ class WaitTimesScreen extends React.Component {
                 {text: 'Add', onPress: () => this.addCustomer(item)},
                 {text: 'Finished', onPress: () => this.finishCustomer(item)},
                 {text: 'Delete', onPress: () => this.removeCustomer(item)},
-                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+                // {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
             ],
             { cancelable: false }
         )
@@ -125,7 +126,7 @@ class WaitTimesScreen extends React.Component {
             '',
             [
                 {text: 'Finished', onPress: () => this.finishCustomer(item)},
-                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+                // {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
             ],
             { cancelable: false }
         )
@@ -141,7 +142,7 @@ class WaitTimesScreen extends React.Component {
 
     handleJoinStaffWaitlist(item) {
         this.props.addStaffMember(item);
-        console.log("here is the wait list current user", this.props.currentUser);
+        // console.log("here is the wait list current user", this.props.currentUser);
         {this.props.currentUser.shop === true ? this.props.navigation.navigate('WaitListSignUp') : this.props.navigation.navigate('WaitTimes3')}
     };
 
@@ -238,7 +239,7 @@ class WaitTimesScreen extends React.Component {
                               {/*{this.state.waitTimesForStaff ? this.state.waitTimesForStaff.map((item3, index) => {*/}
                                   {/*for (let i = 0; i < this.state.waitTimesForStaff.length; i++) {*/}
                                       {/*if (item3.time.staffid === item.staffid) {*/}
-                                          {/*console.log('item 3', item3);*/}
+                                          // {/*console.log('item 3', item3);*/}
                                           {/*return (*/}
                                               {/*<Text key={index} style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item3.time.waittime > 60 ? this._timeConvert(item3.time.waittime) : item3.time.waittime + " min."} wait time</Text>*/}
                                           {/*)*/}
@@ -365,7 +366,7 @@ class WaitTimesScreen extends React.Component {
 
 
 function mapStateToProps(state) {
-    console.log('state', state);
+    // console.log('state', state);
     return {
         currentUser: state.currentUser
     }
@@ -378,7 +379,7 @@ async function performLogin(user, props) {
         }
     })
         .then(function (response) {
-            console.log(response);
+            // console.log(response);
             if (response.data.length > 0) {
                 props.signInUser(response.data[0]);
                 props.navigation.navigate('WaitTimeList');
@@ -395,7 +396,7 @@ async function performLogin(user, props) {
                         props.navigation.navigate('WaitTimeList');
                     })
                     .catch(function (error) {
-                        console.log('error', error)
+                        // console.log('error', error)
                     })
             }
         });
@@ -404,13 +405,13 @@ async function performLogin(user, props) {
 async function signInWithGoogleAsync() {
     try {
         const result = await Expo.Google.logInAsync({
-            iosClientId: '732604278812-g2vo8f8bg9dgge5815ihl7jqs3etri8a.apps.googleusercontent.com',
+            iosClientId: '968547614348-eokbatrmmtsfgademfaitubna2dafpgv.apps.googleusercontent.com',
             iosStandaloneAppClientId: '968547614348-t18b4fbe1liusiof5rmuot61ijl2h9le.apps.googleusercontent.com',
             scopes: ['profile', 'email'],
         });
 
         if (result.type === 'success') {
-            console.log(result.user);
+            // // console.log(result.user);
             let first_name = result.user.givenName;
             let last_name = result.user.familyName;
             let email = result.user.email;
@@ -444,7 +445,7 @@ async function signInWithFacebook() {
         let customer = true;
         let pictureUrl = picture.data.url;
         let user = {first_name, last_name, email, phone_number, pictureUrl, owner, staff, customer};
-        console.log(user);
+        // // console.log(user);
         performLogin(user, this.props)
     }
 }

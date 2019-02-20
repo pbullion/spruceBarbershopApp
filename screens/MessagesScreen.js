@@ -17,6 +17,7 @@ export default class StaffScreen extends React.Component {
       title: 'Messages',
       headerStyle: {
           backgroundColor: 'rgba(53, 96, 68, 1)',
+          fontFamily: 'neutra-text-bold'
       },
       headerTintColor: '#fff',
       headerTitleStyle: {
