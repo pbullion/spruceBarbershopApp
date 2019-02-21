@@ -115,9 +115,9 @@ class WaitTimesScreen extends React.Component {
                 {text: 'Add', onPress: () => this.addCustomer(item)},
                 {text: 'Finished', onPress: () => this.finishCustomer(item)},
                 {text: 'Delete', onPress: () => this.removeCustomer(item)},
-                // {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+                {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
             ],
-            { cancelable: false }
+            { cancelable: true }
         )
     }
     handlePressInProgress(item) {

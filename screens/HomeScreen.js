@@ -87,6 +87,8 @@ class HomeScreen extends React.Component {
 
     componentDidMount() {
         this._onRefresh();
+        this.registerForPushNotifications();
+        Expo.Notifications.setBadgeNumberAsync(0);
     };
 
     _facebookHandleOpenWithWebBrowser = () => {
@@ -98,11 +100,12 @@ class HomeScreen extends React.Component {
     };
 
     registerForPushNotifications = async () => {
-        Expo.Notifications.setBadgeNumberAsync(0);
+        console.log("in the token");
         const { status: existingStatus } = await Permissions.getAsync(
             Permissions.NOTIFICATIONS
         );
         let finalStatus = existingStatus;
+
 
         // only ask if permissions have not already been determined, because
         // iOS won't necessarily prompt the user a second time.
@@ -120,9 +123,6 @@ class HomeScreen extends React.Component {
         let token = await Notifications.getExpoPushTokenAsync();
         this.setState({token: token});
     };
-    componentWillMount() {
-        this.registerForPushNotifications();
-    }
 
     render() {
       return (
@@ -260,7 +260,10 @@ async function performLogin(user, accessToken, props, token) {
         }
     })
         .then(function (response) {
+            console.log("response data TOKEN", token);
+            console.log(response.data);
             if (response.data.length > 0 && token) {
+                console.log("in the if statement with token****************");
                 axios.put(`http://52.37.61.234:3001/users/socialSignUp`, {
                     user,
                     token
@@ -269,10 +272,30 @@ async function performLogin(user, accessToken, props, token) {
                         'content-type': 'application/json'
                     }
                 })
-                    .then(function (response) {
+                    .then(function (newResponse) {
                         props.signInUser(response.data[0], accessToken);
                         props.navigation.navigate('WaitTimeList');
                     })
+                    .catch(function (error) {
+                        if (error.response) {
+                            // The request was made and the server responded with a status code
+                            // that falls out of the range of 2xx
+                            // console.log(error.response.data);
+                            // console.log(error.response.status);
+                            // console.log(error.response.headers);
+                            props.signInUser(response.data[0], accessToken);
+                            props.navigation.navigate('WaitTimeList');
+                        } else if (error.request) {
+                            // The request was made but no response was received
+                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                            // http.ClientRequest in node.js
+                            console.log(error.request);
+                        } else {
+                            // Something happened in setting up the request that triggered an Error
+                            console.log('Error', error.message);
+                        }
+                        console.log("error.config", error.config);
+                    });
             } else if (response.data.length > 0) {
                 props.signInUser(response.data[0], accessToken);
                 props.navigation.navigate('WaitTimeList');
@@ -293,6 +316,7 @@ async function performLogin(user, accessToken, props, token) {
                         console.log('error', error)
                     })
             } else {
+                console.log("already signed up and no token");
                 axios.post(`http://52.37.61.234:3001/users/socialSignUp`, {
                     user
                 }, {
