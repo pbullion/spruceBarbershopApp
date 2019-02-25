@@ -36,7 +36,6 @@ class JoinWaitListScreen7 extends React.Component {
     handleSubmit = (props) => {
         let waitList = props.waitListFlow;
         let currentUser = props.currentUser;
-        console.log("***********props.currentUser", props.currentUser);
         if (props.currentUser.shop === false || null) {
             currentUser = props.currentUser;
             console.log("here is the current user", currentUser);
