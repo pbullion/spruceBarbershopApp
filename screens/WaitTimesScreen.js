@@ -278,7 +278,7 @@ class WaitTimesScreen extends React.Component {
                                                           fontSize: 15,
                                                           textAlign: 'center',
                                                           marginTop: 5,
-                                                          fontFamily: 'neutra-text-light'
+                                                          fontFamily: 'neutra-text-bold'
                                                       }}>
                                                           {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
                                                       </Text>
@@ -308,7 +308,7 @@ class WaitTimesScreen extends React.Component {
                                               </View>
                                           </TouchableOpacity> :
                                           <View style={styles.waitListCard}>
-                                              <View>
+                                              <View style={{ width: '10%' }}>
                                                   <Text>{index < 1 ? null : index}</Text>
                                               </View>
                                               <View style={styles.waitListCardRemainingTime}>
@@ -323,7 +323,7 @@ class WaitTimesScreen extends React.Component {
                                                       fontSize: 15,
                                                       textAlign: 'center',
                                                       marginTop: 5,
-                                                      fontFamily: 'neutra-text-light'
+                                                      fontFamily: 'neutra-text-bold'
                                                   }}>
                                                       {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
                                                   </Text>
@@ -563,8 +563,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         // height: 115,
         paddingHorizontal: 20,
+        paddingVertical: 20,
         width: '100%',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         alignItems: 'center',
         flexDirection: 'row',
         // borderBottomWidth: Dimensions.get('window').width > 500 ? .5 : .2,
@@ -574,16 +575,16 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        padding: 20,
-        marginLeft: 10,
+        // padding: 20,
+        // marginLeft: 10,
         width: '35%'
     },
     waitListCardInfo: {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: 20,
-        width: '65%'
+        // padding: 20,
+        width: '55%'
     },
     waitListCardServices: {
         flexDirection: 'column',
