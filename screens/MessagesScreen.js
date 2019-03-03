@@ -54,13 +54,14 @@ export default class StaffScreen extends React.Component {
         }
             <RefreshText/>
             <View style={{ width: '100%', marginTop: 5 }}>
-                {this.state.messages ? this.state.messages.map((l,i) => {
+                {this.state.messages ? this.state.messages.reverse().map((l,i) => {
+                    console.log(l.date);
                     return (
                         <ListItem
                             key={i}
                             title={l.title}
                             titleStyle={{fontFamily: 'neutra-text-bold', marginBottom: 3}}
-                            rightTitle={moment(l.date).format("ddd, MMM Do")}
+                            rightTitle={moment(l.date).utcOffset('+06:00').format("ddd, MMM Do")}
                             rightTitleStyle={{fontFamily: 'neutra-text-bold', color: '#000000'}}
                             rightTitleNumberOfLines={2}
                             subtitle={l.body}
