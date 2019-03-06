@@ -5,7 +5,7 @@ import RefreshText from "../components/RefreshText";
 import {Button, SocialIcon} from "react-native-elements";
 import axios from "axios";
 import moment from 'moment';
-import {addStaffMember, signInUser, signUpUser} from "../actions";
+import {addStaffMember, signInUser, signUpUser, refreshFalse, refreshTrue} from "../actions";
 
 class WaitTimesScreen extends React.Component {
     constructor(props) {
@@ -18,9 +18,10 @@ class WaitTimesScreen extends React.Component {
     }
 
     _onRefresh = () => {
-        this.setState({refreshing: true});
+        // this.setState({refreshing: true});
         this._getStaff();
         this._getStaffWaitTimes();
+        this.setState({refreshing: false});
     };
 
     _timeConvert = time => {
@@ -37,7 +38,6 @@ class WaitTimesScreen extends React.Component {
     };
 
     _getStaffWaitTimes = () => {
-        this.setState({refreshing: false});
         axios.get(`http://52.37.61.234:3001/waitlist/totals`)
             .then(res => {
                 const lowestStaffWait = res.data[0].lowestWait;
@@ -47,7 +47,6 @@ class WaitTimesScreen extends React.Component {
             });
     };
     _getStaff = () => {
-        this.setState({refreshing: false});
         axios.get(`http://52.37.61.234:3001/staff/working`)
             .then(res => {
                 const staff = res.data;
@@ -147,21 +146,24 @@ class WaitTimesScreen extends React.Component {
     };
 
     addCustomer(item) {
-        axios.put(`http://52.37.61.234:3001/waitList/start/${item.waitlistid}`)
+        axios.put(`http://localhost:3001/waitList/start/${item.waitlistid}`)
             .then(res => {
+                this.props.refreshTrue(true);
                 this._onRefresh();
             });
     }
     finishCustomer(item) {
-        axios.put(`http://52.37.61.234:3001/waitList/done/${item.waitlistid}`)
+        axios.put(`http://localhost:3001/waitList/done/${item.waitlistid}`)
             .then(res => {
+                this.props.refreshTrue(true);
                 this._onRefresh();
             });
     }
 
     removeCustomer(item) {
-        axios.delete(`http://52.37.61.234:3001/waitList/${item.waitlistid}`)
+        axios.delete(`http://localhost:3001/waitList/${item.waitlistid}`)
             .then(res => {
+                this.props.refreshTrue(true);
                 this._onRefresh();
             });
     }
@@ -171,6 +173,12 @@ class WaitTimesScreen extends React.Component {
     }
 
     render() {
+        console.log('****************************refresh****************************', this.props.refresh);
+        if (this.props.refresh) {
+            this._onRefresh();
+            this.props.refreshFalse(false);
+        }
+        console.log("ldjsflksjhdflshdljfhsdfnsdlfnsdnflsdnf", this.state.refreshing);
     return (
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
           refreshControl={
@@ -181,13 +189,6 @@ class WaitTimesScreen extends React.Component {
           }
       >
           <RefreshText/>
-          {/*<TouchableOpacity*/}
-          {/*onPress={() => this.handleFirstAvailable(this.state.lowestStaffWait.time.staffid)}*/}
-          {/*>*/}
-          {/*<View style={styles.joinWaitListButton}>*/}
-          {/*<Text style={styles.joinWaitListButtonText}>First Available</Text>*/}
-          {/*</View>*/}
-          {/*</TouchableOpacity>*/}
           {this.props.currentUser.isLoggedIn ?
               null
               :
@@ -354,7 +355,8 @@ class WaitTimesScreen extends React.Component {
 function mapStateToProps(state) {
     // console.log('state', state);
     return {
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        refresh: state.refresh.refreshStatus
     }
 }
 
@@ -436,7 +438,7 @@ async function signInWithFacebook() {
     }
 }
 
-export default connect(mapStateToProps, {signInUser, signUpUser, addStaffMember})(WaitTimesScreen)
+export default connect(mapStateToProps, {signInUser, signUpUser, refreshFalse, refreshTrue, addStaffMember})(WaitTimesScreen)
 
 const styles = StyleSheet.create({
     container: {
