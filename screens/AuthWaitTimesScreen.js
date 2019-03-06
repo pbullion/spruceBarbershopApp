@@ -59,13 +59,14 @@ class WaitTimesScreen extends React.Component {
 
   render() {
     return (
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
           refreshControl={
           <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._onRefresh}
           />
       }
+    >
           <RefreshText/>
           <TouchableOpacity
               onPress={() => this.props.navigation.navigate('JoinWaitList')}
