@@ -181,7 +181,16 @@ class WaitTimesScreen extends React.Component {
           }
       >
           <RefreshText/>
-          {!this.props.currentUser.isLoggedIn ?
+          {/*<TouchableOpacity*/}
+          {/*onPress={() => this.handleFirstAvailable(this.state.lowestStaffWait.time.staffid)}*/}
+          {/*>*/}
+          {/*<View style={styles.joinWaitListButton}>*/}
+          {/*<Text style={styles.joinWaitListButtonText}>First Available</Text>*/}
+          {/*</View>*/}
+          {/*</TouchableOpacity>*/}
+          {this.props.currentUser.isLoggedIn ?
+              null
+              :
               <View style={styles.logInView}>
                   <Text style={{ fontSize: 20, marginTop: 10, fontFamily: 'neutra-text-light'}}>Log in / Sign Up</Text>
                   <Text style={{ fontSize: 20, marginBottom: 2, fontFamily: 'neutra-text-light'}}>using Google or Facebook</Text>
@@ -204,151 +213,138 @@ class WaitTimesScreen extends React.Component {
                           />
                       </TouchableOpacity>
                   </View>
-              </View> : null
+              </View>
           }
-          {/*<View style={{width: '75%'}}>*/}
-            {/*<Text style={{ fontSize: 20, marginTop: 10, fontFamily: 'neutra-text-light', textAlign: 'center'}}>Joining the waitlist from your phone will add $1 to your final total</Text>*/}
-          {/*</View>*/}
-          {/*{this.state.working ? this.state.staff.map((item, index) => {*/}
-              {/*if (item.isWorking) {*/}
-                  {/*return (*/}
-                      {/*<View style={{*/}
-                          {/*paddingVertical: 20,*/}
-                          {/*justifyContent: 'center',*/}
-                          {/*alignItems: 'center',*/}
-                          {/*borderBottomWidth: .3,*/}
-                          {/*width: '100%'*/}
-                      {/*}} key={index}>*/}
-                          {/*<View style={styles.nameHeader}>*/}
-                              {/*<Text*/}
-                                  {/*style={{fontSize: 25, textAlign: 'center', fontFamily: 'neutra-text-bold'}}>{item.first_name} {item.last_name}</Text>*/}
-                              {/*<Text style={{*/}
-                                  {/*fontSize: 20,*/}
-                                  {/*textAlign: 'center',*/}
-                                  {/*paddingVertical: 3,*/}
-                                  {/*fontFamily: 'neutra-text-light'*/}
-                              {/*}}>{item.barber ? "Barber" : "Stylist"}</Text>*/}
-                              {/*/!*{this.state.waitTimesForStaff ? this.state.waitTimesForStaff.map((item3, index) => {*!/*/}
-                                  {/*/!*for (let i = 0; i < this.state.waitTimesForStaff.length; i++) {*!/*/}
-                                      {/*/!*if (item3.time.staffid === item.staffid) {*!/*/}
-                                          {/*// /!*console.log('item 3', item3);*!/*/}
-                                          {/*/!*return (*!/*/}
-                                              {/*/!*<Text key={index} style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item3.time.waittime > 60 ? this._timeConvert(item3.time.waittime) : item3.time.waittime + " min."} wait time</Text>*!/*/}
-                                          {/*/!*)*!/*/}
-                                      {/*/!*}*!/*/}
-                                  {/*/!*}*!/*/}
-                              {/*/!*}) : null}*!/*/}
-                          {/*</View>*/}
-                          {/*{this.props.currentUser.isLoggedIn ?*/}
-                              {/*<TouchableOpacity*/}
-                                  {/*onPress={() => this.handleJoinStaffWaitlist(item)}*/}
-                              {/*>*/}
-                                  {/*<View style={styles.joinStaffWaitListButton}>*/}
-                                      {/*<Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait*/}
-                                          {/*list</Text>*/}
-                                  {/*</View>*/}
-                              {/*</TouchableOpacity>*/}
-                              {/*: null}*/}
-                          {/*{this.state[item.last_name] ? this.state[item.last_name].map((item2, index) => {*/}
-                              {/*return (*/}
-                                  {/*<View key={index}>*/}
-                                      {/*{this.props.currentUser.staff ?*/}
-                                          {/*<TouchableOpacity onPress={() => this.handlePress(item2)}>*/}
-                                              {/*<View style={styles.waitListCard}>*/}
-                                                  {/*<View>*/}
-                                                      {/*<Text>{index < 1 ? null : index}</Text>*/}
-                                                  {/*</View>*/}
-                                                  {/*<View style={styles.waitListCardRemainingTime}>*/}
-                                                      {/*<Text style={{*/}
-                                                          {/*fontWeight: 'bold',*/}
-                                                          {/*fontSize: 15,*/}
-                                                          {/*textAlign: 'center',*/}
-                                                          {/*fontFamily: 'neutra-text-light'*/}
-                                                      {/*}}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>*/}
-                                                      {/*<Text style={{*/}
-                                                          {/*fontWeight: 'bold',*/}
-                                                          {/*fontSize: 15,*/}
-                                                          {/*textAlign: 'center',*/}
-                                                          {/*marginTop: 5,*/}
-                                                          {/*fontFamily: 'neutra-text-bold'*/}
-                                                      {/*}}>*/}
-                                                          {/*{item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}*/}
-                                                      {/*</Text>*/}
-                                                  {/*</View>*/}
-                                                  {/*<View style={styles.waitListCardInfo}>*/}
-                                                      {/*<Text style={{*/}
-                                                          {/*fontWeight: 'bold',*/}
-                                                          {/*fontSize: 20,*/}
-                                                          {/*fontFamily: 'neutra-text-bold'*/}
-                                                      {/*}}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>*/}
-                                                      {/*<View style={styles.waitListCardServices}>*/}
-                                                          {/*<View style={styles.waitListCardService}>*/}
-                                                              {/*<Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service1_name}</Text>*/}
-                                                              {/*<Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service1_time} min.</Text>*/}
-                                                          {/*</View>*/}
-                                                          {/*{item2.service2_id ? <View style={styles.waitListCardService}><Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service2_name}</Text>*/}
-                                                                  {/*<Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service2_time} min.</Text></View>*/}
-                                                              {/*: null}*/}
-                                                      {/*</View>*/}
-                                                      {/*<Text*/}
-                                                          {/*style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}*/}
-                                                      {/*</Text>*/}
-                                                      {/*<Text*/}
-                                                          {/*style={{paddingTop: 5, fontFamily: 'neutra-text-bold', fontWeight: 'bold'}}>{item2.mobile_join ? "JOINED FROM APP" : null}*/}
-                                                      {/*</Text>*/}
-                                                  {/*</View>*/}
-                                              {/*</View>*/}
-                                          {/*</TouchableOpacity> :*/}
-                                          {/*<View style={styles.waitListCard}>*/}
-                                              {/*<View style={{ width: '10%' }}>*/}
-                                                  {/*<Text>{index < 1 ? null : index}</Text>*/}
-                                              {/*</View>*/}
-                                              {/*<View style={styles.waitListCardRemainingTime}>*/}
-                                                  {/*<Text style={{*/}
-                                                      {/*fontWeight: 'bold',*/}
-                                                      {/*fontSize: 15,*/}
-                                                      {/*textAlign: 'center',*/}
-                                                      {/*fontFamily: 'neutra-text-light'*/}
-                                                  {/*}}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>*/}
-                                                  {/*<Text style={{*/}
-                                                      {/*fontWeight: 'bold',*/}
-                                                      {/*fontSize: 15,*/}
-                                                      {/*textAlign: 'center',*/}
-                                                      {/*marginTop: 5,*/}
-                                                      {/*fontFamily: 'neutra-text-bold'*/}
-                                                  {/*}}>*/}
-                                                      {/*{item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}*/}
-                                                  {/*</Text>*/}
-                                              {/*</View>*/}
-                                              {/*<View style={styles.waitListCardInfo}>*/}
-                                                  {/*<Text style={{*/}
-                                                      {/*fontWeight: 'bold',*/}
-                                                      {/*fontSize: 20,*/}
-                                                      {/*fontFamily: 'neutra-text-bold'*/}
-                                                  {/*}}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>*/}
-                                                  {/*<View style={styles.waitListCardServices}>*/}
-                                                      {/*<View style={styles.waitListCardService}>*/}
-                                                          {/*<Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service1_name}</Text>*/}
-                                                          {/*<Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service1_time} min.</Text>*/}
-                                                      {/*</View>*/}
-                                                      {/*{item2.service2_id ? <View style={styles.waitListCardService}><Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service2_name}</Text><Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service2_time} min.</Text></View>*/}
-                                                          {/*: null}*/}
-                                                  {/*</View>*/}
-                                                  {/*<Text*/}
-                                                      {/*style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}*/}
-                                                  {/*</Text>*/}
-                                                  {/*<Text*/}
-                                                      {/*style={{paddingTop: 5, fontFamily: 'neutra-text-bold', fontWeight: 'bold'}}>{item2.mobile_join ? "JOINED FROM APP" : null}</Text>*/}
-                                              {/*</View>*/}
-                                          {/*</View>*/}
-                                      {/*}*/}
-                                  {/*</View>*/}
-                              {/*)*/}
-                          {/*}) : null};*/}
-                      {/*</View>*/}
-                  {/*)*/}
-              {/*}*/}
-          {/*}) : <Text style={{fontFamily: 'neutra-text-light', fontSize: 40, marginTop: 100}}>We are closed</Text>};*/}
+          <View style={{width: '75%'}}>
+            <Text style={{ fontSize: 20, marginTop: 10, fontFamily: 'neutra-text-light', textAlign: 'center'}}>Joining the waitlist from your phone will add $1 to your final total</Text>
+          </View>
+          {this.state.working === true ? this.state.staff.map((item, index) => {
+              if (item.isWorking) {
+                  return (
+                      <View style={{
+                          paddingVertical: 20,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          borderBottomWidth: .3,
+                          width: '100%'
+                      }} key={index}>
+                          <View style={styles.nameHeader}>
+                              <Text style={{fontSize: 25, textAlign: 'center', fontFamily: 'neutra-text-bold'}}>{item.first_name} {item.last_name}</Text>
+                              <Text style={{
+                                  fontSize: 20,
+                                  textAlign: 'center',
+                                  paddingVertical: 3,
+                                  fontFamily: 'neutra-text-light'
+                              }}>{item.barber ? "Barber" : "Stylist"}</Text>
+                          </View>
+                          {this.props.currentUser.isLoggedIn ?
+                              <TouchableOpacity
+                                  onPress={() => this.handleJoinStaffWaitlist(item)}
+                              >
+                                  <View style={styles.joinStaffWaitListButton}>
+                                      <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait
+                                          list</Text>
+                                  </View>
+                              </TouchableOpacity>
+                              : null}
+                          {this.state[item.last_name] ? this.state[item.last_name].map((item2, index) => {
+                              return (
+                                  <View key={index}>
+                                      {this.props.currentUser.staff ?
+                                          <TouchableOpacity onPress={() => this.handlePress(item2)}>
+                                              <View style={styles.waitListCard}>
+                                                  <View>
+                                                      <Text>{index < 1 ? null : index}</Text>
+                                                  </View>
+                                                  <View style={styles.waitListCardRemainingTime}>
+                                                      <Text style={{
+                                                          fontWeight: 'bold',
+                                                          fontSize: 15,
+                                                          textAlign: 'center',
+                                                          fontFamily: 'neutra-text-light'
+                                                      }}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
+                                                      <Text style={{
+                                                          fontWeight: 'bold',
+                                                          fontSize: 15,
+                                                          textAlign: 'center',
+                                                          marginTop: 5,
+                                                          fontFamily: 'neutra-text-bold'
+                                                      }}>
+                                                          {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
+                                                      </Text>
+                                                  </View>
+                                                  <View style={styles.waitListCardInfo}>
+                                                      <Text style={{
+                                                          fontWeight: 'bold',
+                                                          fontSize: 20,
+                                                          fontFamily: 'neutra-text-bold'
+                                                      }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
+                                                      <View style={styles.waitListCardServices}>
+                                                          <View style={styles.waitListCardService}>
+                                                              <Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service1_name}</Text>
+                                                              <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service1_time} min.</Text>
+                                                          </View>
+                                                          {item2.service2_id ? <View style={styles.waitListCardService}><Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service2_name}</Text>
+                                                                  <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service2_time} min.</Text></View>
+                                                              : null}
+                                                      </View>
+                                                      <Text
+                                                          style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}
+                                                      </Text>
+                                                      <Text
+                                                          style={{paddingTop: 5, fontFamily: 'neutra-text-bold', fontWeight: 'bold'}}>{item2.mobile_join ? "JOINED FROM APP" : null}
+                                                      </Text>
+                                                  </View>
+                                              </View>
+                                          </TouchableOpacity> :
+                                          <View style={styles.waitListCard}>
+                                              <View style={{ width: '10%' }}>
+                                                  <Text>{index < 1 ? null : index}</Text>
+                                              </View>
+                                              <View style={styles.waitListCardRemainingTime}>
+                                                  <Text style={{
+                                                      fontWeight: 'bold',
+                                                      fontSize: 15,
+                                                      textAlign: 'center',
+                                                      fontFamily: 'neutra-text-light'
+                                                  }}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
+                                                  <Text style={{
+                                                      fontWeight: 'bold',
+                                                      fontSize: 15,
+                                                      textAlign: 'center',
+                                                      marginTop: 5,
+                                                      fontFamily: 'neutra-text-bold'
+                                                  }}>{item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}</Text>
+                                              </View>
+                                              <View style={styles.waitListCardInfo}>
+                                                  <Text style={{
+                                                      fontWeight: 'bold',
+                                                      fontSize: 20,
+                                                      fontFamily: 'neutra-text-bold'
+                                                  }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
+                                                  <View style={styles.waitListCardServices}>
+                                                      <View style={styles.waitListCardService}>
+                                                          <Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service1_name}</Text>
+                                                          <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service1_time} min.</Text>
+                                                      </View>
+                                                      {item2.service2_id ? <View style={styles.waitListCardService}><Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center'}}>{item2.service2_name}</Text><Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service2_time} min.</Text></View>
+                                                          : null}
+                                                  </View>
+                                                  <Text
+                                                      style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}
+                                                  </Text>
+                                                  <Text
+                                                      style={{paddingTop: 5, fontFamily: 'neutra-text-bold', fontWeight: 'bold'}}>{item2.mobile_join ? "JOINED FROM APP" : null}</Text>
+                                              </View>
+                                          </View>
+                                      }
+                                  </View>
+                              )
+                          }) : null}
+                      </View>
+                  )
+              }
+          }) : <Text style={{fontFamily: 'neutra-text-light', fontSize: 40, marginTop: 100}}>We are closed</Text>}
       </ScrollView>
     );
   }
