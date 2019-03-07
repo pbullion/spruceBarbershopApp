@@ -25,7 +25,7 @@
     "facebookDisplayName": "spruceBarbershopApp",
     "ios": {
       "bundleIdentifier": "com.poke.spruceBarbershopApp",
-      "buildNumber": "0.0.49",
+      "buildNumber": "0.0.50",
       "supportsTablet": true,
       "isTabletOnly": false,
       "config": {
