@@ -146,14 +146,14 @@ class WaitTimesScreen extends React.Component {
     };
 
     addCustomer(item) {
-        axios.put(`http://localhost:3001/waitList/start/${item.waitlistid}`)
+        axios.put(`http://52.37.61.234:3001/waitList/start/${item.waitlistid}`)
             .then(res => {
                 this.props.refreshTrue(true);
                 this._onRefresh();
             });
     }
     finishCustomer(item) {
-        axios.put(`http://localhost:3001/waitList/done/${item.waitlistid}`)
+        axios.put(`http://52.37.61.234:3001/waitList/done/${item.waitlistid}`)
             .then(res => {
                 this.props.refreshTrue(true);
                 this._onRefresh();
@@ -161,7 +161,7 @@ class WaitTimesScreen extends React.Component {
     }
 
     removeCustomer(item) {
-        axios.delete(`http://localhost:3001/waitList/${item.waitlistid}`)
+        axios.delete(`http://52.37.61.234:3001/waitList/${item.waitlistid}`)
             .then(res => {
                 this.props.refreshTrue(true);
                 this._onRefresh();
@@ -173,12 +173,10 @@ class WaitTimesScreen extends React.Component {
     }
 
     render() {
-        console.log('****************************refresh****************************', this.props.refresh);
         if (this.props.refresh) {
             this._onRefresh();
             this.props.refreshFalse(false);
         }
-        console.log("ldjsflksjhdflshdljfhsdfnsdlfnsdnflsdnf", this.state.refreshing);
     return (
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
           refreshControl={
