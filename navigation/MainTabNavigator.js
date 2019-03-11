@@ -56,7 +56,7 @@ ProductsStack.navigationOptions = {
     tabBarIcon: ({ focused }) => (
         <TabBarIcon
             focused={focused}
-            name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
+            name={Platform.OS === 'ios' ? `ios-cut` : 'md-cut'}
         />
     ),
     tabBarOptions: {
@@ -79,7 +79,7 @@ ServicesStack.navigationOptions = {
     tabBarIcon: ({ focused }) => (
         <TabBarIcon
             focused={focused}
-            name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
+            name={Platform.OS === 'ios' ? `ios-cut` : 'md-cut'}
         />
     ),
     tabBarOptions: {
@@ -97,7 +97,7 @@ MessagesStack.navigationOptions = {
     tabBarIcon: ({ focused }) => (
         <TabBarIcon
             focused={focused}
-            name={Platform.OS === 'ios' ? `ios-leaf${focused ? '' : '-outline'}` : 'md-leaf'}
+            name={Platform.OS === 'ios' ? `ios-mail-open` : 'md-mail-open'}
         />
     ),
     tabBarOptions: {
@@ -117,7 +117,7 @@ StaffStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-contacts${focused ? '' : '-outline'}` : 'md-contacts'}
+      name={Platform.OS === 'ios' ? `ios-contacts` : 'md-contacts'}
     />
   ),
     tabBarOptions: {
@@ -143,7 +143,7 @@ WaitTimesStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-time${focused ? '' : '-outline'}` : 'md-time'}
+      name={Platform.OS === 'ios' ? `ios-time` : 'md-time'}
     />
   ),
     tabBarOptions: {

@@ -45,13 +45,14 @@ export default class StaffScreen extends React.Component {
   render() {
       console.log(this.state.messages);
       return(
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
             refreshControl={
             <RefreshControl
                 refreshing={this.state.refreshing}
                 onRefresh={this._onRefresh}
             />
         }
+        >
             <RefreshText/>
             <View style={{ width: '100%', marginTop: 5 }}>
                 {this.state.messages ? this.state.messages.reverse().map((l,i) => {
