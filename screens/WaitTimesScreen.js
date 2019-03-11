@@ -5,7 +5,7 @@ import RefreshText from "../components/RefreshText";
 import {Button, SocialIcon} from "react-native-elements";
 import axios from "axios";
 import moment from 'moment';
-import {addStaffMember, signInUser, signUpUser} from "../actions";
+import {addStaffMember, signInUser, signUpUser, refreshFalse, refreshTrue} from "../actions";
 
 class WaitTimesScreen extends React.Component {
     constructor(props) {
@@ -18,9 +18,10 @@ class WaitTimesScreen extends React.Component {
     }
 
     _onRefresh = () => {
-        this.setState({refreshing: true});
+        // this.setState({refreshing: true});
         this._getStaff();
         this._getStaffWaitTimes();
+        this.setState({refreshing: false});
     };
 
     _timeConvert = time => {
@@ -37,7 +38,6 @@ class WaitTimesScreen extends React.Component {
     };
 
     _getStaffWaitTimes = () => {
-        this.setState({refreshing: false});
         axios.get(`http://52.37.61.234:3001/waitlist/totals`)
             .then(res => {
                 const lowestStaffWait = res.data[0].lowestWait;
@@ -47,7 +47,6 @@ class WaitTimesScreen extends React.Component {
             });
     };
     _getStaff = () => {
-        this.setState({refreshing: false});
         axios.get(`http://52.37.61.234:3001/staff/working`)
             .then(res => {
                 const staff = res.data;
@@ -96,17 +95,17 @@ class WaitTimesScreen extends React.Component {
             });
     };
 
-  static navigationOptions = {
-    title: 'Wait List',
-    headerStyle: {
-        backgroundColor: 'rgba(53, 96, 68, 1)',
-        fontFamily: 'neutra-text-bold'
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-        fontWeight: 'bold',
-    },
-  };
+    static navigationOptions = {
+        title: 'Wait List',
+        headerStyle: {
+            backgroundColor: 'rgba(53, 96, 68, 1)',
+            fontFamily: 'neutra-text-bold'
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+            fontWeight: 'bold',
+        },
+    };
     handlePress(item) {
         Alert.alert(
             'Add or remove Customer',
@@ -149,12 +148,14 @@ class WaitTimesScreen extends React.Component {
     addCustomer(item) {
         axios.put(`http://52.37.61.234:3001/waitList/start/${item.waitlistid}`)
             .then(res => {
+                this.props.refreshTrue(true);
                 this._onRefresh();
             });
     }
     finishCustomer(item) {
         axios.put(`http://52.37.61.234:3001/waitList/done/${item.waitlistid}`)
             .then(res => {
+                this.props.refreshTrue(true);
                 this._onRefresh();
             });
     }
@@ -162,6 +163,7 @@ class WaitTimesScreen extends React.Component {
     removeCustomer(item) {
         axios.delete(`http://52.37.61.234:3001/waitList/${item.waitlistid}`)
             .then(res => {
+                this.props.refreshTrue(true);
                 this._onRefresh();
             });
     }
@@ -171,204 +173,188 @@ class WaitTimesScreen extends React.Component {
     }
 
     render() {
-    return (
-      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          refreshControl={
-          <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={this._onRefresh}
-          />
-      }
-          <RefreshText/>
-          {/*<TouchableOpacity*/}
-          {/*onPress={() => this.handleFirstAvailable(this.state.lowestStaffWait.time.staffid)}*/}
-          {/*>*/}
-          {/*<View style={styles.joinWaitListButton}>*/}
-          {/*<Text style={styles.joinWaitListButtonText}>First Available</Text>*/}
-          {/*</View>*/}
-          {/*</TouchableOpacity>*/}
-          {this.props.currentUser.isLoggedIn ?
-              null
-              :
-              <View style={styles.logInView}>
-                  <Text style={{ fontSize: 20, marginTop: 10, fontFamily: 'neutra-text-light'}}>Log in / Sign Up</Text>
-                  <Text style={{ fontSize: 20, marginBottom: 2, fontFamily: 'neutra-text-light'}}>using Google or Facebook</Text>
-                  <Text style={{ fontSize: 20, marginBottom: 10, fontFamily: 'neutra-text-light'}}>to join the Wait List</Text>
-                  <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-around' }}>
-                      <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
-                          <SocialIcon
-                              title='Google'
-                              button
-                              type='google-plus-official'
-                              style={{ padding: 20, width: 150 }}
-                          />
-                      </TouchableOpacity>
-                      <TouchableOpacity onPress={signInWithFacebook.bind(this)}>
-                          <SocialIcon
-                              title='Facebook'
-                              button
-                              type='facebook'
-                              style={{ padding: 20, width: 150 }}
-                          />
-                      </TouchableOpacity>
-                  </View>
-              </View>
-          }
-          <View style={{width: '75%'}}>
-            <Text style={{ fontSize: 20, marginTop: 10, fontFamily: 'neutra-text-light', textAlign: 'center'}}>Joining the waitlist from your phone will add $1 to your final total</Text>
-          </View>
-          {this.state.working ? this.state.staff.map((item, index) => {
-              if (item.isWorking) {
-                  return (
-                      <View style={{
-                          paddingVertical: 20,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          borderBottomWidth: .3,
-                          width: '100%'
-                      }} key={index}>
-                          <View style={styles.nameHeader}>
-                              <Text
-                                  style={{fontSize: 25, textAlign: 'center', fontFamily: 'neutra-text-bold'}}>{item.first_name} {item.last_name}</Text>
-                              <Text style={{
-                                  fontSize: 20,
-                                  textAlign: 'center',
-                                  paddingVertical: 3,
-                                  fontFamily: 'neutra-text-light'
-                              }}>{item.barber ? "Barber" : "Stylist"}</Text>
-                              {/*{this.state.waitTimesForStaff ? this.state.waitTimesForStaff.map((item3, index) => {*/}
-                                  {/*for (let i = 0; i < this.state.waitTimesForStaff.length; i++) {*/}
-                                      {/*if (item3.time.staffid === item.staffid) {*/}
-                                          // {/*console.log('item 3', item3);*/}
-                                          {/*return (*/}
-                                              {/*<Text key={index} style={{fontSize: 20, textAlign: 'center', paddingVertical: 3}}>{item3.time.waittime > 60 ? this._timeConvert(item3.time.waittime) : item3.time.waittime + " min."} wait time</Text>*/}
-                                          {/*)*/}
-                                      {/*}*/}
-                                  {/*}*/}
-                              {/*}) : null}*/}
-                          </View>
-                          {this.props.currentUser.isLoggedIn ?
-                              <TouchableOpacity
-                                  onPress={() => this.handleJoinStaffWaitlist(item)}
-                              >
-                                  <View style={styles.joinStaffWaitListButton}>
-                                      <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait
-                                          list</Text>
-                                  </View>
-                              </TouchableOpacity>
-                              : null}
-                          {this.state[item.last_name] ? this.state[item.last_name].map((item2, index) => {
-                              return (
-                                  <View key={index}>
-                                      {this.props.currentUser.staff ?
-                                          <TouchableOpacity onPress={() => this.handlePress(item2)}>
-                                              <View style={styles.waitListCard}>
-                                                  <View>
-                                                      <Text>{index < 1 ? null : index}</Text>
-                                                  </View>
-                                                  <View style={styles.waitListCardRemainingTime}>
-                                                      <Text style={{
-                                                          fontWeight: 'bold',
-                                                          fontSize: 15,
-                                                          textAlign: 'center',
-                                                          fontFamily: 'neutra-text-light'
-                                                      }}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
-                                                      <Text style={{
-                                                          fontWeight: 'bold',
-                                                          fontSize: 15,
-                                                          textAlign: 'center',
-                                                          marginTop: 5,
-                                                          fontFamily: 'neutra-text-bold'
-                                                      }}>
-                                                          {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
-                                                      </Text>
-                                                  </View>
-                                                  <View style={styles.waitListCardInfo}>
-                                                      <Text style={{
-                                                          fontWeight: 'bold',
-                                                          fontSize: 20,
-                                                          fontFamily: 'neutra-text-bold'
-                                                      }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
-                                                      <View style={styles.waitListCardServices}>
-                                                          <View style={styles.waitListCardService}>
-                                                              <Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service1_name}</Text>
-                                                              <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service1_time} min.</Text>
-                                                          </View>
-                                                          {item2.service2_id ? <View style={styles.waitListCardService}><Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service2_name}</Text>
-                                                                  <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service2_time} min.</Text></View>
-                                                              : null}
-                                                      </View>
-                                                      <Text
-                                                          style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}
-                                                      </Text>
-                                                      <Text
-                                                          style={{paddingTop: 5, fontFamily: 'neutra-text-bold', fontWeight: 'bold'}}>{item2.mobile_join ? "JOINED FROM APP" : null}
-                                                      </Text>
-                                                  </View>
-                                              </View>
-                                          </TouchableOpacity> :
-                                          <View style={styles.waitListCard}>
-                                              <View style={{ width: '10%' }}>
-                                                  <Text>{index < 1 ? null : index}</Text>
-                                              </View>
-                                              <View style={styles.waitListCardRemainingTime}>
-                                                  <Text style={{
-                                                      fontWeight: 'bold',
-                                                      fontSize: 15,
-                                                      textAlign: 'center',
-                                                      fontFamily: 'neutra-text-light'
-                                                  }}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
-                                                  <Text style={{
-                                                      fontWeight: 'bold',
-                                                      fontSize: 15,
-                                                      textAlign: 'center',
-                                                      marginTop: 5,
-                                                      fontFamily: 'neutra-text-bold'
-                                                  }}>
-                                                      {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
-                                                  </Text>
-                                              </View>
-                                              <View style={styles.waitListCardInfo}>
-                                                  <Text style={{
-                                                      fontWeight: 'bold',
-                                                      fontSize: 20,
-                                                      fontFamily: 'neutra-text-bold'
-                                                  }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
-                                                  <View style={styles.waitListCardServices}>
-                                                      <View style={styles.waitListCardService}>
-                                                          <Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service1_name}</Text>
-                                                          <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service1_time} min.</Text>
-                                                      </View>
-                                                      {item2.service2_id ? <View style={styles.waitListCardService}><Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service2_name}</Text>
-                                                              <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service2_time} min.</Text></View>
-                                                          : null}
-                                                  </View>
-                                                  <Text
-                                                      style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}
-                                                  </Text>
-                                                  <Text
-                                                      style={{paddingTop: 5, fontFamily: 'neutra-text-bold', fontWeight: 'bold'}}>{item2.mobile_join ? "JOINED FROM APP" : null}
-                                                  </Text>
-                                              </View>
-                                          </View>
-                                      }
-                                  </View>
-                              )
-                          }) : null};
-                      </View>
-                  )
-              }
-          }) : <Text style={{fontFamily: 'neutra-text-light', fontSize: 40, marginTop: 100}}>We are closed</Text> };
-      </ScrollView>
-    );
-  }
+        if (this.props.refresh) {
+            this._onRefresh();
+            this.props.refreshFalse(false);
+        }
+        return (
+            <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}
+                        refreshControl={
+                            <RefreshControl
+                                refreshing={this.state.refreshing}
+                                onRefresh={this._onRefresh}
+                            />
+                        }
+            >
+                <RefreshText/>
+                {this.props.currentUser.isLoggedIn ?
+                    null
+                    :
+                    <View style={styles.logInView}>
+                        <Text style={{ fontSize: 20, marginTop: 10, fontFamily: 'neutra-text-light'}}>Log in / Sign Up</Text>
+                        <Text style={{ fontSize: 20, marginBottom: 2, fontFamily: 'neutra-text-light'}}>using Google or Facebook</Text>
+                        <Text style={{ fontSize: 20, marginBottom: 10, fontFamily: 'neutra-text-light'}}>to join the Wait List</Text>
+                        <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'space-around' }}>
+                            <TouchableOpacity onPress={signInWithGoogleAsync.bind(this)}>
+                                <SocialIcon
+                                    title='Google'
+                                    button
+                                    type='google-plus-official'
+                                    style={{ padding: 20, width: 150 }}
+                                />
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={signInWithFacebook.bind(this)}>
+                                <SocialIcon
+                                    title='Facebook'
+                                    button
+                                    type='facebook'
+                                    style={{ padding: 20, width: 150 }}
+                                />
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                }
+                <View style={{width: '75%'}}>
+                    <Text style={{ fontSize: 20, marginTop: 10, fontFamily: 'neutra-text-light', textAlign: 'center'}}>Joining the waitlist from your phone will add $1 to your final total</Text>
+                </View>
+                {this.state.working === true ? this.state.staff.map((item, index) => {
+                    if (item.isWorking) {
+                        return (
+                            <View style={{
+                                paddingVertical: 20,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                borderBottomWidth: .3,
+                                width: '100%'
+                            }} key={index}>
+                                <View style={styles.nameHeader}>
+                                    <Text style={{fontSize: 25, textAlign: 'center', fontFamily: 'neutra-text-bold'}}>{item.first_name} {item.last_name}</Text>
+                                    <Text style={{
+                                        fontSize: 20,
+                                        textAlign: 'center',
+                                        paddingVertical: 3,
+                                        fontFamily: 'neutra-text-light'
+                                    }}>{item.barber ? "Barber" : "Stylist"}</Text>
+                                </View>
+                                {this.props.currentUser.isLoggedIn ?
+                                    <TouchableOpacity
+                                        onPress={() => this.handleJoinStaffWaitlist(item)}
+                                    >
+                                        <View style={styles.joinStaffWaitListButton}>
+                                            <Text style={styles.joinStaffWaitListButtonText}>Join {item.first_name}'s wait
+                                                list</Text>
+                                        </View>
+                                    </TouchableOpacity>
+                                    : null}
+                                {this.state[item.last_name] ? this.state[item.last_name].map((item2, index) => {
+                                    return (
+                                        <View key={index}>
+                                            {this.props.currentUser.staff ?
+                                                <TouchableOpacity onPress={() => this.handlePress(item2)}>
+                                                    <View style={styles.waitListCard}>
+                                                        <View>
+                                                            <Text>{index < 1 ? null : index}</Text>
+                                                        </View>
+                                                        <View style={styles.waitListCardRemainingTime}>
+                                                            <Text style={{
+                                                                fontWeight: 'bold',
+                                                                fontSize: 15,
+                                                                textAlign: 'center',
+                                                                fontFamily: 'neutra-text-light'
+                                                            }}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
+                                                            <Text style={{
+                                                                fontWeight: 'bold',
+                                                                fontSize: 15,
+                                                                textAlign: 'center',
+                                                                marginTop: 5,
+                                                                fontFamily: 'neutra-text-bold'
+                                                            }}>
+                                                                {item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}
+                                                            </Text>
+                                                        </View>
+                                                        <View style={styles.waitListCardInfo}>
+                                                            <Text style={{
+                                                                fontWeight: 'bold',
+                                                                fontSize: 20,
+                                                                fontFamily: 'neutra-text-bold'
+                                                            }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
+                                                            <View style={styles.waitListCardServices}>
+                                                                <View style={styles.waitListCardService}>
+                                                                    <Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service1_name}</Text>
+                                                                    <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service1_time} min.</Text>
+                                                                </View>
+                                                                {item2.service2_id ? <View style={styles.waitListCardService}><Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service2_name}</Text>
+                                                                        <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service2_time} min.</Text></View>
+                                                                    : null}
+                                                            </View>
+                                                            <Text
+                                                                style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}
+                                                            </Text>
+                                                            <Text
+                                                                style={{paddingTop: 5, fontFamily: 'neutra-text-bold', fontWeight: 'bold'}}>{item2.mobile_join ? "JOINED FROM APP" : null}
+                                                            </Text>
+                                                        </View>
+                                                    </View>
+                                                </TouchableOpacity> :
+                                                <View style={styles.waitListCard}>
+                                                    <View style={{ width: '10%' }}>
+                                                        <Text>{index < 1 ? null : index}</Text>
+                                                    </View>
+                                                    <View style={styles.waitListCardRemainingTime}>
+                                                        <Text style={{
+                                                            fontWeight: 'bold',
+                                                            fontSize: 15,
+                                                            textAlign: 'center',
+                                                            fontFamily: 'neutra-text-light'
+                                                        }}>{item2.in_progress ? "Rem. Time" : "Wait Time"}</Text>
+                                                        <Text style={{
+                                                            fontWeight: 'bold',
+                                                            fontSize: 15,
+                                                            textAlign: 'center',
+                                                            marginTop: 5,
+                                                            fontFamily: 'neutra-text-bold'
+                                                        }}>{item2.remainingTime > 60 ? this._timeConvert(item2.remainingTime) : item2.remainingTime + " min."}</Text>
+                                                    </View>
+                                                    <View style={styles.waitListCardInfo}>
+                                                        <Text style={{
+                                                            fontWeight: 'bold',
+                                                            fontSize: 20,
+                                                            fontFamily: 'neutra-text-bold'
+                                                        }}>{item2.customer_first_name} {item2.customer_last_name.charAt(0)}</Text>
+                                                        <View style={styles.waitListCardServices}>
+                                                            <View style={styles.waitListCardService}>
+                                                                <Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center',}}>{item2.service1_name}</Text>
+                                                                <Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service1_time} min.</Text>
+                                                            </View>
+                                                            {item2.service2_id ? <View style={styles.waitListCardService}><Text style={{paddingTop: 5, fontFamily: 'neutra-text-bold', textAlign: 'center'}}>{item2.service2_name}</Text><Text style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>{item2.service2_time} min.</Text></View>
+                                                                : null}
+                                                        </View>
+                                                        <Text
+                                                            style={{paddingTop: 5, fontFamily: 'neutra-text-light'}}>Status: {item2.in_progress ? "In Progress" : "Waiting"}
+                                                        </Text>
+                                                        <Text
+                                                            style={{paddingTop: 5, fontFamily: 'neutra-text-bold', fontWeight: 'bold'}}>{item2.mobile_join ? "JOINED FROM APP" : null}</Text>
+                                                    </View>
+                                                </View>
+                                            }
+                                        </View>
+                                    )
+                                }) : null}
+                            </View>
+                        )
+                    }
+                }) : <Text style={{fontFamily: 'neutra-text-light', fontSize: 40, marginTop: 100}}>We are closed</Text>}
+            </ScrollView>
+        );
+    }
 }
 
 
 function mapStateToProps(state) {
     // console.log('state', state);
     return {
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
+        refresh: state.refresh.refreshStatus
     }
 }
 
@@ -450,7 +436,7 @@ async function signInWithFacebook() {
     }
 }
 
-export default connect(mapStateToProps, {signInUser, signUpUser, addStaffMember})(WaitTimesScreen)
+export default connect(mapStateToProps, {signInUser, signUpUser, refreshFalse, refreshTrue, addStaffMember})(WaitTimesScreen)
 
 const styles = StyleSheet.create({
     container: {
@@ -506,46 +492,46 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         fontFamily: 'neutra-text-light'
     },
-      joinWaitListButton: {
-          height: 50,
-          width: 250,
-          justifyContent: 'center',
-          alignContent: 'center',
-          borderWidth: .5,
-          borderColor: '#2F553C',
-          backgroundColor: '#2F553C',
-          marginVertical: 15,
-          borderRadius: 25,
-          fontFamily: 'neutra-text-bold'
-      },
-      nameHeader: {
-          width: '100%',
-          justifyContent: 'center',
-          alignContent: 'center',
-      },
-      joinStaffWaitListButton: {
-          height: 35,
-          width: 200,
-          justifyContent: 'center',
-          alignContent: 'center',
-          borderWidth: .5,
-          borderColor: '#2F553C',
-          backgroundColor: '#2F553C',
-          marginVertical: 5,
-          borderRadius: 25,
-        },
-      joinStaffWaitListButtonText: {
-          color: '#fff',
-          fontSize: 15,
-          marginTop: 5,
-          textAlign: 'center',
-          fontFamily: 'neutra-text-light'
-      },
-      joinWaitListButtonText: {
-          color: '#fff',
-          fontSize: 25,
-          textAlign: 'center',
-          fontFamily: 'neutra-text-light'
+    joinWaitListButton: {
+        height: 50,
+        width: 250,
+        justifyContent: 'center',
+        alignContent: 'center',
+        borderWidth: .5,
+        borderColor: '#2F553C',
+        backgroundColor: '#2F553C',
+        marginVertical: 15,
+        borderRadius: 25,
+        fontFamily: 'neutra-text-bold'
+    },
+    nameHeader: {
+        width: '100%',
+        justifyContent: 'center',
+        alignContent: 'center',
+    },
+    joinStaffWaitListButton: {
+        height: 35,
+        width: 200,
+        justifyContent: 'center',
+        alignContent: 'center',
+        borderWidth: .5,
+        borderColor: '#2F553C',
+        backgroundColor: '#2F553C',
+        marginVertical: 5,
+        borderRadius: 25,
+    },
+    joinStaffWaitListButtonText: {
+        color: '#fff',
+        fontSize: 15,
+        marginTop: 5,
+        textAlign: 'center',
+        fontFamily: 'neutra-text-light'
+    },
+    joinWaitListButtonText: {
+        color: '#fff',
+        fontSize: 25,
+        textAlign: 'center',
+        fontFamily: 'neutra-text-light'
     },
     buttonView: {
         justifyContent: 'space-around',
