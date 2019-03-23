@@ -3,9 +3,11 @@ import {
     TouchableOpacity,
     View,
     StyleSheet,
-    Text, Alert
+    Text,
+    Dimensions
 }
     from 'react-native';
+// import { Dimensions } from 'expo';
 import { connect } from 'react-redux';
 import { signInUser, signInWaitListUser } from "../actions";
 import { FormInput, FormLabel } from 'react-native-elements'
@@ -22,6 +24,15 @@ class WaitListSignUpScreen extends Component {
     static navigationOptions = {
         header: null,
     };
+
+    // function changeScreenOrientation() {
+    //     Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.LANDSCAPE);
+    // }
+
+    componentDidMount() {
+        const {width} = Dimensions.get('window');
+        {width > 1200 ? Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.LANDSCAPE) : null}
+    }
 
     render() {
         return (
