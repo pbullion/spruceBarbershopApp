@@ -38,6 +38,7 @@
     "redux-form": "^7.4.2"
   },
   "devDependencies": {
-    "jest-expo": "30.0.0"
+    "jest-expo": "30.0.0",
+    "prettier": "^1.16.4"
   }
 }

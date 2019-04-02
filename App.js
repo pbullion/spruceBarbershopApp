@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import {Platform, StatusBar, StyleSheet, View, Dimensions, DeviceEventEmitter} from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import { Provider } from 'react-redux';
@@ -11,8 +11,12 @@ export default class App extends React.Component {
     };
 
     componentDidMount() {
+
     }
+
     render() {
+        DeviceEventEmitter.addListener('namedOrientationDidChange', data => {data.isLandscape ? Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.LANDSCAPE) : Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT) });
+
         if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
             return (
                 <AppLoading
