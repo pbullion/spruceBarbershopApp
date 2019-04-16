@@ -42,7 +42,7 @@ export default class StaffScreen extends React.Component {
   }
 
   render() {
-    console.log(this.state.messages);
+    // console.log(this.state.messages);
     return (
       <ScrollView
         style={styles.container}
@@ -59,7 +59,7 @@ export default class StaffScreen extends React.Component {
         <View style={{ width: "100%", marginTop: 5 }}>
           {this.state.messages
             ? this.state.messages.reverse().map((l, i) => {
-                console.log(l.date);
+                // console.log(l.date);
                 return (
                   <ListItem
                     key={i}

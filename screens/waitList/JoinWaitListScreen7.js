@@ -38,11 +38,11 @@ class JoinWaitListScreen7 extends React.Component {
         let currentUser = props.currentUser;
         if (props.currentUser.shop === false || null) {
             currentUser = props.currentUser;
-            console.log("here is the current user", currentUser);
+            // console.log("here is the current user", currentUser);
         } else if (props.currentUser.shop === true) {
             currentUser = props.waitListUser;
             waitList.mobile_join = false;
-            console.log("here is the current user in the true statement", currentUser);
+            // console.log("here is the current user in the true statement", currentUser);
         }
         axios.post(`http://52.37.61.234:3001/waitlist`, {
             waitList,

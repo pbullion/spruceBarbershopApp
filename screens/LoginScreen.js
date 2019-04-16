@@ -100,7 +100,7 @@ async function performLogin(email, props) {
             props.navigation.navigate('WaitTimeList');
         })
         .catch(function (error) {
-            console.log('USER IS NOT SIGNED UP');
+            // console.log('USER IS NOT SIGNED UP');
             console.log('error', error);
             props.navigation.navigate('SignUp');
         });

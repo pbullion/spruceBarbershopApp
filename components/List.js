@@ -7,7 +7,8 @@ import {
   View,
   Dimensions,
   TouchableOpacity,
-  Image
+  Image,
+  Switch
 } from "react-native";
 import { Title, Paragraph, Card } from "react-native-paper";
 import * as Animatable from "react-native-animatable";
@@ -23,8 +24,10 @@ import HeaderImageScrollView, {
   TriggeringView
 } from "react-native-image-header-scroll-view";
 import { WebBrowser } from "expo";
+import axios from "axios";
+import connect from "react-redux/es/connect/connect";
 
-export default class ListComponent extends React.Component {
+class ListComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -203,6 +206,27 @@ export default class ListComponent extends React.Component {
     }
   };
 
+  toggleValue = (value, item) => {
+    axios
+      .put(`http://52.37.61.234:3001/staff/appointments${!value}/${item.id}`)
+      .then(res => {
+        this.getData();
+      });
+  };
+
+  getData = () => {
+    axios
+      .get(`http://52.37.61.234:3001/staff/list/${this.props.type}`)
+      .then(res => {
+        const data = res.data;
+        this.setState({ data });
+      });
+  };
+
+  componentDidMount() {
+    this.getData();
+  }
+
   render() {
     return (
       <ScrollView
@@ -263,8 +287,7 @@ export default class ListComponent extends React.Component {
                 </View>
               )}
             >
-              {this.state.item.appt_only === true &&
-              this.state.item.appointment_link !== null ? (
+              {this.state.item.appointment_link !== null ? (
                 <View
                   style={{
                     flexDirection: "row",
@@ -336,8 +359,8 @@ export default class ListComponent extends React.Component {
             </HeaderImageScrollView>
           </View>
         </Modal>
-        {this.props.data
-          ? this.props.data.map((item, index) => {
+        {this.state.data
+          ? this.state.data.map((item, index) => {
               return (
                 <TouchableItem
                   key={index}
@@ -359,6 +382,35 @@ export default class ListComponent extends React.Component {
                           >
                             {item.first_name} {item.last_name}
                           </Title>
+                          {this.props.currentUser.staff ? (
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                width: "100%",
+                                justifyContent: "center",
+                                margin: 10
+                              }}
+                            >
+                              <Text
+                                style={{
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                  marginRight: 15,
+                                  marginTop: 10,
+                                  fontFamily: "neutra-text-light"
+                                }}
+                              >
+                                Appointment Only
+                              </Text>
+                              <Switch
+                                onValueChange={() => {
+                                  this.toggleValue(item.appt_only, item);
+                                  item.appt_only = !item.appt_only;
+                                }}
+                                value={item.appt_only}
+                              />
+                            </View>
+                          ) : null}
                           <Paragraph
                             style={{ fontFamily: "neutra-text-light" }}
                           >
@@ -376,6 +428,17 @@ export default class ListComponent extends React.Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    currentUser: state.currentUser
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  {}
+)(ListComponent);
 
 const styles = StyleSheet.create({
   container: {

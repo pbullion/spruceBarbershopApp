@@ -96,7 +96,7 @@ class HomeScreen extends React.Component {
   };
 
   registerForPushNotifications = async () => {
-    console.log("in the token");
+    // console.log("in the token");
     const { status: existingStatus } = await Permissions.getAsync(
       Permissions.NOTIFICATIONS
     );
@@ -345,7 +345,7 @@ class HomeScreen extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log("state", state);
+  // console.log("state", state);
   return {
     currentUser: state.currentUser
   };
@@ -359,8 +359,8 @@ async function performLogin(user, accessToken, props, token) {
       }
     })
     .then(function(response) {
-      console.log("response data TOKEN", token);
-      console.log(response.data);
+      // console.log("response data TOKEN", token);
+      // console.log(response.data);
       if (response.data.length > 0 && token) {
         console.log("in the if statement with token****************");
         axios

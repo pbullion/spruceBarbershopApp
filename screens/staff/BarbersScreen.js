@@ -22,13 +22,13 @@ export default class BarbersScreen extends React.Component {
   };
 
   render() {
-    return <ListComponent data={this.state.data} imageHeight={650} />;
+    return <ListComponent type="barber" imageHeight={650}/>;
   }
 
-  componentDidMount() {
-    axios.get(`http://52.37.61.234:3001/staff/list/barber`).then(res => {
-      const data = res.data;
-      this.setState({ data });
-    });
-  }
+  // componentDidMount() {
+  //   axios.get(`http://52.37.61.234:3001/staff/list/barber`).then(res => {
+  //     const data = res.data;
+  //     this.setState({ data });
+  //   });
+  // }
 }

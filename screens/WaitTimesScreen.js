@@ -28,12 +28,15 @@ class WaitTimesScreen extends React.Component {
     this.state = {
       refreshing: false,
       updatedWaitList: [],
-      working: false
+      working: false,
+      availableStaff: []
     };
   }
 
   _onRefresh = () => {
-    // this.setState({refreshing: true});
+    console.log("in the on refresh");
+    this.props.refreshTrue(true);
+    this.setState({ refreshing: true });
     this._getStaff();
     this._getStaffWaitTimes();
     this.setState({ refreshing: false });
@@ -113,6 +116,8 @@ class WaitTimesScreen extends React.Component {
                 }
               }
               this.setState({ [res.data[0].staff_last_name]: updatedWaitList });
+            } else {
+              this.state.availableStaff.push(staffid);
             }
           });
       }
@@ -147,26 +152,27 @@ class WaitTimesScreen extends React.Component {
       { cancelable: true }
     );
   }
-  handlePressInProgress(item) {
-    Alert.alert(
-      "Remove customer from waitlist",
-      "",
-      [
-        { text: "Finished", onPress: () => this.finishCustomer(item) }
-        // {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
-      ],
-      { cancelable: false }
-    );
-  }
-
-  handleFirstAvailable(id) {
-    axios.get(`http://52.37.61.234:3001/staff/${id}`).then(res => {
-      this.handleJoinStaffWaitlist(res.data);
-      this.props.navigation.navigate("WaitTimes3");
-    });
-  }
+  // handlePressInProgress(item) {
+  //   Alert.alert(
+  //     "Remove customer from waitlist",
+  //     "",
+  //     [
+  //       { text: "Finished", onPress: () => this.finishCustomer(item) }
+  //       // {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'}
+  //     ],
+  //     { cancelable: false }
+  //   );
+  // }
+  //
+  // handleFirstAvailable(id) {
+  //   axios.get(`http://52.37.61.234:3001/staff/${id}`).then(res => {
+  //     this.handleJoinStaffWaitlist(res.data);
+  //     this.props.navigation.navigate("WaitTimes3");
+  //   });
+  // }
 
   handleJoinStaffWaitlist(item) {
+    // console.log("8888888", item);
     this.props.addStaffMember(item);
     // console.log("here is the wait list current user", this.props.currentUser);
     {
@@ -181,7 +187,7 @@ class WaitTimesScreen extends React.Component {
       .put(`http://52.37.61.234:3001/waitList/start/${item.waitlistid}`)
       .then(res => {
         this.props.refreshTrue(true);
-        this._onRefresh();
+        // this._onRefresh();
       });
   }
   finishCustomer(item) {
@@ -189,7 +195,7 @@ class WaitTimesScreen extends React.Component {
       .put(`http://52.37.61.234:3001/waitList/done/${item.waitlistid}`)
       .then(res => {
         this.props.refreshTrue(true);
-        this._onRefresh();
+        // this._onRefresh();
       });
   }
 
@@ -198,9 +204,22 @@ class WaitTimesScreen extends React.Component {
       .delete(`http://52.37.61.234:3001/waitList/${item.waitlistid}`)
       .then(res => {
         this.props.refreshTrue(true);
-        this._onRefresh();
+        // this._onRefresh();
       });
   }
+
+  joinRandom = () => {
+    const item = this.state.availableStaff[
+      Math.floor(Math.random() * this.state.availableStaff.length)
+    ];
+    console.log("here is the random", item);
+    let i;
+    for (i = 0; i < this.state.staff.length; i++) {
+      if (this.state.staff[i].staffid === item) {
+        this.handleJoinStaffWaitlist(this.state.staff[i]);
+      }
+    }
+  };
 
   componentDidMount() {
     this._onRefresh();
@@ -208,8 +227,10 @@ class WaitTimesScreen extends React.Component {
 
   render() {
     if (this.props.refresh) {
+      console.log("refresh 1", this.props.refresh);
       this._onRefresh();
       this.props.refreshFalse(false);
+      console.log("refresh 2", this.props.refresh);
     }
     return (
       <ScrollView
@@ -223,7 +244,15 @@ class WaitTimesScreen extends React.Component {
         }
       >
         <RefreshText />
-        {this.props.currentUser.isLoggedIn ? null : (
+        {this.props.currentUser.isLoggedIn ? (
+          <TouchableOpacity onPress={() => this.joinRandom()}>
+            <View style={styles.joinStaffWaitListButton}>
+              <Text style={styles.joinStaffWaitListButtonText}>
+                Join Random
+              </Text>
+            </View>
+          </TouchableOpacity>
+        ) : (
           <View style={styles.logInView}>
             <Text
               style={{
@@ -387,7 +416,7 @@ class WaitTimesScreen extends React.Component {
                                       }}
                                     >
                                       {item2.customer_first_name}{" "}
-                                      {item2.customer_last_name.charAt(0)}
+                                      {item2.customer_last_name}
                                     </Text>
                                     <View style={styles.waitListCardServices}>
                                       <View style={styles.waitListCardService}>
@@ -499,7 +528,7 @@ class WaitTimesScreen extends React.Component {
                                     }}
                                   >
                                     {item2.customer_first_name}{" "}
-                                    {item2.customer_last_name.charAt(0)}
+                                    {item2.customer_last_name}
                                   </Text>
                                   <View style={styles.waitListCardServices}>
                                     <View style={styles.waitListCardService}>

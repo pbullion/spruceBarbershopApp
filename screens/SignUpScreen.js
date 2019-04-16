@@ -94,7 +94,7 @@ async function performLogin(user, props) {
       }
     })
     .then(function(response) {
-      console.log(response);
+      // console.log(response);
       if (response.data.length > 0) {
         Alert.alert(
           "You are already signed up!",
@@ -147,7 +147,7 @@ async function signInWithGoogleAsync() {
     });
 
     if (result.type === "success") {
-      console.log(result.user);
+      // console.log(result.user);
       let first_name = result.user.givenName;
       let last_name = result.user.familyName;
       let email = result.user.email;
@@ -202,7 +202,7 @@ async function signInWithFacebook() {
       staff,
       customer
     };
-    console.log(user);
+    // console.log(user);
     performLogin(user, this.props);
   }
 }

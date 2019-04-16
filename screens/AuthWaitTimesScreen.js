@@ -95,7 +95,7 @@ class WaitTimesScreen extends React.Component {
 
 
 function mapStateToProps(state) {
-    console.log('state', state);
+    // console.log('state', state);
     return {
         currentUser: state.currentUser
     }

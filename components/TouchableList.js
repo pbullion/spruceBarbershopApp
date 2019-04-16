@@ -19,7 +19,7 @@ class TouchableList extends React.Component {
     }
 
     selectItem = (props, item) => {
-        console.log("***********************************staff member item", item);
+        // console.log("***********************************staff member item", item);
         this.props.addStaffMember(item);
         props.props.navigation.navigate('WaitTimes3')
     };

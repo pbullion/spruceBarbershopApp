@@ -14,7 +14,7 @@ class ServicesButton extends React.Component {
     }
 
     render() {
-        console.log('home screen props', this.props.currentUser);
+        // console.log('home screen props', this.props.currentUser);
         return (
             <TouchableOpacity
                 onPress={this.props.onPress}
