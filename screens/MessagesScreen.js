@@ -26,7 +26,7 @@ export default class StaffScreen extends React.Component {
   };
   getMessages = () => {
     this.setState({ refreshing: false });
-    axios.get(`http://52.37.61.234:3001/messages`).then(res => {
+    axios.get(`http://18.237.192.82:3001/messages`).then(res => {
       const messages = res.data;
       this.setState({ messages });
     });

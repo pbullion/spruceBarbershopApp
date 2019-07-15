@@ -29,7 +29,9 @@ class WaitTimesScreen extends React.Component {
       refreshing: false,
       updatedWaitList: [],
       working: false,
-      availableStaff: []
+      availableStaff: [],
+      availableBarbers: [],
+      availableStylists: [],
     };
   }
 
@@ -56,7 +58,7 @@ class WaitTimesScreen extends React.Component {
   };
 
   _getStaffWaitTimes = () => {
-    axios.get(`http://52.37.61.234:3001/waitlist/totals`).then(res => {
+    axios.get(`http://18.237.192.82:3001/waitlist/totals`).then(res => {
       const lowestStaffWait = res.data[0].lowestWait;
       const waitTimesForStaff = res.data[1];
       this.setState({ waitTimesForStaff });
@@ -64,7 +66,7 @@ class WaitTimesScreen extends React.Component {
     });
   };
   _getStaff = () => {
-    axios.get(`http://52.37.61.234:3001/staff/working`).then(res => {
+    axios.get(`http://18.237.192.82:3001/staff/working`).then(res => {
       const staff = res.data;
       let i;
       this.setState({ staff });
@@ -75,8 +77,9 @@ class WaitTimesScreen extends React.Component {
       }
       for (i = 0; i < staff.length; i++) {
         const staffid = staff[i].staffid;
+        const barber = staff[i].barber;
         axios
-          .get(`http://52.37.61.234:3001/waitlist/staffmember/${staffid}`)
+          .get(`http://18.237.192.82:3001/waitlist/staffmember/${staffid}`)
           .then(res => {
             if (res.data.length > 0) {
               const updatedWaitList = [];
@@ -117,7 +120,11 @@ class WaitTimesScreen extends React.Component {
               }
               this.setState({ [res.data[0].staff_last_name]: updatedWaitList });
             } else {
-              this.state.availableStaff.push(staffid);
+              if (barber) {
+                this.state.availableBarbers.push(staffid)
+              } else {
+                this.state.availableStylists.push(staffid);
+              }
             }
           });
       }
@@ -165,7 +172,7 @@ class WaitTimesScreen extends React.Component {
   // }
   //
   // handleFirstAvailable(id) {
-  //   axios.get(`http://52.37.61.234:3001/staff/${id}`).then(res => {
+  //   axios.get(`http://18.237.192.82:3001/staff/${id}`).then(res => {
   //     this.handleJoinStaffWaitlist(res.data);
   //     this.props.navigation.navigate("WaitTimes3");
   //   });
@@ -184,7 +191,7 @@ class WaitTimesScreen extends React.Component {
 
   addCustomer(item) {
     axios
-      .put(`http://52.37.61.234:3001/waitList/start/${item.waitlistid}`)
+      .put(`http://18.237.192.82:3001/waitList/start/${item.waitlistid}`)
       .then(res => {
         this.props.refreshTrue(true);
         // this._onRefresh();
@@ -192,7 +199,7 @@ class WaitTimesScreen extends React.Component {
   }
   finishCustomer(item) {
     axios
-      .put(`http://52.37.61.234:3001/waitList/done/${item.waitlistid}`)
+      .put(`http://18.237.192.82:3001/waitList/done/${item.waitlistid}`)
       .then(res => {
         this.props.refreshTrue(true);
         // this._onRefresh();
@@ -201,7 +208,7 @@ class WaitTimesScreen extends React.Component {
 
   removeCustomer(item) {
     axios
-      .delete(`http://52.37.61.234:3001/waitList/${item.waitlistid}`)
+      .delete(`http://18.237.192.82:3001/waitList/${item.waitlistid}`)
       .then(res => {
         this.props.refreshTrue(true);
         // this._onRefresh();
@@ -209,9 +216,27 @@ class WaitTimesScreen extends React.Component {
   }
 
   joinRandom = () => {
-    const item = this.state.availableStaff[
-      Math.floor(Math.random() * this.state.availableStaff.length)
-    ];
+    Alert.alert(
+        "Choose what type of service",
+        "",
+        [
+          { text: "Barber", onPress: () => this.joinRandomBarber() },
+          { text: "Stylist", onPress: () => this.joinRandomStylist() },
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          }
+        ],
+        { cancelable: true }
+    );
+  };
+
+  joinRandomBarber = () => {
+    console.log(this.state.availableBarbers);
+    const item = this.state.availableBarbers[
+        Math.floor(Math.random() * this.state.availableBarbers.length)
+        ];
     console.log("here is the random", item);
     let i;
     for (i = 0; i < this.state.staff.length; i++) {
@@ -220,6 +245,21 @@ class WaitTimesScreen extends React.Component {
       }
     }
   };
+
+  joinRandomStylist = () => {
+    console.log(this.state.availableStylists);
+    const item = this.state.availableStylists[
+        Math.floor(Math.random() * this.state.availableStylists.length)
+        ];
+    console.log("here is the random", item);
+    let i;
+    for (i = 0; i < this.state.staff.length; i++) {
+      if (this.state.staff[i].staffid === item) {
+        this.handleJoinStaffWaitlist(this.state.staff[i]);
+      }
+    }
+  };
+
 
   componentDidMount() {
     this._onRefresh();
@@ -631,7 +671,7 @@ function mapStateToProps(state) {
 
 async function performLogin(user, props) {
   axios
-    .get(`http://52.37.61.234:3001/users/email/${user.email}`, {
+    .get(`http://18.237.192.82:3001/users/email/${user.email}`, {
       headers: {
         "content-type": "application/json"
       }
@@ -644,7 +684,7 @@ async function performLogin(user, props) {
       } else {
         axios
           .post(
-            `http://52.37.61.234:3001/users/socialSignUp`,
+            `http://18.237.192.82:3001/users/socialSignUp`,
             {
               user
             },

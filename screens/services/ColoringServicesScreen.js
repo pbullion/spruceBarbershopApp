@@ -28,7 +28,7 @@ export default class ColoringServicesScreen extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://52.37.61.234:3001/services/category/Coloring`)
+        axios.get(`http://18.237.192.82:3001/services/category/Coloring`)
             .then(res => {
                 // console.log('hair services response', res.data);
                 const data = res.data;

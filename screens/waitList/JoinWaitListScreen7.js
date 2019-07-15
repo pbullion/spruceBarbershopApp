@@ -44,7 +44,7 @@ class JoinWaitListScreen7 extends React.Component {
             waitList.mobile_join = false;
             // console.log("here is the current user in the true statement", currentUser);
         }
-        axios.post(`http://52.37.61.234:3001/waitlist`, {
+        axios.post(`http://18.237.192.82:3001/waitlist`, {
             waitList,
             currentUser
         }, {
@@ -75,7 +75,7 @@ class JoinWaitListScreen7 extends React.Component {
     };
 
     componentDidMount() {
-        axios.get(`http://52.37.61.234:3001/services/category/${this.props.waitListFlow.waitListView}`)
+        axios.get(`http://18.237.192.82:3001/services/category/${this.props.waitListFlow.waitListView}`)
             .then(res => {
                 const data = res.data;
                 this.setState({ data });

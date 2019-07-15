@@ -34,7 +34,7 @@ class HomeScreen extends React.Component {
 
   _getCurrentWaitTime = () => {
     this.setState({ refreshing: false });
-    axios.get(`http://52.37.61.234:3001/waitlist/totals`).then(res => {
+    axios.get(`http://18.237.192.82:3001/waitlist/totals`).then(res => {
       // if (res.data[0].lowestWait.time.waittime) {
       //     const currentWaitTime = res.data[0].lowestWait.time.waittime;
       //     this.setState({ currentWaitTime })
@@ -45,14 +45,14 @@ class HomeScreen extends React.Component {
   };
 
   _getSpecials = () => {
-    axios.get(`http://52.37.61.234:3001/homeScreen/specials`).then(res => {
+    axios.get(`http://18.237.192.82:3001/homeScreen/specials`).then(res => {
       const specials = res.data;
       this.setState({ specials });
     });
   };
 
   _getBusinessHours = () => {
-    axios.get(`http://52.37.61.234:3001/homeScreen/businessHours`).then(res => {
+    axios.get(`http://18.237.192.82:3001/homeScreen/businessHours`).then(res => {
       const businessHours = res.data;
       this.setState({ businessHours });
     });
@@ -62,7 +62,7 @@ class HomeScreen extends React.Component {
   };
 
   _getUpdate = () => {
-    axios.get(`http://52.37.61.234:3001/homeScreen/update`).then(res => {
+    axios.get(`http://18.237.192.82:3001/homeScreen/update`).then(res => {
       const update = res.data;
       if (update.length > 0) {
         this.setState({ update });
@@ -353,7 +353,7 @@ function mapStateToProps(state) {
 
 async function performLogin(user, accessToken, props, token) {
   axios
-    .get(`http://52.37.61.234:3001/users/email/${user.email}`, {
+    .get(`http://18.237.192.82:3001/users/email/${user.email}`, {
       headers: {
         "content-type": "application/json"
       }
@@ -365,7 +365,7 @@ async function performLogin(user, accessToken, props, token) {
         console.log("in the if statement with token****************");
         axios
           .put(
-            `http://52.37.61.234:3001/users/socialSignUp`,
+            `http://18.237.192.82:3001/users/socialSignUp`,
             {
               user,
               token
@@ -406,7 +406,7 @@ async function performLogin(user, accessToken, props, token) {
       } else if (token) {
         axios
           .post(
-            `http://52.37.61.234:3001/users/socialSignUp`,
+            `http://18.237.192.82:3001/users/socialSignUp`,
             {
               user,
               token
@@ -428,7 +428,7 @@ async function performLogin(user, accessToken, props, token) {
         console.log("already signed up and no token");
         axios
           .post(
-            `http://52.37.61.234:3001/users/socialSignUp`,
+            `http://18.237.192.82:3001/users/socialSignUp`,
             {
               user
             },

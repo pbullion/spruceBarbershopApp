@@ -88,7 +88,7 @@ class SignUpScreen extends Component {
 
 async function performLogin(user, props) {
   axios
-    .get(`http://52.37.61.234:3001/users/email/${user.email}`, {
+    .get(`http://18.237.192.82:3001/users/email/${user.email}`, {
       headers: {
         "content-type": "application/json"
       }
@@ -115,7 +115,7 @@ async function performLogin(user, props) {
       } else {
         axios
           .post(
-            `http://52.37.61.234:3001/users/socialSignUp`,
+            `http://18.237.192.82:3001/users/socialSignUp`,
             {
               user
             },

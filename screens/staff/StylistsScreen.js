@@ -23,12 +23,12 @@ export default class StylistsScreen extends React.Component {
 
     render() {
         return (
-            <ListComponent data={this.state.data} imageHeight={650}/>
+            <ListComponent type="stylist" imageHeight={650}/>
         );
     }
 
     componentDidMount() {
-        axios.get(`http://52.37.61.234:3001/staff/list/stylist`)
+        axios.get(`http://18.237.192.82:3001/staff/list/stylist`)
             .then(res => {
                 // console.log("this should be stylists", res.data);
                 const data = res.data;

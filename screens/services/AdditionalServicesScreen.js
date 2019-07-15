@@ -28,7 +28,7 @@ export default class AdditionalServicesScreen extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://52.37.61.234:3001/services/category/Additional`)
+        axios.get(`http://18.237.192.82:3001/services/category/Additional`)
             .then(res => {
                 // console.log('hair services response', res.data);
                 const data = res.data;

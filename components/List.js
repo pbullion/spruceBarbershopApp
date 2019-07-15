@@ -208,7 +208,7 @@ class ListComponent extends React.Component {
 
   toggleValue = (value, item) => {
     axios
-      .put(`http://52.37.61.234:3001/staff/appointments${!value}/${item.id}`)
+      .put(`http://18.237.192.82:3001/staff/appointments${!value}/${item.id}`)
       .then(res => {
         this.getData();
       });
@@ -216,7 +216,7 @@ class ListComponent extends React.Component {
 
   getData = () => {
     axios
-      .get(`http://52.37.61.234:3001/staff/list/${this.props.type}`)
+      .get(`http://18.237.192.82:3001/staff/list/${this.props.type}`)
       .then(res => {
         const data = res.data;
         this.setState({ data });
@@ -377,7 +377,8 @@ class ListComponent extends React.Component {
                           <Title
                             style={{
                               fontFamily: "neutra-text-bold",
-                              marginTop: 5
+                              marginTop: 10,
+                              textAlign: "center"
                             }}
                           >
                             {item.first_name} {item.last_name}
@@ -411,11 +412,6 @@ class ListComponent extends React.Component {
                               />
                             </View>
                           ) : null}
-                          <Paragraph
-                            style={{ fontFamily: "neutra-text-light" }}
-                          >
-                            {item.bio}
-                          </Paragraph>
                         </Card.Content>
                       </Card>
                     </Animatable.View>

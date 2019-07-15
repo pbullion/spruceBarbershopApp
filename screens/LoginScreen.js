@@ -88,7 +88,7 @@ class LoginScreen extends Component {
 }
 
 async function performLogin(email, props) {
-    axios.get(`http://52.37.61.234:3001/users/email/${email}`, {
+    axios.get(`http://18.237.192.82:3001/users/email/${email}`, {
         email
     }, {
         headers: {

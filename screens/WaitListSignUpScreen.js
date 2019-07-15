@@ -109,14 +109,14 @@ class WaitListSignUpScreen extends Component {
   }
 }
 
-async function performSignUp(first_name, last_name, email, props) {
+async function performSignUp(first_name, last_name, phone, props) {
   axios
     .post(
-      `http://52.37.61.234:3001/users`,
+      `http://18.237.192.82:3001/store-signup`,
       {
         first_name,
         last_name,
-        email
+        phone
       },
       {
         headers: {
