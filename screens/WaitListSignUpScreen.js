@@ -66,12 +66,12 @@ class WaitListSignUpScreen extends Component {
             <FormLabel
               labelStyle={{ color: "#ffffff", fontFamily: "neutra-text-bold" }}
             >
-              Email
+              Phone Number
             </FormLabel>
             <FormInput
               inputStyle={{ color: "#ffffff", fontFamily: "neutra-text-light" }}
               onChangeText={value => {
-                this.setState({ email: value });
+                this.setState({ phone_number: value });
               }}
               focus
             />
@@ -81,7 +81,7 @@ class WaitListSignUpScreen extends Component {
               performSignUp(
                 this.state.first_name,
                 this.state.last_name,
-                this.state.email,
+                this.state.phone_number,
                 this.props
               )
             }
@@ -109,14 +109,14 @@ class WaitListSignUpScreen extends Component {
   }
 }
 
-async function performSignUp(first_name, last_name, phone, props) {
+async function performSignUp(first_name, last_name, phone_number, props) {
   axios
     .post(
-      `http://18.237.192.82:3001/store-signup`,
+      `http://18.237.192.82:3001/users/store-signup`,
       {
         first_name,
         last_name,
-        phone
+        phone_number
       },
       {
         headers: {
@@ -125,7 +125,7 @@ async function performSignUp(first_name, last_name, phone, props) {
       }
     )
     .then(function(response) {
-      console.log(response.data);
+      console.log("**************************", response.data);
       props.signInWaitListUser(response.data[0]);
       props.navigation.navigate("WaitTimes3");
     })
